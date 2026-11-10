@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>リプレイ一覧｜横浜市立大学ヨット部</title>
+<style>
+  :root{ --ink:#12303f; --sub:#5a7180; --line:#d7e3ea; --accent:#0b6fa4; --chip:#eef5f9; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif; color:var(--ink); background:#f6fafc; }
+  header{ background:linear-gradient(160deg,#0a3d5c,#0b6fa4); color:#fff; padding:28px 20px 22px; }
+  header h1{ margin:0 0 6px; font-size:22px; letter-spacing:.02em; }
+  header p{ margin:0; font-size:13px; opacity:.85; }
+  main{ max-width:640px; margin:0 auto; padding:20px 16px 40px; }
+  .note{ font-size:13px; color:var(--sub); margin:0 0 16px; }
+  ul{ list-style:none; margin:0; padding:0; }
+  li{ background:#fff; border:1px solid var(--line); border-radius:12px; margin-bottom:10px; }
+  li a{ display:flex; align-items:center; gap:12px; padding:14px 16px; color:var(--ink); text-decoration:none; }
+  li a:active{ background:var(--chip); }
+  .date{ font-weight:700; white-space:nowrap; }
+  .title{ flex:1; font-size:15px; }
+  .meta{ font-size:12px; color:var(--sub); white-space:nowrap; }
+  li.upcoming{ padding:14px 16px; display:flex; align-items:center; gap:12px; color:var(--sub); background:transparent; border-style:dashed; }
+  .badge{ font-size:11px; background:var(--chip); color:var(--accent); border-radius:999px; padding:3px 9px; white-space:nowrap; }
+  .go{ color:var(--accent); font-size:18px; }
+  footer{ max-width:640px; margin:0 auto; padding:0 16px 32px; font-size:12px; color:var(--sub); }
+  footer a{ color:var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>リプレイ一覧</h1>
+  <p>横浜市立大学ヨット部 スナイプ ― コース練習・レースの全艇リプレイ</p>
+</header>
+<main>
+  <p class="note">練習が終わると、その日のリプレイがここに追加されます。</p>
+  <ul id="replayList">
+    <!-- 公開済みリプレイはここに新しい順で追加される -->
+    <li class="upcoming"><span class="date">12/13（日）</span><span class="title">八景レース</span><span class="badge">準備中</span></li>
+    <li class="upcoming"><span class="date">12/6（日）</span><span class="title">コース練習</span><span class="badge">準備中</span></li>
+    <li class="upcoming"><span class="date">11/22（日）</span><span class="title">コース練習</span><span class="badge">準備中</span></li>
+    <li class="upcoming"><span class="date">11/15（日）</span><span class="title">コース練習</span><span class="badge">準備中</span></li>
+  </ul>
+</main>
+<footer>
+  <p><a href="../">トラッカー（記録用アプリ）へ</a></p>
+  <p>データは練習の振り返りのためのものです。</p>
+</footer>
+</body>
+</html>
