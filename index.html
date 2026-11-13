@@ -154,6 +154,26 @@ input[type=range]{min-height:auto;padding:0}
 .wakebar.mid{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow)}
 .gap-warn{border:2px solid var(--red);background:var(--red-bg);border-radius:var(--radius);padding:16px;margin:14px 0;font-size:15px}
 .gap-warn b.gap-title{font-size:17px;color:var(--red)}
+/* tuning */
+.tuning-panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:16px;margin:18px 0}
+.tuning-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.tuning-head h3{font-size:17px;margin:0;font-weight:800;line-height:1.35}
+.tuning-head .sub2{font-size:13px;color:var(--muted);margin:3px 0 0}
+.tuning-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+.tuning-grid2{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:560px){.tuning-grid{grid-template-columns:1fr 1fr}.tuning-grid .f:last-child{grid-column:span 2}.tuning-grid2{grid-template-columns:1fr}}
+.tuning-panel label.f{margin:6px 0}
+.tuning-panel input,.tuning-panel textarea{background:var(--bg)}
+.tuning-same{border-color:var(--green);color:var(--green);background:var(--green-bg);font-weight:800}
+.tuning-saved{border-top:1px solid var(--line);margin-top:14px;padding-top:12px;display:none}
+.tuning-saved.on{display:block}
+.tuning-saved .line{font-size:14px;margin:0 0 10px;font-variant-numeric:tabular-nums}
+.tuning-history{margin-top:10px}
+.tuning-history .th-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.tuning-history .th-row:last-child{border-bottom:0}
+.tuning-history .th-row .th-main{flex:1;min-width:0;color:var(--muted);font-variant-numeric:tabular-nums}
+.tuning-history .th-row .th-main b{color:var(--ink)}
+.tuning-history .th-exp{flex:0 0 auto;min-height:38px;padding:6px 12px;font-size:13px}
 .pocket-back{margin-top:26px;min-height:54px;padding:12px 22px;border-radius:12px;border:1px solid #555;background:#111;color:#ccc;font-size:15px;font-weight:700}
 #pocket .dim .wake-line{color:#888;font-size:13px}
 </style>
@@ -231,6 +251,55 @@ input[type=range]{min-height:auto;padding:0}
     <label class="f"><span>クルー</span><input id="crewName" placeholder="例: ゆり"></label>
   </div>
   <p class="small" style="margin:2px 0 0">午前／午後は、記録を始めた時刻から自動で付けます（昼休みで記録を分け、電池と集計を管理するための目印です）。選ぶ必要はありません。</p>
+
+  <div class="tuning-panel" id="tuningPanel">
+    <div class="tuning-head">
+      <div>
+        <h3>チューニング記録</h3>
+        <p class="sub2">出艇前に1回だけ。艇とスキッパーを選んだあと、陸で入れてください。</p>
+      </div>
+      <span class="pill" id="tuningState">今日は未記録</span>
+    </div>
+    <p class="small" id="tuningPrevInfo" style="margin:10px 0 0">前回の記録はまだありません。測った値を入れて「記録する」を押してください。</p>
+
+    <span style="display:block;font-weight:700;margin:12px 0 0;font-size:14px">セール</span>
+    <div class="seg" id="tuningSailSeg" role="group" aria-label="セール選択" style="margin:6px 0 4px">
+      <button type="button" data-sail="CB2" class="on">CB2</button>
+      <button type="button" data-sail="SW4C1">SW4C1</button>
+    </div>
+
+    <div class="tuning-grid">
+      <label class="f"><span>レーキ（mm）</span><input type="number" id="tuningRake" inputmode="numeric" placeholder="例: 6540"></label>
+      <label class="f"><span>サイドテンション</span><input type="number" id="tuningSide" inputmode="decimal" step="0.1" placeholder="例: 20"></label>
+      <label class="f"><span>プリベンド（mm）</span><input type="number" id="tuningPrebend" inputmode="numeric" placeholder="例: 50"></label>
+    </div>
+    <p class="small" style="margin:2px 0 0">サイドテンションはバネ式ゲージの値です。前回値が最初から入っているので、変わった数字だけ直せば大丈夫です。</p>
+
+    <details id="tuningDetails">
+      <summary>詳細（任意）— スプレッダー・ステップ・メモ</summary>
+      <div class="tuning-grid2">
+        <label class="f"><span>スプレッダーレングス（mm）</span><input type="number" id="tuningSpreader" inputmode="numeric" placeholder="例: 460"></label>
+        <label class="f"><span>ディフレクション（mm）</span><input type="number" id="tuningDeflection" inputmode="numeric" placeholder="例: 700"></label>
+        <label class="f"><span>マストステップ（mm）</span><input type="number" id="tuningStep" inputmode="numeric" placeholder="例: 1540"></label>
+      </div>
+      <label class="f"><span>メモ</span><textarea id="tuningMemo" rows="2" placeholder="ピン位置、ハリヤードの記しなど" style="min-height:56px"></textarea></label>
+    </details>
+
+    <div class="btnrow" style="margin-top:12px">
+      <button class="btn tuning-same" id="btnTuningSame" type="button">前回と同じ</button>
+      <button class="btn primary" id="btnTuningSave" type="button">記録する</button>
+    </div>
+    <p class="small" id="tuningMsg" aria-live="polite" style="margin:8px 0 0"></p>
+
+    <div class="tuning-saved" id="tuningSaved">
+      <p class="line" id="tuningSavedLine">—</p>
+      <button class="btn primary" id="btnTuningExport" type="button" style="width:100%;min-height:54px">チューニング記録を書き出す（JSON）</button>
+      <p class="small" style="margin:8px 0 0">GPXと同じく、Googleドライブの『GPSデータ』フォルダ（ヨット部フォルダ ＞ 2027 ＞ レース ＞ GPSデータ）に保存してください。</p>
+      <p class="export-status" aria-live="polite"></p>
+    </div>
+
+    <div class="tuning-history" id="tuningHistory"></div>
+  </div>
 
   <label class="toggle"><input type="checkbox" id="powerSave" checked><span><b>節電モード</b><p id="powerSaveHint">節電ON：5秒間隔で保存し、開始と同時に黒画面になります。電池の減りを抑えます。</p></span></label>
   <div class="note"><b>電源ボタンは押さないでください。</b> 黒画面でもスマホは起きています。電源ボタンで画面を消すとGPSが止まることがあり、スマホの電源を切ると記録は完全に止まります。</div>
@@ -395,6 +464,8 @@ input[type=range]{min-height:auto;padding:0}
   <details><summary>集計の流れ</summary><p>各艇は自分のGPXを書き出してGoogleドライブの『GPSデータ』フォルダ（ヨット部フォルダ ＞ 2027 ＞ レース ＞ GPSデータ）に保存し、レスキュー（運営）は運営記録JSONを同じフォルダに保存します。集計はClaudeがフォルダから読み取って行い、結果は冬の分析シートと、このアプリの「リプレイ」タブ（日付ごと）で公開します。コースは 上マーク → アウターマーク（下） → 上マーク → アウターマーク（下） → フィニッシュライン（本船マーク〜レスキュー）横断、の順で判定します。</p></details>
 <details><summary>データの集め方</summary><p>サーバーはありません。各艇がGPXを書き出し、Googleドライブの『GPSデータ』フォルダ（ヨット部フォルダ ＞ 2027 ＞ レース ＞ GPSデータ）に保存します。運営JSONも同じフォルダに忘れずに。集計はClaudeがフォルダから読み取って行います。</p></details>
   <details><summary>集めているデータ</summary><p>時刻・緯度・経度・精度だけを生で保存し、速度・VMG・タックは後から計算します。マーク実位置、号砲時刻、時刻つきの風、フィニッシュ目視順位、欠損区間、電池、配艇も残します。</p></details>
+  <details><summary>チューニング記録について</summary><p>艇モードで、艇とスキッパーを選んだあとに出る「チューニング記録」が朝のステップです。出艇前に1回、レーキ／サイドテンション／プリベンドを入れてください。前回の記録が端末内に残り、次回はその値が最初から表示されます。変わっていない日は「前回と同じ」を1回押すだけで今日の記録になります。</p><p>記録はこの端末内に日付×艇で残ります。書き出しはJSONファイル（tuning_日付_艇番.json）で、GPXと同じくGoogleドライブの『GPSデータ』フォルダに保存してください。集計のときに、その日の航跡・風・順位と艇ごとに結びつけます。</p></details>
+  <p class="small" style="margin-top:16px">バージョン v2.4.0</p>
 </section>
 </div>
 <div id="toast" style="position:fixed;left:12px;right:12px;bottom:96px;z-index:10000;background:#111;color:#fff;padding:14px 16px;border-radius:12px;font-weight:700;display:none;box-shadow:0 8px 30px rgba(0,0,0,.3)"></div>
@@ -562,6 +633,176 @@ function fleetLookup(boat){var f=getFleet();for(var i=0;i<f.rows.length;i++){if(
 function syncBoatFromFleet(){var b=currentBoatNo();var r=fleetLookup(b);if(r){$("skipperName").value=r[1]||"";$("crewName").value=r[2]||""}}
 function currentBoatNo(){var v=$("boatNoSel").value;return v==="custom"?($("boatNoCustom").value.trim()||"custom") : v}
 $("boatNoSel").addEventListener("change",function(){$("boatCustomWrap").style.display=$("boatNoSel").value==="custom"?"":"none";syncBoatFromFleet()});
+
+/* ---------- TUNING RECORD (morning step, per boat) ---------- */
+var TUNING_ALL_KEY="snipe_tuning_all_v1";
+var TUNING_LAST_KEY="snipe_tuning_last_v1";
+var tuningSail="CB2";
+var tuningTodayRecord=null; /* today's saved record for current boat, if any */
+function tuningLoadAll(){try{var a=JSON.parse(localStorage.getItem(TUNING_ALL_KEY)||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
+function tuningSaveAll(a){try{localStorage.setItem(TUNING_ALL_KEY,JSON.stringify(a))}catch(e){}}
+function tuningLoadLastMap(){try{var m=JSON.parse(localStorage.getItem(TUNING_LAST_KEY)||"{}");return (m&&typeof m==="object"&&!Array.isArray(m))?m:{}}catch(e){return{}}}
+function tuningSaveLast(boat,rec){var m=tuningLoadLastMap();m[boat]=rec;try{localStorage.setItem(TUNING_LAST_KEY,JSON.stringify(m))}catch(e){}}
+function tuningRecordsForBoat(boat){return tuningLoadAll().filter(function(r){return r&&r.boat===boat}).sort(function(a,b){return (b.date||"").localeCompare(a.date||"")||String(b.recordedAt||"").localeCompare(String(a.recordedAt||""))})}
+function tuningLastForBoat(boat){
+  var m=tuningLoadLastMap(); if(m[boat])return m[boat];
+  var list=tuningRecordsForBoat(boat); return list.length?list[0]:null;
+}
+function tuningTodayForBoat(boat){var t=todayStr();var list=tuningRecordsForBoat(boat);for(var i=0;i<list.length;i++){if(list[i].date===t)return list[i]}return null}
+function tuningNum(id){var v=$(id).value.trim();if(v==="")return null;var n=Number(v);return isNaN(n)?null:n}
+function tuningSetVal(id,val){$(id).value=(val==null?"":val)}
+function tuningSetSail(sail){
+  tuningSail=(sail==="SW4C1")?"SW4C1":"CB2";
+  document.querySelectorAll("#tuningSailSeg button").forEach(function(b){b.classList.toggle("on",b.dataset.sail===tuningSail)});
+}
+document.querySelectorAll("#tuningSailSeg button").forEach(function(b){b.addEventListener("click",function(){tuningSetSail(b.dataset.sail)})});
+function tuningFillForm(rec){
+  if(!rec)return;
+  tuningSetSail(rec.sail);
+  tuningSetVal("tuningRake",rec.rake);
+  tuningSetVal("tuningSide",rec.sideTension);
+  tuningSetVal("tuningPrebend",rec.prebend);
+  tuningSetVal("tuningSpreader",rec.spreaderLength);
+  tuningSetVal("tuningDeflection",rec.deflection);
+  tuningSetVal("tuningStep",rec.mastStep);
+  $("tuningMemo").value=rec.memo||"";
+  var hasDetail=(rec.spreaderLength!=null||rec.deflection!=null||rec.mastStep!=null||(rec.memo&&rec.memo!==""));
+  var det=$("tuningDetails"); if(det&&hasDetail)det.open=true;
+}
+function tuningSummaryText(r){
+  if(!r)return "—";
+  var parts=[];
+  parts.push(r.sail||"—");
+  parts.push("レーキ "+(r.rake==null?"—":r.rake));
+  parts.push("テンション "+(r.sideTension==null?"—":r.sideTension));
+  parts.push("プリベンド "+(r.prebend==null?"—":r.prebend));
+  return parts.join(" ｜ ");
+}
+function renderTuning(){
+  var boat=currentBoatNo();
+  var todayRec=tuningTodayForBoat(boat);
+  tuningTodayRecord=todayRec;
+  var state=$("tuningState"),info=$("tuningPrevInfo"),sameBtn=$("btnTuningSame"),saved=$("tuningSaved"),hist=$("tuningHistory");
+  if(!state)return;
+  var last=tuningLastForBoat(boat);
+  if(todayRec){
+    state.textContent="今日は記録済み ✓"; state.style.color="var(--green)"; state.style.borderColor="var(--green)";
+    info.innerHTML="今日（"+esc(todayRec.date)+"）の記録を表示しています。直したら「記録する」で上書きできます。";
+  }else if(last){
+    state.textContent="今日は未記録"; state.style.color=""; state.style.borderColor="";
+    info.innerHTML="前回（"+esc(last.date||"")+"）の値を表示しています。変わっていなければ「前回と同じ」で完了です。";
+  }else{
+    state.textContent="今日は未記録"; state.style.color=""; state.style.borderColor="";
+    info.textContent="この艇の前回の記録はまだありません。測った値を入れて「記録する」を押してください。";
+  }
+  if(sameBtn){
+    if(!last||todayRec){sameBtn.disabled=true;sameBtn.style.opacity=".45"}
+    else{sameBtn.disabled=false;sameBtn.style.opacity=""}
+    sameBtn.textContent=last?("前回と同じ（"+esc(last.date||"")+"）"):"前回と同じ";
+  }
+  if(saved){
+    if(todayRec){
+      saved.classList.add("on");
+      $("tuningSavedLine").innerHTML="<b>"+esc(todayRec.boat)+"艇 ｜ "+esc(todayRec.date)+"</b> ｜ "+esc(tuningSummaryText(todayRec))+(todayRec.skipper?" ｜ "+esc(todayRec.skipper):"");
+    }else{saved.classList.remove("on")}
+  }
+  if(hist){
+    var list=tuningRecordsForBoat(boat).slice(0,5);
+    if(!list.length){hist.innerHTML=""}
+    else{
+      hist.innerHTML="<p class='small' style='font-weight:700;color:var(--ink);margin:12px 0 2px'>この艇の記録（この端末内）</p>"+list.map(function(r,i){
+        return "<div class='th-row'><span class='th-main'><b>"+esc(r.date||"")+"</b> "+esc(tuningSummaryText(r))+"</span><button class='btn th-exp' type='button' data-tuning-exp='"+i+"'>JSON</button></div>"
+      }).join("");
+      hist.querySelectorAll("[data-tuning-exp]").forEach(function(b){b.addEventListener("click",function(){var l=tuningRecordsForBoat(boat);var r=l[parseInt(b.dataset.tuningExp,10)];if(r)exportTuningRecord(r)})});
+    }
+  }
+}
+function prefillTuningForm(){
+  var boat=currentBoatNo();
+  var todayRec=tuningTodayForBoat(boat);
+  var src=todayRec||tuningLastForBoat(boat);
+  /* reset details closed state per spec (normally closed) unless record has details — handled in fill */
+  var det=$("tuningDetails"); if(det)det.open=false;
+  if(src){tuningFillForm(src)}
+  else{
+    tuningSetSail("CB2");
+    ["tuningRake","tuningSide","tuningPrebend","tuningSpreader","tuningDeflection","tuningStep"].forEach(function(id){$(id).value=""});
+    $("tuningMemo").value="";
+  }
+  var msg=$("tuningMsg"); if(msg)msg.textContent="";
+  renderTuning();
+}
+function tuningUpsert(rec){
+  var all=tuningLoadAll();
+  var kept=all.filter(function(r){return !(r&&r.date===rec.date&&r.boat===rec.boat)});
+  kept.push(rec);
+  tuningSaveAll(kept);
+  tuningSaveLast(rec.boat,rec);
+}
+function tuningBuildRecordFromForm(){
+  return {
+    date:todayStr(),
+    boat:currentBoatNo(),
+    skipper:$("skipperName").value.trim(),
+    sail:tuningSail,
+    rake:tuningNum("tuningRake"),
+    sideTension:tuningNum("tuningSide"),
+    prebend:tuningNum("tuningPrebend"),
+    spreaderLength:tuningNum("tuningSpreader"),
+    deflection:tuningNum("tuningDeflection"),
+    mastStep:tuningNum("tuningStep"),
+    memo:$("tuningMemo").value.trim(),
+    recordedAt:new Date().toISOString()
+  };
+}
+function tuningValidateCore(rec){
+  var missing=[];
+  if(rec.rake==null)missing.push("レーキ");
+  if(rec.sideTension==null)missing.push("サイドテンション");
+  if(rec.prebend==null)missing.push("プリベンド");
+  return missing;
+}
+function saveTuningRecord(rec,viaSame){
+  var missing=tuningValidateCore(rec);
+  var msg=$("tuningMsg");
+  if(missing.length){
+    if(msg){msg.innerHTML="<span style='color:var(--red);font-weight:700'>未入力です: "+esc(missing.join("・"))+"</span> 測った値を入れてください。";msg.scrollIntoView({behavior:"smooth",block:"center"})}
+    showMsg("チューニング記録: "+missing.join("・")+" が未入力です");
+    return false;
+  }
+  tuningUpsert(rec);
+  tuningTodayRecord=rec;
+  if(msg)msg.innerHTML="<span style='color:var(--green);font-weight:700'>✓ 記録しました</span> "+esc(rec.date)+" ｜ "+esc(rec.boat)+"艇 ｜ "+esc(tuningSummaryText(rec))+(viaSame?"（前回と同じ）":"");
+  renderTuning();
+  showMsg("チューニングを記録しました: "+rec.boat+"艇 "+rec.date);
+  var saved=$("tuningSaved"); if(saved)setTimeout(function(){try{saved.scrollIntoView({behavior:"smooth",block:"center"})}catch(e){}},60);
+  return true;
+}
+function exportTuningRecord(rec){
+  if(!rec){setExportStatus("書き出すチューニング記録がありません。先に「記録する」か「前回と同じ」で今日の記録を作ってください。",true);return}
+  var ordered={date:rec.date,boat:rec.boat,skipper:rec.skipper||"",sail:rec.sail,rake:rec.rake,sideTension:rec.sideTension,prebend:rec.prebend,spreaderLength:(rec.spreaderLength==null?null:rec.spreaderLength),deflection:(rec.deflection==null?null:rec.deflection),mastStep:(rec.mastStep==null?null:rec.mastStep),memo:rec.memo||"",recordedAt:rec.recordedAt||new Date().toISOString()};
+  var filename="tuning_"+ordered.date+"_"+ordered.boat+".json";
+  downloadOrShare(new Blob([JSON.stringify(ordered,null,2)],{type:"application/json"}),filename);
+}
+$("btnTuningSave").addEventListener("click",function(){saveTuningRecord(tuningBuildRecordFromForm(),false)});
+$("btnTuningSame").addEventListener("click",function(){
+  var boat=currentBoatNo(); var last=tuningLastForBoat(boat);
+  var msg=$("tuningMsg");
+  if(!last){if(msg)msg.textContent="前回の記録がありません。値を入れて「記録する」を押してください。";showMsg("前回の記録がありません");return}
+  var rec={
+    date:todayStr(),boat:boat,skipper:$("skipperName").value.trim(),
+    sail:last.sail||"CB2",rake:(last.rake==null?null:last.rake),sideTension:(last.sideTension==null?null:last.sideTension),prebend:(last.prebend==null?null:last.prebend),
+    spreaderLength:(last.spreaderLength==null?null:last.spreaderLength),deflection:(last.deflection==null?null:last.deflection),mastStep:(last.mastStep==null?null:last.mastStep),
+    memo:last.memo||"",recordedAt:new Date().toISOString()
+  };
+  if(saveTuningRecord(rec,true)){tuningFillForm(rec);renderTuning()}
+});
+$("btnTuningExport").addEventListener("click",function(){
+  var rec=tuningTodayRecord||tuningTodayForBoat(currentBoatNo());
+  exportTuningRecord(rec);
+});
+$("boatNoSel").addEventListener("change",function(){prefillTuningForm()});
+$("boatNoCustom").addEventListener("change",function(){if($("boatNoSel").value==="custom")prefillTuningForm()});
 
 /* ---------- Maps ---------- */
 function initMaps(){
@@ -1016,7 +1257,7 @@ var _ps=document.getElementById("powerSave"); if(_ps){_ps.addEventListener("chan
 /* ---------- init ---------- */
 function init(){ updateStatus();
   renderOriginWarnings(); refreshPermState();
-  loadFleet(); loadOpsLocal(); renderMarks(); renderChecks(); refreshSessions(); cdRender(); renderReplay();
+  loadFleet(); syncBoatFromFleet(); prefillTuningForm(); loadOpsLocal(); renderMarks(); renderChecks(); refreshSessions(); cdRender(); renderReplay();
   $("fleetDate").value=$("fleetDate").value||todayStr();
   setTimeout(function(){initMaps();drawOps()},600);
 }
