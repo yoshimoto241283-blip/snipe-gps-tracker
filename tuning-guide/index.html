@@ -609,19 +609,26 @@
         <button data-wave="chop" aria-pressed="false">波あり</button>
       </div>
     </div>
+    <div class="cond-group">
+      <div class="lab">SAIL — セール</div>
+      <div class="seg" id="condSailSeg">
+        <button data-csail="cb2" aria-pressed="true">CB2</button>
+        <button data-csail="sw4" aria-pressed="false">SW4C1</button>
+      </div>
+    </div>
     <div class="cond-grid">
       <div class="panel">
         <div class="p-head">
           <span class="no">SET</span>
           <h2 id="condTitle">6–12 kt のセット</h2>
-          <span class="role">ベースセット（CB2トリム表・mm）</span>
+          <span class="role" id="condBaseRole">ベースセット（CB2トリム表・mm）</span>
         </div>
         <div class="cond-points" id="condPoints"></div>
         <table class="set base-set"><tbody>
           <tr><th>レーキ</th><td><span class="mono">6530–6550</span></td></tr>
           <tr><th>プリベンド</th><td><span class="mono">45–55</span></td></tr>
           <tr><th>サイドテンション（バネ式）</th><td><span class="mono">19–21</span></td></tr>
-          <tr><th>スプレッダー長</th><td><span class="mono">450–470</span></td></tr>
+          <tr><th>スプレッダー長</th><td><span class="mono" id="condBaseSpreaderVal">450–470</span></td></tr>
           <tr><th>ディフレクション</th><td><span class="mono">680–720</span></td></tr>
           <tr><th>ステップ</th><td><span class="mono">1524–1550</span></td></tr>
         </tbody></table>
@@ -860,6 +867,9 @@ var PARTS = [
   fix:["リーヘルム（手応えがない）→ 寝かせる。数値は小さくなる",
        "ウェザーヘルムが強い → 起こす。数値は大きくなる"],
   table:[["微風","0–6 kt","6510"],["中風","6–12 kt","6530"],["中〜強風","13–18 kt","6550（最も起こす）"],["強風","19–22 kt","6490–6520"]],
+  tableTitle:"基準値（風域別）",
+  sailTable:[["0–6 kt","6510","6530–6550"],["6–12 kt","6530","6530–6550"],["13–18 kt","6550","6530–6550"],["19–22 kt","6490–6520","6490–6520"]],
+  sailNote:"SW系は「同じセッティングでベストなパフォーマンスを発揮できる」ことが特徴（North Sails Japan レース報告）。",
   base:"CB2トリム表。風域で逆U字に変わる（ベース 6530–6550）",
   detail:["なぜヘルムが決まるのか。セール全体の圧力中心をCE、水面下の横抵抗の中心をCLRという。マストを寝かせるとCEがCLRより後ろへ離れ、艇は風上へ回ろうとする力（ウェザーヘルム）が増える。起こせばCEが前へ寄り、ヘルムは抜ける。",
           "ヘルムは感覚の問題ではない。ウェザーヘルムが強い間、スキッパーは常時ラダーを当て続けている。ラダーは角度が付くほどブレーキになり、艇速を落とす。逆にリーヘルムではティラーに手応えがなく、艇が風下へ落ちる感覚も鈍る。中立〜わずかなウェザーが速いのは、この両方のコストが最小になる点だからだ。",
@@ -881,6 +891,8 @@ var PARTS = [
   fix:["出艇後、マスト前面を下から見上げる。デッキからハウンズまで左右にまっすぐか、両タックで確認する",
        "中部が風下側に倒れる → 短くする",
        "中部が風上側に張る → 長くする"],
+  tableTitle:"基準値（風域別）",
+  sailTable:[["0–6 kt（微風）","450–470","470–490（+20）"],["6 kt以上","450–470","450–470"]],
   base:"CB2：450–470（コブラ用）",
   detail:["スプレッダーはシュラウドの通り道を外へ張り出す部品で、マスト中部を横から支える支点になる。長くするとシュラウドが外へ張る分、マストを前へ押す力が増え、プリベンドが増えてセールは浅くなる。同時に横への支えが強くなり、中部が左右に曲がりにくく、風を逃がさないパワフルなリグになる。短くすると逆で、プリベンドは減って深くなり、横にも曲がりやすくなって風を逃がせる。",
           "左右ベンドの問題は形の非対称だ。マスト中部が横に曲がると、メインのドラフト位置と深さがタックごとに変わる。症状は「タックごとに速さが違う」。だから判定は数値ではなく、出艇後にマスト前面を下から見上げ、デッキからハウンズまでが両タックでまっすぐかで見る。",
@@ -1866,7 +1878,14 @@ function selectPart(id, doScroll){
   var fix = p.fix.map(function(s){ return "<li>"+s+"</li>"; }).join("");
   var det = p.detail.map(function(s){ return "<p>"+s+"</p>"; }).join("");
   var tableHtml = "";
-  if(p.table){
+  if(p.sailTable){
+    tableHtml = '<div class="p-sec"><h3>'+(p.tableTitle||"基準値（風域別）")+'</h3><table class="set"><tbody>'+
+      '<tr><th></th><td><span class="same">CB2</span></td><td><span class="same">SW4C1</span></td></tr>'+
+      p.sailTable.map(function(r){ return "<tr><th>"+r[0]+"</th><td><span class='mono'>"+r[1]+"</span></td><td><span class='mono'>"+r[2]+"</span></td></tr>"; }).join("")+
+      '</tbody></table>'+
+      (p.sailNote ? '<p style="margin:8px 0 0; font-size:12.5px; color:var(--ink2)">'+p.sailNote+'</p>' : "")+
+      '</div>';
+  } else if(p.table){
     tableHtml = '<div class="p-sec"><h3>'+(p.tableTitle||"基準値（風域別・CB2）")+'</h3><table class="set"><tbody>'+
       p.table.map(function(r){ return "<tr><th>"+r[0]+"</th><td>"+r[1]+"</td><td><span class='mono'>"+r[2]+"</span></td></tr>"; }).join("")+
       '</tbody></table></div>';
@@ -1959,20 +1978,41 @@ var CONDS = {
     ["バング","上マーク前に必ず緩める",1,"反転防止が最優先の手順"],
     ["ボード","上りで数cm上げる手もある",0,"CLRが前へ動き、ウェザーヘルムが減る。代償は横流れの増加"]]}
 };
-var curWind = "w1", curWave = "flat";
+var curWind = "w1", curWave = "flat", curSail = "cb2";
 function renderCond(){
   var c = CONDS[curWind];
-  document.getElementById("condTitle").textContent = c.title + (curWave==="chop" ? " ＋ 波あり" : "");
+  document.getElementById("condTitle").textContent = c.title + (curWave==="chop" ? " ＋ 波あり" : "") + (curSail==="sw4" ? " ・ SW4C1" : " ・ CB2");
+  var baseRole = document.getElementById("condBaseRole");
+  if(baseRole) baseRole.textContent = curSail==="sw4" ? "ベースセット（SW4C1トリム表・mm）" : "ベースセット（CB2トリム表・mm）";
+  var baseSpr = document.getElementById("condBaseSpreaderVal");
+  if(baseSpr) baseSpr.textContent = (curSail==="sw4" && curWind==="w0") ? "470–490" : "450–470";
   /* 強いハイライトは、その風で一番大事なポイント2〜3箇所だけ。
      状態の描画自体（ベンド・深さ・サグの変化）は全セット分そのまま残す。 */
   var focus = (c.focus || []).slice();
   var focusRows = (c.focusRows || []).slice();
+  var dispRows = c.rows.map(function(r){ return r.slice(); });
+  if(curSail==="sw4"){
+    /* SW4C1で変わるのはレーキ（〜18kt固定）と微風のスプレッダー（+20）だけ。
+       他の行は CB2 と同じ値をそのまま使う（表の重複は作らない） */
+    if(curWind==="w0" || curWind==="w1" || curWind==="w2"){
+      dispRows.forEach(function(r){
+        if(r[0]==="レーキ"){ r[1]="6530–6550"; r[3]="0–18 kt は固定。風域で動かさない"; }
+      });
+    }
+    if(curWind==="w0"){
+      var sprIdx = 2;
+      focusRows = focusRows.map(function(i){ return i>=sprIdx ? i+1 : i; });
+      dispRows.splice(sprIdx, 0, ["スプレッダー長","470–490（+20）",1,"SW4C1 微風は +20mm 伸ばす"]);
+      if(focus.indexOf("spreader")<0) focus.push("spreader");
+      if(focusRows.indexOf(sprIdx)<0) focusRows.push(sprIdx);
+    }
+  }
   if(curWave==="chop" && focus.indexOf("outhaul")<0){
     focus.push("outhaul");
-    c.rows.forEach(function(r, i){ if(r[0]==="アウトホール" && focusRows.indexOf(i)<0) focusRows.push(i); });
+    dispRows.forEach(function(r, i){ if(r[0]==="アウトホール" && focusRows.indexOf(i)<0) focusRows.push(i); });
   }
   var html = "";
-  c.rows.forEach(function(r, i){
+  dispRows.forEach(function(r, i){
     var isFocus = focusRows.indexOf(i)>=0;
     html += "<tr"+(isFocus ? " class='chg-row'" : "")+"><th>"+r[0]+"</th><td><span class='mono'>"+r[1]+"</span>"+
       (isFocus ? "<span class='chg'>ポイント</span>" : "")+
@@ -1999,6 +2039,13 @@ document.getElementById("waveSeg").querySelectorAll("button").forEach(function(b
   b.addEventListener("click", function(){
     curWave = b.dataset.wave;
     document.getElementById("waveSeg").querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", x===b?"true":"false"); });
+    renderCond();
+  });
+});
+document.getElementById("condSailSeg").querySelectorAll("button").forEach(function(b){
+  b.addEventListener("click", function(){
+    curSail = b.dataset.csail;
+    document.getElementById("condSailSeg").querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", x===b?"true":"false"); });
     renderCond();
   });
 });
