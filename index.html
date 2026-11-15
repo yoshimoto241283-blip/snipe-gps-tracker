@@ -465,7 +465,7 @@ input[type=range]{min-height:auto;padding:0}
 <details><summary>データの集め方</summary><p>サーバーはありません。各艇がGPXを書き出し、Googleドライブの『GPSデータ』フォルダ（ヨット部フォルダ ＞ 2027 ＞ レース ＞ GPSデータ）に保存します。運営JSONも同じフォルダに忘れずに。集計はClaudeがフォルダから読み取って行います。</p></details>
   <details><summary>集めているデータ</summary><p>時刻・緯度・経度・精度だけを生で保存し、速度・VMG・タックは後から計算します。マーク実位置、号砲時刻、時刻つきの風、フィニッシュ目視順位、欠損区間、電池、配艇も残します。</p></details>
   <details><summary>チューニング記録について</summary><p>艇モードで、艇とスキッパーを選んだあとに出る「チューニング記録」が朝のステップです。出艇前に1回、レーキ／サイドテンション／プリベンドを入れてください。前回の記録が端末内に残り、次回はその値が最初から表示されます。変わっていない日は「前回と同じ」を1回押すだけで今日の記録になります。</p><p>記録はこの端末内に日付×艇で残ります。書き出しはJSONファイル（tuning_日付_艇番.json）で、GPXと同じくGoogleドライブの『GPSデータ』フォルダに保存してください。集計のときに、その日の航跡・風・順位と艇ごとに結びつけます。</p></details>
-  <p class="small" style="margin-top:16px">バージョン v2.4.0</p>
+  <p class="small" style="margin-top:16px">バージョン v2.4.1</p>
 </section>
 </div>
 <div id="toast" style="position:fixed;left:12px;right:12px;bottom:96px;z-index:10000;background:#111;color:#fff;padding:14px 16px;border-radius:12px;font-weight:700;display:none;box-shadow:0 8px 30px rgba(0,0,0,.3)"></div>
@@ -1197,7 +1197,7 @@ $("expOps").onclick=function(){var rc=opsRace();rc.exportedAt=Date.now();saveOps
 
 /* ---------- REPLAY (date list only — race selection lives on each date page) ---------- */
 var REPLAY_DAYS=[
-  {id:"2026-11-15",dateLabel:"2026年11月15日（日）",label:"コース練習",venue:"八景島",status:"preparing",url:"replays/2026-11-15.html"},
+  {id:"2026-11-15",dateLabel:"2026年11月15日（日）",label:"コース練習",venue:"八景島",status:"published",url:"replays/2026-11-15.html"},
   {id:"2026-11-22",dateLabel:"2026年11月22日（日）",label:"コース練習",venue:"八景島",status:"preparing",url:"replays/2026-11-22.html"},
   {id:"2026-12-06",dateLabel:"2026年12月6日（日）",label:"コース練習",venue:"八景島",status:"preparing",url:"replays/2026-12-06.html"},
   {id:"2026-12-13",dateLabel:"2026年12月13日（日）",label:"八景レース",venue:"八景島",status:"preparing",url:"replays/2026-12-13.html"}
