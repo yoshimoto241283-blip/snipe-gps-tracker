@@ -68,7 +68,6 @@
   <button class="tab on" data-tab="replay">リプレイ</button>
   <button class="tab" data-tab="breakdown">レース分解</button>
   <button class="tab" data-tab="boats">艇別診断</button>
-  <button class="tab" data-tab="ideal">正解のコース</button>
   <button class="tab" data-tab="method">方法・メモ</button>
 </nav>
 
@@ -109,10 +108,10 @@
     <button class="pill" data-view="1">レグ2</button>
     <button class="pill" data-view="2">レグ3</button>
     <button class="pill" data-view="3">レグ4</button>
-    <button class="pill on" id="idealToggle">正解コース</button>
+    <button class="pill on" id="idealToggle">レイライン</button>
   </div>
   <div class="chips" id="chips"></div>
-  <p class="mut">艇をタップするとハイライト。黄色は正解コース。マーク周りの点線は3艇身ゾーン。詳しい前提は「方法・メモ」。</p>
+  <p class="mut">艇をタップするとハイライト。マーク周りの点線は3艇身ゾーン。詳しい前提は「方法・メモ」。</p>
 </section>
 
 <section>
@@ -128,7 +127,7 @@
 <div class="tabpage" id="tab-breakdown" hidden>
 <section>
   <div class="focusbox">
-    <h3>ここを見て</h3>
+    <h3>注目ポイント</h3>
     <ul>
       <li>順位が動いたのは下り1と上り2だけ。中でも<b>上り2（レグ3）の差が最大</b>で、今日の勝負はここで決まった。</li>
       <li><b>84のレグ3はVMG1.9kt</b>（107は2.8kt）。タック5回で失速を重ねた。</li>
@@ -240,34 +239,6 @@
       <button class="mini-btn" data-mini="mini84">▶ ポイント再生</button>
     </div>
   </div>
-</section>
-</div>
-
-<div class="tabpage" id="tab-ideal" hidden>
-<section>
-  <h2>正解のコース（AIがレースに出たら）</h2>
-  <canvas class="replay" id="idealCv" width="720" height="520"></canvas>
-  <p class="mut">黄色がAIの選ぶコース。今日のコースは、上マークが風の真上から右へ約31°ずれていた（推定）。この「片側が極端に有利」な形が全レグの正解を決めている。</p>
-  <h3>スタート〜レグ1（上り）</h3>
-  <ul>
-    <li><b>正解：本船寄りからスタートして、すぐ北向きのロングボード。</b>本船側の端は上マークまで約42m近い。北向きのボードはマーク方位への進みが0.97とほぼ一直線で、逆の西向きボードは0.24しか進まない。だから「北へ長く、西は最後に短く」。</li>
-    <li>実際：107と184がこの形（107は本船寄り+24秒で通過、184はタック2回で押し切った）。84と133はスタート直後にタックを重ねて、航走距離が495m・517mまで伸びた。</li>
-  </ul>
-  <h3>レグ2（下り）</h3>
-  <ul>
-    <li><b>正解：最初のボードを長く、ジャイブは最後に1回。</b>下マークへの方位（166°）は、ダウンウィンドの速い角度で走ったときの片側のボードとほぼ重なる。まっすぐマークへ向かうボードを取り切るのが正解。</li>
-    <li>実際：184がジャイブ1回でフリート最速（235秒）。107はジャイブ3回で246秒。</li>
-  </ul>
-  <h3>レグ3（上り2）</h3>
-  <ul>
-    <li><b>正解：レグ1と同じ。北のロングボード＋タックは最小限。</b>3.5m/sの微風ではタック1回ごとの失速が大きく、回数を減らすこと自体が速度になる。</li>
-    <li>実際：84は逆側（西）に出て、タック5回・VMG1.9ktと崩れた。今日一番の分かれ目はここ。</li>
-  </ul>
-  <h3>レグ4（下り2）</h3>
-  <ul>
-    <li><b>正解：レグ2と同じ最初のボード主体で、最後は早めにジャイブ。</b>フィニッシュは下マークより右（本船側）へ約96mずれているので、まっすぐ下マーク方向へ行くと最後に合わせ直しが要る。</li>
-    <li>実際：このレグは全艇順位の動きなし。勝負はレグ3までで決まっていた。</li>
-  </ul>
 </section>
 </div>
 
@@ -439,20 +410,13 @@ function draw(t){
   for (const m of [w, l]){ ctx.beginPath(); ctx.arc(m[0], m[1], ZONE*scale, 0, 7); ctx.stroke(); }
   ctx.setLineDash([]);
   if (showIdeal){
-    ctx.strokeStyle = 'rgba(255,213,79,.9)'; ctx.lineWidth = 2.2;
-    for (const route of D.routes){
-      ctx.beginPath();
-      route.forEach((p, i) => { const xy = XY(p); if (i === 0) ctx.moveTo(...xy); else ctx.lineTo(...xy); });
-      ctx.stroke();
-      const mid = XY(route[1]);
-      ctx.fillStyle = '#ffd54f';
-      ctx.beginPath(); ctx.arc(mid[0], mid[1], 3, 0, 7); ctx.fill();
+    ctx.strokeStyle = 'rgba(190,220,235,.30)'; ctx.lineWidth = 1.2; ctx.setLineDash([5,6]);
+    for (const sgn of [45, -45]){
+      const d = rot2(windToward, sgn);
+      const e = XY([D.W[0] + 200*d[0], D.W[1] + 200*d[1]]);
+      ctx.beginPath(); ctx.moveTo(...w); ctx.lineTo(...e); ctx.stroke();
     }
-    const ie = XY([D.L[0] + 60*actDir[0], D.L[1] + 60*actDir[1]]);
-    ctx.strokeStyle = '#ffd54f'; ctx.lineWidth = 3;
-    ctx.beginPath(); ctx.moveTo(...l); ctx.lineTo(...ie); ctx.stroke();
-    ctx.fillStyle = '#ffd54f'; ctx.font = '10px sans-serif';
-    ctx.fillText('正解のスタート位置', ie[0]-24, ie[1]-24);
+    ctx.setLineDash([]);
   }
   const sl = XY([D.L[0] + 110*actDir[0], D.L[1] + 110*actDir[1]]);
   ctx.strokeStyle = '#f5f9fb'; ctx.lineWidth = 2.5;
@@ -576,76 +540,11 @@ document.getElementById('idealToggle').addEventListener('click', e => {
 });
 
 // ---- tabs ----
-let idealDrawn = false;
 document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => {
   document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x === b));
   document.querySelectorAll('.tabpage').forEach(p => { p.hidden = p.id !== 'tab-' + b.dataset.tab; });
-  if (b.dataset.tab === 'ideal' && !idealDrawn){ drawIdeal(); idealDrawn = true; }
   if (b.dataset.tab === 'replay') draw(cur);
 }));
-
-// ---- ideal course diagram ----
-function drawIdeal(){
-  const c = document.getElementById('idealCv'), g2 = c.getContext('2d');
-  const W2 = c.width, H2 = c.height;
-  const pts = [D.W, D.L, D.FIN,
-    [D.L[0] + 110*actDir[0], D.L[1] + 110*actDir[1]]];
-  for (const r of D.routes) for (const p of r) pts.push(p);
-  let x0=1e9, x1=-1e9, y0=1e9, y1=-1e9;
-  for (const p of pts){ x0=Math.min(x0,p[0]); x1=Math.max(x1,p[0]); y0=Math.min(y0,p[1]); y1=Math.max(y1,p[1]); }
-  x0-=35; x1+=35; y0-=35; y1+=35;
-  const sc = Math.min((W2-20)/(x1-x0), (H2-20)/(y1-y0));
-  const oxx = (W2-(x1-x0)*sc)/2, oyy = (H2-(y1-y0)*sc)/2;
-  const P = p => [oxx + (p[0]-x0)*sc, H2 - (oyy + (p[1]-y0)*sc)];
-  const gr = g2.createLinearGradient(0,0,0,H2);
-  gr.addColorStop(0,'#0a3a56'); gr.addColorStop(1,'#072a40');
-  g2.fillStyle = gr; g2.fillRect(0,0,W2,H2);
-  g2.strokeStyle = 'rgba(255,255,255,.05)'; g2.lineWidth = 1;
-  for (let gx = Math.ceil(x0/50)*50; gx <= x1; gx += 50){ const a = P([gx, 0]); g2.beginPath(); g2.moveTo(a[0], 0); g2.lineTo(a[0], H2); g2.stroke(); }
-  for (let gy = Math.ceil(y0/50)*50; gy <= y1; gy += 50){ const a = P([0, gy]); g2.beginPath(); g2.moveTo(0, a[1]); g2.lineTo(W2, a[1]); g2.stroke(); }
-  const w = P(D.W), l = P(D.L), f = P(D.FIN);
-  g2.strokeStyle = 'rgba(255,255,255,.16)'; g2.setLineDash([3,5]); g2.lineWidth = 1;
-  g2.beginPath(); g2.moveTo(...w); g2.lineTo(...l); g2.stroke(); g2.setLineDash([]);
-  g2.strokeStyle = 'rgba(255,255,255,.35)'; g2.lineWidth = 1.2; g2.setLineDash([4,4]);
-  for (const m of [w, l]){ g2.beginPath(); g2.arc(m[0], m[1], ZONE*sc, 0, 7); g2.stroke(); }
-  g2.setLineDash([]);
-  g2.strokeStyle = '#ffd54f'; g2.lineWidth = 2.4;
-  D.routes.forEach((route, i) => {
-    g2.beginPath();
-    route.forEach((p, j) => { const xy = P(p); if (j === 0) g2.moveTo(...xy); else g2.lineTo(...xy); });
-    g2.stroke();
-    const mid = P(route[1]);
-    g2.fillStyle = '#ffd54f'; g2.font = 'bold 13px sans-serif';
-    g2.fillText('レグ' + (i+1), mid[0]+8, mid[1]-8);
-  });
-  const sl = P([D.L[0] + 110*actDir[0], D.L[1] + 110*actDir[1]]);
-  g2.strokeStyle = '#f5f9fb'; g2.lineWidth = 2.5;
-  g2.beginPath(); g2.moveTo(...l); g2.lineTo(...sl); g2.stroke();
-  const ie = P([D.L[0] + 60*actDir[0], D.L[1] + 60*actDir[1]]);
-  g2.strokeStyle = '#ffd54f'; g2.lineWidth = 4;
-  g2.beginPath(); g2.moveTo(...l); g2.lineTo(...ie); g2.stroke();
-  g2.fillStyle = '#ffa726';
-  for (const m of [w, l]){ g2.beginPath(); g2.arc(m[0], m[1], 5, 0, 7); g2.fill(); g2.strokeStyle = '#06222f'; g2.lineWidth = 1.5; g2.stroke(); }
-  g2.fillStyle = '#fff'; g2.font = 'bold 12px sans-serif';
-  g2.fillText('上マーク', w[0]+10, w[1]+4);
-  g2.fillText('下マーク（アウター）', l[0]-128, l[1]+4);
-  g2.font = '11px sans-serif'; g2.fillStyle = '#ffd54f';
-  g2.fillText('正解のスタート位置（本船寄り）', ie[0]-40, ie[1]-26);
-  g2.fillStyle = '#f5f9fb';
-  g2.fillText('今日の推定ライン 約110m', sl[0]-110, sl[1]+18);
-  g2.fillStyle = '#9db8c6';
-  g2.fillText('フィニッシュ付近（推定）', f[0]-40, f[1]+24);
-  // wind arrow
-  const ax = W2-110, ay = 64, wd = [windToward[0], -windToward[1]];
-  g2.strokeStyle = '#7fd4f7'; g2.lineWidth = 3;
-  g2.beginPath(); g2.moveTo(ax-27*wd[0], ay-27*wd[1]); g2.lineTo(ax+27*wd[0], ay+27*wd[1]); g2.stroke();
-  g2.beginPath();
-  g2.moveTo(ax+34*wd[0], ay+34*wd[1]);
-  g2.lineTo(ax+27*wd[0]-8*wd[1], ay+27*wd[1]+8*wd[0]);
-  g2.lineTo(ax+27*wd[0]+8*wd[1], ay+27*wd[1]-8*wd[0]);
-  g2.closePath(); g2.fillStyle = '#7fd4f7'; g2.fill();
-  g2.font = 'bold 12px sans-serif'; g2.fillText('風 北西 315°', ax-40, ay+52);
-}
 
 // ---- per-boat fine-moment mini replays ----
 const MINIS = BOATS.map(b => ({ id:'mini' + b, boat:b, t0:D.minis[b][0], t1:D.minis[b][1] }));
