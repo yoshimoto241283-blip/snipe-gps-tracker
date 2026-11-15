@@ -87,10 +87,10 @@
     <input type="range" id="seek" min="0" max="1800" value="0" step="1">
   </div>
   <div class="pillrow">
+    <button class="smallbtn" id="back60">◀ 1分</button>
     <button class="smallbtn" id="back10">◀ 10秒</button>
-    <button class="smallbtn" id="back5">◀ 5秒</button>
-    <button class="smallbtn" id="fwd5">5秒 ▶</button>
     <button class="smallbtn" id="fwd10">10秒 ▶</button>
+    <button class="smallbtn" id="fwd60">1分 ▶</button>
     <button class="smallbtn" id="gostart">スタートへ</button>
   </div>
   <div class="pillrow" id="speeds">
@@ -108,7 +108,6 @@
     <button class="pill" data-view="1">レグ2</button>
     <button class="pill" data-view="2">レグ3</button>
     <button class="pill" data-view="3">レグ4</button>
-    <button class="pill on" id="idealToggle">レイライン</button>
   </div>
   <div class="chips" id="chips"></div>
   <p class="mut">艇をタップするとハイライト。マーク周りの点線は3艇身ゾーン。詳しい前提は「方法・メモ」。</p>
@@ -126,6 +125,8 @@
 
 <div class="tabpage" id="tab-breakdown" hidden>
 <section>
+  <h2>総評</h2>
+  <p>北西3.5m/sの弱風で1レース。コースの軸が風の軸から約31°ずれていて、北向きのボードが有利な形だった。107がスタートから全マーク1位で押し切り、184がタック・ジャイブの少ない走りで2位を守った。順位が動いたのは下り1と上り2だけで、勝負は上り2に集中した。フリートの差は艇速そのものより、操作の回数と航走距離に出ている（最短1,868mと最長2,068mで200mの開き）。次回までの宿題は、921へのGPS搭載と、運営によるマーク位置のGPS記録。</p>
   <div class="focusbox">
     <h3>注目ポイント</h3>
     <ul>
@@ -176,9 +177,9 @@
 
   <div class="card">
     <h3>107 侃・尚人<span class="conf">GPS実測</span></h3>
-    <p>全レグ1位で完勝。レグごとの速度も全部そろっていて（3.8/3.2/3.8/3.4kt）、崩れたレグが無い。スタートのライン通過は推定+24秒で、本船寄りから出て1上トップ。今日の基準艇は107でいい。</p>
+    <p>順位推移 1→1→1→1。通過は推定+24秒・本船寄り。レグVMGは2.9／2.9／2.8／2.5ktで、一番低いのは下り2。総距離1,899m。</p>
     <p class="mut">GPS推定：上りのタック計7回／下りのジャイブ計6回／総航走距離 約1899m</p>
-    <p class="rx">処方：この風域（弱風）での107の走りが「正解の形」。他の艇の比較材料として使う。</p>
+    <p class="rx">改善点：下り2の角度を次回1つだけ試す。それ以外はこの風域の基準として維持。</p>
     <div class="mini">
       <div class="mini-cap">この艇のポイント：スタート直後のタック（13:28頃）— ライン通過のあと、速度を保ったままタックした場面</div>
       <canvas id="mini107" width="720" height="400"></canvas>
@@ -188,9 +189,9 @@
 
   <div class="card">
     <h3>184 苺香・世名<span class="conf">GPS実測</span></h3>
-    <p>全レグ2位で安定。特に下り1レグが235秒でフリート最速（107より11秒速い）。弱いのは最初の上り（267秒、107と24秒差）。上りで置かれて、下りで取り返す形になっている。</p>
+    <p>順位推移 2→2→2→2。通過は推定+31秒。レグ2はジャイブ1回で235秒・VMG3.0kt（フリート最速）。弱点はレグ1で、267秒・VMG2.6kt（107と24秒差）。総距離1,868mは最短。</p>
     <p class="mut">GPS推定：上りのタック計4回／下りのジャイブ計3回／総航走距離 約1868m</p>
-    <p class="rx">処方：次の走り合わせで、微〜弱風の上りの艇速だけをテーマにする（1上の入りが2位→1位に変わる条件）。</p>
+    <p class="rx">改善点：レグ1の序盤を107と同じ北のロングボードに寄せる。</p>
     <div class="mini">
       <div class="mini-cap">この艇のポイント：下り1のジャイブ（13:35頃）— 1下の回航直前、このジャイブで回航までつないだ</div>
       <canvas id="mini184" width="720" height="400"></canvas>
@@ -200,27 +201,27 @@
 
   <div class="card">
     <h3>921 思穏・大木<span class="conf">目視記録のみ</span></h3>
-    <p>1上は5位。そこから下り1レグで1つ、上り2レグでもう1つ上げて、3位でフィニッシュした。順位率0.43は冬の目標ライン（0.44以下）に今日は入った。ただGPSが無く、スタートから1上までの中身が見えていない。次回は921にも記録を載せるのが一番の改善（データの穴が一番大きい）。</p>
-    <p class="rx">処方：次回のコース練習は921にGPSを必ず載せる。1上までの入り方を107と並べて見る。</p>
+    <p>順位推移 5→4→3→3。下り1で+1、上り2で+1。順位率0.43は冬の目標ライン（0.44以下）の中。GPSが無いので、速度・タック回数・距離は全部不明。</p>
+    <p class="rx">改善点：次回はGPSを搭載して、1上5位の内訳（スタートか、艇速か、距離か）を切り分ける。</p>
   </div>
 
   <div class="card">
     <h3>864 怜・遥都<span class="conf">目視記録のみ</span></h3>
-    <p>1上の時点で3位につけていて、前半はそのままキープした。落としたのは上り2レグの1つだけ（3→4）。スタートから1上までの入りが良かった艇で、その再現ができれば上位が近い。</p>
-    <p class="rx">処方：スタート〜1上の動きを本人たちに言語化してもらう（MTGで）。再現条件を残すのが先。</p>
+    <p>順位推移 3→3→4→4。落としたのは上り2の1つだけ。GPSが無いので中身は不明。</p>
+    <p class="rx">改善点：次回はGPSを搭載して、1上3位の入り方（スタート位置と最初のボード）を航跡で残す。</p>
   </div>
 
   <div class="card">
     <h3>916 英慈・いろは<span class="conf">目視記録のみ</span></h3>
-    <p>1上は4位で、入りは良かった。下り1レグで1つ落として5位になり、そのままフィニッシュ。GPSが無いので、下りで何が起きたかは切り分けられない。</p>
-    <p class="rx">処方：916も次回はGPS候補。まず下りレグの航跡を1本取る。</p>
+    <p>順位推移 4→5→5→5。落としたのは下り1の1つだけ。GPSが無いので中身は不明。</p>
+    <p class="rx">改善点：次回はGPSを搭載して、下り1レグの航跡（ジャイブの位置と回数）を取る。</p>
   </div>
 
   <div class="card">
     <h3>133 智成・苑香<span class="conf">GPS実測</span></h3>
-    <p>一番落としたのは最初の上り（305秒、107と62秒差、航走距離も4艇最長の517m、タックは推定4回）で、1上は7位（最下位）。その後は全レグ3.3kt前後で安定して、上り2レグ（324秒）で84（374秒）を抜いて6位に上げた。艇速そのものより、最初の上りの距離のロスが大きい。</p>
+    <p>順位推移 7→7→6→6。総距離2,068mは最長（107と169m差）。レグ1が305秒・517m・タック4回で、1上直前のタックでは1.7ktまで失速。上りのタック計9回はフリート最多。</p>
     <p class="mut">GPS推定：上りのタック計9回／下りのジャイブ計3回／総航走距離 約2068m</p>
-    <p class="rx">処方：長上下で「微風の上りで余計に走らない」— タックの回数と、レイラインへの入り方を分けて練習する。</p>
+    <p class="rx">改善点：上りのタックをレグ2回までに減らす。長上下でタック後の加速を反復。</p>
     <div class="mini">
       <div class="mini-cap">この艇のポイント：1上直前のタック〜回航（13:31頃）— 回航までに速度が1.7ktまで落ちた</div>
       <canvas id="mini133" width="720" height="400"></canvas>
@@ -230,9 +231,9 @@
 
   <div class="card">
     <h3>84 広隆・眞澄<span class="conf">GPS実測</span></h3>
-    <p>落としたのは上り2レグ（374秒・VMG1.9kt、107は249秒・VMG2.8kt）。タックは推定5回と多く、一番の失速タックでは2.4ktから1.8ktまで落ちた。微風の上りで、タックのたびに失速して戻せていない形に見える。スタートと下りは持ちこたえている。</p>
+    <p>順位推移 6→6→7→7。レグ3が374秒・VMG1.9kt（107は249秒・2.8kt）で、このレグだけで125秒差。タック5回、最悪のタックで2.4→1.8kt。総距離2,055m。</p>
     <p class="mut">GPS推定：上りのタック計8回／下りのジャイブ計7回／総航走距離 約2055m</p>
-    <p class="rx">処方：長上下で微風のタック後の加速だけを繰り返す。上りでタックを減らすコース引きもセットで。</p>
+    <p class="rx">改善点：弱風の上りはタックを減らす。タックしても2ktを切らない加速を長上下で反復。</p>
     <div class="mini">
       <div class="mini-cap">この艇のポイント：上り2のタック（13:41頃）— 2.4ktから1.8ktまで落ちた、このレグ一番の失速</div>
       <canvas id="mini84" width="720" height="400"></canvas>
@@ -279,7 +280,7 @@ const Wpx = cv.width, Hpx = cv.height;
 const clockEl = document.getElementById('clock'), phaseEl = document.getElementById('phase');
 const seek = document.getElementById('seek'), playBtn = document.getElementById('play');
 const boardBody = document.getElementById('boardBody');
-let cur = 0, playing = false, speed = 10, selected = null, viewKey = 'all', showIdeal = true;
+let cur = 0, playing = false, speed = 10, selected = null, viewKey = 'all';
 let minX = 0, minY = 0, scale = 1, ox = 0, oy = 0;
 
 function fmt(sec){
@@ -315,6 +316,14 @@ function setView(v){
     ms.forEach(eat);
     for (const k in D.tracks) for (const p of D.tracks[k]) if (p[0]>=w[0]-30 && p[0]<=w[1]+30) eat([p[1],p[2]]);
     fitBounds([x0-25, x1+25, y0-25, y1+25]);
+  }
+  if (v !== 'all'){
+    const starts = [D.gun,
+      Math.min(...BOATS.map(k => D.splits[k][0])),
+      Math.min(...BOATS.map(k => D.splits[k][1])),
+      Math.min(...BOATS.map(k => D.splits[k][2]))];
+    cur = starts[v];
+    seek.value = Math.floor(cur);
   }
   draw(cur);
 }
@@ -409,15 +418,13 @@ function draw(t){
   ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 1.2; ctx.setLineDash([4,4]);
   for (const m of [w, l]){ ctx.beginPath(); ctx.arc(m[0], m[1], ZONE*scale, 0, 7); ctx.stroke(); }
   ctx.setLineDash([]);
-  if (showIdeal){
-    ctx.strokeStyle = 'rgba(190,220,235,.30)'; ctx.lineWidth = 1.2; ctx.setLineDash([5,6]);
-    for (const sgn of [45, -45]){
-      const d = rot2(windToward, sgn);
-      const e = XY([D.W[0] + 200*d[0], D.W[1] + 200*d[1]]);
-      ctx.beginPath(); ctx.moveTo(...w); ctx.lineTo(...e); ctx.stroke();
-    }
-    ctx.setLineDash([]);
+  ctx.strokeStyle = 'rgba(190,220,235,.30)'; ctx.lineWidth = 1.2; ctx.setLineDash([5,6]);
+  for (const sgn of [45, -45]){
+    const d = rot2(windToward, sgn);
+    const e = XY([D.W[0] + 200*d[0], D.W[1] + 200*d[1]]);
+    ctx.beginPath(); ctx.moveTo(...w); ctx.lineTo(...e); ctx.stroke();
   }
+  ctx.setLineDash([]);
   const sl = XY([D.L[0] + 110*actDir[0], D.L[1] + 110*actDir[1]]);
   ctx.strokeStyle = '#f5f9fb'; ctx.lineWidth = 2.5;
   ctx.beginPath(); ctx.moveTo(...l); ctx.lineTo(...sl); ctx.stroke();
@@ -520,10 +527,10 @@ playBtn.addEventListener('click', () => {
 });
 seek.addEventListener('input', () => { cur = +seek.value; draw(cur); });
 const nudge = d => () => { cur = Math.min(T_END, Math.max(0, cur + d)); seek.value = Math.floor(cur); draw(cur); };
+document.getElementById('back60').addEventListener('click', nudge(-60));
 document.getElementById('back10').addEventListener('click', nudge(-10));
-document.getElementById('back5').addEventListener('click', nudge(-5));
-document.getElementById('fwd5').addEventListener('click', nudge(5));
 document.getElementById('fwd10').addEventListener('click', nudge(10));
+document.getElementById('fwd60').addEventListener('click', nudge(60));
 document.getElementById('gostart').addEventListener('click', () => { cur = D.gun; seek.value = cur; draw(cur); });
 document.querySelectorAll('#speeds .pill').forEach(b => b.addEventListener('click', () => {
   speed = +b.dataset.speed;
@@ -533,11 +540,6 @@ document.querySelectorAll('#views [data-view]').forEach(b => b.addEventListener(
   document.querySelectorAll('#views [data-view]').forEach(x => x.classList.toggle('on', x === b));
   setView(b.dataset.view === 'all' ? 'all' : +b.dataset.view);
 }));
-document.getElementById('idealToggle').addEventListener('click', e => {
-  showIdeal = !showIdeal;
-  e.target.classList.toggle('on', showIdeal);
-  draw(cur);
-});
 
 // ---- tabs ----
 document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => {
