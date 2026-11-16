@@ -31,9 +31,10 @@
   .fsbtn .ic-exit{ display:none; }
   .fsbtn.on .ic-exit{ display:block; }
   .fsbtn.on .ic-enter{ display:none; }
-  .wrap:fullscreen{ background:#072a40; padding:12px; }
-  .wrap.pseudo{ position:fixed; inset:0; z-index:9999; background:#072a40; padding:12px; }
-  .wrap:fullscreen canvas.replay, .wrap.pseudo canvas.replay{ width:100%; height:100%; }
+  #fswrap:fullscreen{ background:#072a40; padding:12px; display:flex; flex-direction:column; }
+  #fswrap.pseudo{ position:fixed; inset:0; z-index:9999; background:#072a40; padding:12px; display:flex; flex-direction:column; overflow:auto; }
+  #fswrap:fullscreen .wrap, #fswrap.pseudo .wrap{ flex:1 1 auto; min-height:0; }
+  #fswrap:fullscreen canvas.replay, #fswrap.pseudo canvas.replay{ width:100%; height:100%; }
   .dgrid{ display:grid; grid-template-columns:1fr 1fr; gap:6px 16px; }
   @media (max-width:680px){ .dgrid{ grid-template-columns:1fr; } }
   .ctl{ display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap; }
@@ -102,6 +103,7 @@
 <div class="tabpage" id="tab-replay">
 <section>
   <h2>リプレイ（GPS 4艇）</h2>
+  <div id="fswrap">
   <div class="wrap">
     <canvas class="replay" id="cv" width="720" height="560"></canvas>
     <div class="windpill">風 <b>北西 315°</b> 約3.5 m/s</div>
@@ -140,6 +142,7 @@
     <button class="pill" data-view="3">レグ4</button>
   </div>
   <div class="chips" id="chips"></div>
+  </div>
   <p class="mut">艇をタップするとハイライト。地図はピンチで拡大、ドラッグで移動できる。マーク周りの点線は3艇身ゾーン。詳しい前提は「方法・メモ」。</p>
 </section>
 
@@ -836,26 +839,27 @@ cv.addEventListener('pointerup', ptrEnd);
 cv.addEventListener('pointercancel', ptrEnd);
 cv.addEventListener('wheel', e => { e.preventDefault(); const p = evPos(e); applyZoom(p[0], p[1], e.deltaY < 0 ? 1.18 : 1/1.18); }, { passive:false });
 const wrapEl = document.querySelector('.wrap');
+const fsEl = document.getElementById('fswrap');
 const fsBtn = document.getElementById('fsbtn');
-function updFsIcon(){ fsBtn.classList.toggle('on', !!document.fullscreenElement || wrapEl.classList.contains('pseudo')); }
+function updFsIcon(){ fsBtn.classList.toggle('on', !!document.fullscreenElement || fsEl.classList.contains('pseudo')); }
 function resizeMap(){
-  const fs = document.fullscreenElement === wrapEl || wrapEl.classList.contains('pseudo');
+  const fs = document.fullscreenElement === fsEl || fsEl.classList.contains('pseudo');
   if (fs){
     const dpr = Math.min(2, window.devicePixelRatio || 1);
-    cv.width = Math.max(320, Math.round((wrapEl.clientWidth - 24) * dpr));
-    cv.height = Math.max(320, Math.round((wrapEl.clientHeight - 24) * dpr));
+    cv.width = Math.max(320, Math.round(wrapEl.clientWidth * dpr));
+    cv.height = Math.max(240, Math.round(wrapEl.clientHeight * dpr));
   } else { cv.width = 720; cv.height = 560; }
   Wpx = cv.width; Hpx = cv.height;
   refit();
 }
 fsBtn.addEventListener('click', () => {
   if (document.fullscreenElement) document.exitFullscreen();
-  else if (wrapEl.classList.contains('pseudo')){ wrapEl.classList.remove('pseudo'); updFsIcon(); resizeMap(); }
-  else if (wrapEl.requestFullscreen) wrapEl.requestFullscreen().catch(() => { wrapEl.classList.add('pseudo'); updFsIcon(); resizeMap(); });
-  else { wrapEl.classList.add('pseudo'); updFsIcon(); resizeMap(); }
+  else if (fsEl.classList.contains('pseudo')){ fsEl.classList.remove('pseudo'); updFsIcon(); resizeMap(); }
+  else if (fsEl.requestFullscreen) fsEl.requestFullscreen().catch(() => { fsEl.classList.add('pseudo'); updFsIcon(); resizeMap(); });
+  else { fsEl.classList.add('pseudo'); updFsIcon(); resizeMap(); }
 });
-document.addEventListener('fullscreenchange', () => { updFsIcon(); resizeMap(); });
-window.addEventListener('resize', () => { if (document.fullscreenElement === wrapEl || wrapEl.classList.contains('pseudo')) resizeMap(); });
+document.addEventListener('fullscreenchange', () => { updFsIcon(); resizeMap(); requestAnimationFrame(resizeMap); });
+window.addEventListener('resize', () => { if (document.fullscreenElement === fsEl || fsEl.classList.contains('pseudo')) resizeMap(); });
 
 // ---- tabs ----
 document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => {
