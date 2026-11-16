@@ -527,6 +527,7 @@ const D = {"tracks": {"107": [[0, -23.6, 34.9], [5, -19.6, 40.3], [10, -14.0, 44
 const BOATS = ['107','184','84','133'];
 const COLORS = {'107':'#ff5252','184':'#ff5da2','84':'#2ec5d3','133':'#b39ddb'};
 const NAMES = {'107':'107 侃','184':'184 苺香','84':'84 広隆','133':'133 智成'};
+const LEADNAMES = {'107':'107 侃・尚人','184':'184 苺香・世名','84':'84 広隆・眞澄','133':'133 智成・苑香'};
 const LEGNAMES = ['レグ1 上り','レグ2 下り','レグ3 上り','レグ4 下り'];
 const T_END = 1800, ZONE = 14.2, AXISLEN = D.axisLen;
 const actDir = (() => { let d = [D.windFrom[1], -D.windFrom[0]]; if (d[0] < 0) d = [-d[0], -d[1]]; return d; })();
@@ -623,11 +624,11 @@ function drawBoat(c, x, y, ang, color, alpha){
 }
 function namePill(c, x, y, k){
   c.font = 'bold 11px sans-serif';
-  const tw = c.measureText(NAMES[k]).width;
+  const tw = c.measureText(k).width;
   c.fillStyle = 'rgba(3,20,30,.85)';
   c.beginPath(); c.roundRect(x+13, y-16, tw+8, 15, 7); c.fill();
   c.fillStyle = COLORS[k];
-  c.fillText(NAMES[k], x+17, y-5);
+  c.fillText(k, x+17, y-5);
 }
 const mainAng = {};
 function progressOf(k, t){
@@ -658,7 +659,7 @@ function updateBoard(t){
     const leg = r.p.leg < 0 ? 'スタート前' : (r.p.leg >= 4 ? 'フィニッシュ' : LEGNAMES[r.p.leg]);
     const gap = (t < D.gun || i === 0) ? '—' : '約' + Math.round((lead - r.p.prog)*AXISLEN) + 'm';
     const spd = r.v == null ? '—' : r.v.toFixed(1) + 'kt';
-    return '<tr><td>' + (t < D.gun ? '—' : i+1) + '</td><td class="boat" style="color:' + COLORS[r.k] + '">' + NAMES[r.k] + '</td><td>' + leg + '</td><td>' + spd + '</td><td>' + gap + '</td></tr>';
+    return '<tr><td>' + (t < D.gun ? '—' : i+1) + '</td><td class="boat" style="color:' + COLORS[r.k] + '">' + LEADNAMES[r.k] + '</td><td>' + leg + '</td><td>' + spd + '</td><td>' + gap + '</td></tr>';
   }).join('');
 }
 
