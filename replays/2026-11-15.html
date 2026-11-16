@@ -31,10 +31,25 @@
   .fsbtn .ic-exit{ display:none; }
   .fsbtn.on .ic-exit{ display:block; }
   .fsbtn.on .ic-enter{ display:none; }
-  #fswrap:fullscreen{ background:#072a40; padding:12px; display:flex; flex-direction:column; }
-  #fswrap.pseudo{ position:fixed; inset:0; z-index:9999; background:#072a40; padding:12px; display:flex; flex-direction:column; overflow:auto; }
-  #fswrap:fullscreen .wrap, #fswrap.pseudo .wrap{ flex:1 1 auto; min-height:0; }
+  #fswrap:fullscreen{ background:#072a40; padding:0; }
+  #fswrap.pseudo{ position:fixed; inset:0; z-index:9999; background:#072a40; padding:0; }
+  #fswrap:fullscreen .wrap, #fswrap.pseudo .wrap{ height:100%; }
   #fswrap:fullscreen canvas.replay, #fswrap.pseudo canvas.replay{ width:100%; height:100%; }
+  .panelbtn{ right:10px; bottom:60px; display:none; }
+  #fswrap:fullscreen .panelbtn, #fswrap.pseudo .panelbtn{ display:flex; }
+  #fswrap:fullscreen #fsbtn, #fswrap.pseudo #fsbtn{ bottom:80px; }
+  #fswrap:fullscreen #panelbtn, #fswrap.pseudo #panelbtn{ bottom:130px; }
+  #fspanel{ display:contents; }
+  #fswrap:fullscreen .ctl, #fswrap.pseudo .ctl{ position:absolute; left:8px; right:8px; bottom:8px; margin-top:0; z-index:30;
+    background:rgba(3,20,30,.85); border:1px solid rgba(255,255,255,.16); border-radius:12px; padding:6px 12px; transition:opacity .25s; }
+  #fswrap:fullscreen #fspanel, #fswrap.pseudo #fspanel{ display:block; position:absolute; top:56px; right:8px; z-index:30;
+    width:min(300px,74vw); max-height:calc(100% - 170px); overflow:auto; background:rgba(3,20,30,.88);
+    border:1px solid rgba(255,255,255,.16); border-radius:12px; padding:10px;
+    opacity:0; pointer-events:none; transform:translateY(-4px); transition:opacity .18s, transform .18s; }
+  #fswrap:fullscreen #fspanel.open, #fswrap.pseudo #fspanel.open{ opacity:1; pointer-events:auto; transform:none; }
+  #fswrap:fullscreen #fspanel .pillrow:first-child, #fswrap.pseudo #fspanel .pillrow:first-child{ margin-top:0; }
+  #fswrap:fullscreen.idle .ctl, #fswrap.pseudo.idle .ctl,
+  #fswrap:fullscreen.idle #fspanel, #fswrap.pseudo.idle #fspanel{ opacity:0; pointer-events:none; }
   .dgrid{ display:grid; grid-template-columns:1fr 1fr; gap:6px 16px; }
   @media (max-width:680px){ .dgrid{ grid-template-columns:1fr; } }
   .ctl{ display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap; }
@@ -108,6 +123,7 @@
     <canvas class="replay" id="cv" width="720" height="560"></canvas>
     <div class="windpill">風 <b>北西 315°</b> 約3.5 m/s</div>
     <button class="fsbtn" id="fsbtn" aria-label="全画面表示"><svg class="ic-enter" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg><svg class="ic-exit" viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg></button>
+    <button class="fsbtn panelbtn" id="panelbtn" aria-label="操作パネル"><svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z"/><circle cx="9" cy="7" r="2.4" fill="#072a40"/><circle cx="15" cy="12" r="2.4" fill="#072a40"/><circle cx="8" cy="17" r="2.4" fill="#072a40"/></svg></button>
   </div>
   <div class="ctl">
     <button class="playbtn" id="play">▶</button>
@@ -117,6 +133,7 @@
     </div>
     <input type="range" id="seek" min="0" max="1800" value="0" step="1">
   </div>
+  <div id="fspanel">
   <div class="pillrow">
     <button class="smallbtn" id="back60">◀ 1分</button>
     <button class="smallbtn" id="back10">◀ 10秒</button>
@@ -142,6 +159,7 @@
     <button class="pill" data-view="3">レグ4</button>
   </div>
   <div class="chips" id="chips"></div>
+  </div>
   </div>
   <p class="mut">艇をタップするとハイライト。地図はピンチで拡大、ドラッグで移動できる。マーク周りの点線は3艇身ゾーン。詳しい前提は「方法・メモ」。</p>
 </section>
@@ -748,7 +766,7 @@ const chipsEl = document.getElementById('chips');
 for (const k of BOATS){
   const b = document.createElement('button');
   b.className = 'chip'; b.dataset.boat = k;
-  b.innerHTML = '<span class="dot" style="background:' + COLORS[k] + '"></span>' + NAMES[k];
+  b.innerHTML = '<span class="dot" style="background:' + COLORS[k] + '"></span>' + k;
   b.addEventListener('click', () => setSelected(selected === k ? null : k));
   chipsEl.appendChild(b);
 }
@@ -855,11 +873,28 @@ function resizeMap(){
 fsBtn.addEventListener('click', () => {
   if (document.fullscreenElement) document.exitFullscreen();
   else if (fsEl.classList.contains('pseudo')){ fsEl.classList.remove('pseudo'); updFsIcon(); resizeMap(); }
-  else if (fsEl.requestFullscreen) fsEl.requestFullscreen().catch(() => { fsEl.classList.add('pseudo'); updFsIcon(); resizeMap(); });
+  else if (fsEl.requestFullscreen) fsEl.requestFullscreen().catch(() => { fsEl.classList.add('pseudo'); updFsIcon(); resizeMap(); wake(); });
   else { fsEl.classList.add('pseudo'); updFsIcon(); resizeMap(); }
+  wake();
 });
-document.addEventListener('fullscreenchange', () => { updFsIcon(); resizeMap(); requestAnimationFrame(resizeMap); });
+document.addEventListener('fullscreenchange', () => { updFsIcon(); resizeMap(); requestAnimationFrame(resizeMap); wake(); });
 window.addEventListener('resize', () => { if (document.fullscreenElement === fsEl || fsEl.classList.contains('pseudo')) resizeMap(); });
+// ---- fullscreen overlay panel + auto-hide ----
+const panelEl = document.getElementById('fspanel');
+const panelBtn = document.getElementById('panelbtn');
+let idleTimer = null;
+function inFs(){ return document.fullscreenElement === fsEl || fsEl.classList.contains('pseudo'); }
+function armIdle(){
+  clearTimeout(idleTimer);
+  if (inFs()) idleTimer = setTimeout(() => { fsEl.classList.add('idle'); panelEl.classList.remove('open'); }, 4000);
+}
+function wake(){
+  fsEl.classList.remove('idle');
+  if (inFs()) armIdle(); else clearTimeout(idleTimer);
+}
+panelBtn.addEventListener('click', () => { panelEl.classList.toggle('open'); wake(); });
+fsEl.addEventListener('pointerdown', wake);
+fsEl.addEventListener('pointermove', () => { if (fsEl.classList.contains('idle')) wake(); });
 
 // ---- tabs ----
 document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => {
