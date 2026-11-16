@@ -210,16 +210,16 @@ input[type=range]{min-height:auto;padding:0}
   <div class="summary" id="homeSummary">今日のセッションを読み込み中…</div>
   <div class="originWarnSlot"></div>
   <div id="recoverBannerHome"></div>
-  <button class="entry" data-goto="boat"><span class="num">01</span><span><strong>記録する</strong><span class="desc">艇に乗る人 — 艇番を選んで開始</span></span><span class="arrow">›</span></button>
-  <button class="entry" data-goto="ops"><span class="num">02</span><span><strong>運営する</strong><span class="desc">ランカ — 設置ガイド／風／スタート／通過順位／フィニッシュ／書き出し</span></span><span class="arrow">›</span></button>
-  <button class="entry" data-goto="replay"><span class="num">03</span><span><strong>リプレイを見る</strong><span class="desc">帰港後 — 日付とレースを選んで全艇の航跡を見る</span></span><span class="arrow">›</span></button>
+  <button class="entry" data-goto="boat"><span class="num">01</span><span><strong>記録する</strong><span class="desc">艇番を選んで開始</span></span><span class="arrow">›</span></button>
+  <button class="entry" data-goto="ops"><span class="num">02</span><span><strong>運営する</strong><span class="desc">設置・風・スタート・順位・書き出し</span></span><span class="arrow">›</span></button>
+  <button class="entry" data-goto="replay"><span class="num">03</span><span><strong>リプレイを見る</strong><span class="desc">日付を選んで航跡を見る</span></span><span class="arrow">›</span></button>
   <div style="margin-top:20px">
     <button class="textlink" data-goto="check">端末チェック</button>
     <button class="textlink" data-goto="help">ヘルプ・電池と限界について</button>
   </div>
   <details>
     <summary>詳細設定 — 今日の配艇</summary>
-    <p class="small">レース前に1回だけ。艇番とスキッパー／クルーを決めると、艇モードと運営モードに反映されます。</p>
+    <p class="small">レース前に1回設定</p>
     <div class="btnrow">
       <label class="f" style="flex:2"><span>日付</span><input type="date" id="fleetDate"></label>
       <label class="f"><span>海域</span><select id="fleetArea"><option>八景島</option><option>葉山</option><option>江の島</option></select></label>
@@ -232,28 +232,28 @@ input[type=range]{min-height:auto;padding:0}
 
 <section id="view-boat" class="view">
   <h2 class="title">記録する</h2>
-  <p class="sub">艇番を選んで、下のボタンだけ。</p>
+  <p class="sub">艇番を選んで記録</p>
   <div class="originWarnSlot"></div>
   <div id="recoverBannerBoat"></div>
   <div class="gap-warn" id="gapWarn" role="alert" style="display:none">
-    <b class="gap-title">⚠ 記録が途切れました</b>
+    <b class="gap-title">⚠ 記録が途切れた</b>
     <p id="gapWarnText" style="margin:6px 0 10px">—</p>
     <button class="btn" id="gapWarnDismiss" type="button">確認しました</button>
   </div>
   <div class="perm-panel" id="permPanel">
-    <h3>位置情報の許可（最初にここ）</h3>
-    <p class="small" style="margin:0">サイトは勝手に位置を取れません。ブラウザの許可が必要です。下のボタンを押すと、このサイトから位置情報のリクエスト（許可ダイアログ）が出ます。</p>
+    <h3>位置情報の許可</h3>
+    
     <p class="perm-state" id="permState">許可の状態: 確認中…</p>
     <button class="reqbtn" id="btnRequestPerm" type="button">位置情報をリクエストする</button>
     <p class="small" id="permResult" aria-live="polite"></p>
     <div id="permDeniedHelp" style="display:none">
-      <p style="margin:10px 0 0"><b>一度「拒否」したサイトには、ダイアログは二度と出ません。</b>サイト側から再リクエストはできない仕様なので、Chrome側でブロックを解除してください：</p>
+      <p style="margin:10px 0 0"><b>拒否した場合の解除：</b></p>
       <ol class="reset-steps">
-        <li>Chrome右上の「⋮」→「設定」→「サイトの設定」→「位置情報」を開く</li>
-        <li>「許可しないサイト」の一覧から、このトラッカーのアドレスを探してタップ →「削除」または「許可」に変更する</li>
-        <li>このページに戻って再読み込みし、上の「位置情報をリクエストする」をもう一度押す</li>
+        <li>Chrome「⋮」→ 設定 → サイトの設定 → 位置情報</li>
+        <li>「許可しないサイト」からこのサイトを削除／許可に変更</li>
+        <li>再読み込みして、もう一度リクエストする</li>
       </ol>
-      <p class="small">※「許可しないサイト」にこのサイトが無い／アドレスバーが content:// で始まっている場合は、下の赤い警告が原因です（開き方の問題で、設定では直りません）。</p>
+      
     </div>
   </div>
   <label class="f"><span>艇番号</span><select id="boatNoSel"><option>107</option><option>921</option><option>714</option><option>184</option><option>864</option><option>916</option><option>84</option><option>133</option><option value="custom">自由入力…</option></select></label>
@@ -262,17 +262,17 @@ input[type=range]{min-height:auto;padding:0}
     <label class="f"><span>スキッパー</span><input id="skipperName" placeholder="例: 侃"></label>
     <label class="f"><span>クルー</span><input id="crewName" placeholder="例: ゆり"></label>
   </div>
-  <p class="small" style="margin:2px 0 0">午前／午後は、記録を始めた時刻から自動で付けます（昼休みで記録を分け、電池と集計を管理するための目印です）。選ぶ必要はありません。</p>
+  
 
   <div class="tuning-panel" id="tuningPanel">
     <div class="tuning-head">
       <div>
         <h3>チューニング記録</h3>
-        <p class="sub2">出艇前に1回だけ。艇とスキッパーを選んだあと、陸で入れてください。</p>
+        <p class="sub2">出艇前に1回</p>
       </div>
       <span class="pill" id="tuningState">今日は未記録</span>
     </div>
-    <p class="small" id="tuningPrevInfo" style="margin:10px 0 0">前回の記録はまだありません。測った値を入れて「記録する」を押してください。</p>
+    <p class="small" id="tuningPrevInfo" style="margin:10px 0 0"></p>
 
     <span style="display:block;font-weight:700;margin:12px 0 0;font-size:14px">セール</span>
     <div class="seg" id="tuningSailSeg" role="group" aria-label="セール選択" style="margin:6px 0 4px">
@@ -285,7 +285,7 @@ input[type=range]{min-height:auto;padding:0}
       <label class="f"><span>サイドテンション</span><input type="number" id="tuningSide" inputmode="decimal" step="0.1" placeholder="例: 20"></label>
       <label class="f"><span>プリベンド（mm）</span><input type="number" id="tuningPrebend" inputmode="numeric" placeholder="例: 50"></label>
     </div>
-    <p class="small" style="margin:2px 0 0">サイドテンションはバネ式ゲージの値です。前回値が最初から入っているので、変わった数字だけ直せば大丈夫です。</p>
+    
 
     <details id="tuningDetails">
       <summary>詳細（任意）— スプレッダー・ステップ・メモ</summary>
@@ -306,18 +306,18 @@ input[type=range]{min-height:auto;padding:0}
     <div class="tuning-saved" id="tuningSaved">
       <p class="line" id="tuningSavedLine">—</p>
       <button class="btn primary" id="btnTuningExport" type="button" style="width:100%;min-height:54px">チューニング記録を書き出す（JSON）</button>
-      <p class="small" style="margin:8px 0 0">GPXと同じく、Googleドライブの『GPSデータ』フォルダ（ヨット部フォルダ ＞ 2027 ＞ レース ＞ GPSデータ）に保存してください。</p>
+      <p class="small" style="margin:8px 0 0">保存先：ドライブ『GPSデータ』</p>
       <p class="export-status" aria-live="polite"></p>
     </div>
 
     <div class="tuning-history" id="tuningHistory"></div>
   </div>
 
-  <label class="toggle"><input type="checkbox" id="powerSave" checked><span><b>節電モード</b><p id="powerSaveHint">節電ON：5秒間隔で保存し、開始と同時に黒画面になります。電池の減りを抑えます。</p></span></label>
-  <div class="note"><b>電源ボタンは押さないでください。</b> 黒画面でもスマホは起きています。電源ボタンで画面を消すとGPSが止まることがあり、スマホの電源を切ると記録は完全に止まります。</div>
+  <label class="toggle"><input type="checkbox" id="powerSave" checked><span><b>節電モード</b><p id="powerSaveHint">5秒間隔・黒画面</p></span></label>
+  <div class="note"><b>電源ボタンは押さない</b></div>
 
   <div class="lockbar" id="lockBar">
-    <div class="lk-txt"><b id="lockTitle">画面ロック： OFF</b><br><span class="small">記録中の誤タップ防止です。ONにすると、上のモード切替と黒画面の「通常画面に戻る」が効かなくなります。停止はロック中でもできます（3秒長押し）。ロックのON／OFF自体も1.5秒長押しなので、触れただけでは切り替わりません。</span></div>
+    <div class="lk-txt"><b id="lockTitle">画面ロック： OFF</b><br><span class="small">誤タップ防止</span></div>
     <button class="lockbtn" id="btnLock" type="button">ロックする<span class="holdhint">1.5秒長押し</span></button>
   </div>
 
@@ -327,7 +327,7 @@ input[type=range]{min-height:auto;padding:0}
     <div class="stat"><b id="stBattery">—%</b><span>電池</span></div>
     <div class="stat"><b id="stSince">— 秒</b><span>最終測位</span></div>
   </div>
-  <div class="banner" id="gpsDiag" aria-live="polite">GPS診断: まだ記録していません。下の「位置を確認」で、この端末が位置を取れるか先にテストできます。</div>
+  <div class="banner" id="gpsDiag" aria-live="polite">GPS診断: —</div>
   <div class="btnrow">
     <button class="btn" id="btnPocket" disabled>黒画面にする</button>
     <button class="btn" id="btnTestFix">位置を確認</button>
@@ -335,13 +335,13 @@ input[type=range]{min-height:auto;padding:0}
   <p class="small" id="testFixOut"></p>
 
   <div class="export-panel" id="exportPanel" aria-live="polite">
-    <h3>記録が終わりました — そのまま書き出しへ</h3>
+    <h3>記録終了</h3>
     <p class="summary-line" id="exportSummary">—</p>
     <p class="small" id="exportWarn" style="display:none"></p>
     <button class="gpx-main" id="expGpxMain">GPXを書き出す（航跡ファイル）</button>
-    <p style="margin:0 0 6px;font-weight:700">集計に使うのはこのファイル。Googleドライブの『GPSデータ』フォルダ（ヨット部フォルダ ＞ 2027 ＞ レース ＞ GPSデータ）に保存してください。</p>
+    <p style="margin:0 0 6px;font-weight:700">保存先：ドライブ『GPSデータ』</p>
     <p class="export-status" id="exportStatus" aria-live="polite"></p>
-    <p class="small" style="margin:10px 0 0">CSV／JSON形式は「詳細 — 地図・状態・書き出し」の中にあります（通常は使いません）。</p>
+    
   </div>
 
   <details>
@@ -353,10 +353,10 @@ input[type=range]{min-height:auto;padding:0}
       <div class="stat"><b id="stAcc">— m</b><span>GPS精度</span></div>
       <div class="stat"><b id="stGaps">0</b><span>欠損</span></div>
     </div>
-    <p class="small" id="boatPosOut">緯度・経度はここに表示されます。精度100m超の点は原則保存しません（20秒以上よい点が無い場合は、その間の最良の点を残します）。</p>
+    <p class="small" id="boatPosOut"></p>
     <div id="boatMap" class="map"></div>
-    <h3 style="font-size:16px;margin:20px 0 8px">その他の形式（CSV／JSON）</h3>
-    <p class="small">通常の書き出しは上の緑ボタン（GPX）だけでOKです。<br>GPX＝航跡ファイル（集計に使うのはこれ）／ CSV＝表計算ソフトで開ける航跡データ ／ JSON＝記録データ一式（予備用）。</p>
+    <h3 style="font-size:16px;margin:20px 0 8px">その他の形式</h3>
+    
     <div class="btnrow"><button class="btn primary" id="expGpx">GPX（航跡ファイル）</button><button class="btn" id="expCsv">CSV</button><button class="btn" id="expJson">JSON</button></div>
     <p class="export-status" aria-live="polite"></p>
     <div id="sessionList" style="margin-top:10px"></div>
@@ -364,13 +364,13 @@ input[type=range]{min-height:auto;padding:0}
 
   <div class="actionbar"><div class="inner">
     <button class="bigbtn record" id="btnRecord">● 記録する</button>
-    <button class="bigbtn stop" id="btnStop" style="display:none">■ 止める<span class="holdhint">3秒長押しで停止（タップでは止まりません）</span></button>
+    <button class="bigbtn stop" id="btnStop" style="display:none">■ 止める<span class="holdhint">3秒長押し</span></button>
   </div></div>
 </section>
 
 <section id="view-ops" class="view">
   <h2 class="title">運営する</h2>
-  <p class="sub">ランカ用。ステップ1から順に進めるだけです。</p>
+  <p class="sub">ランカ用</p>
   <div class="ops-progress" id="opsProgress">進捗： ステップ 1/6</div>
 
   <div class="seg" id="opsTabs" role="tablist" aria-label="運営の画面切替" style="margin:0 0 6px">
@@ -381,16 +381,16 @@ input[type=range]{min-height:auto;padding:0}
   <div class="ops-panel" id="opsPanel-setup">
   <div class="section">
     <h3><span class="step">ステップ1</span>マークを打つ <span class="pill" id="opStep1State">未完了</span></h3>
-    <p class="small">マークは4つです：<b>本船マーク／アウターマーク／上マーク／フィニッシュ位置</b>（フィニッシュ位置は流し込みの仮想ラインの端になる、レスキューの待機位置です。マークを打つのは本船・アウター・上の3つ）。<br>進め方： <b>最初に、どこでもいいのでマークを1つ打ってください。</b>打った場所で下のボタンを押し、そのマークが何かを確定します。それが基準点になって、残りのマークの設置場所をガイドが計算します。どのマークから打っても大丈夫です。</p>
+    <p class="small">最初に打ったマークを基準にする</p>
     <label class="f"><span>レース</span><select id="opsRace"><option>R1</option><option>R2</option><option>R3</option><option>R4</option><option>R5</option><option>R6</option></select></label>
-    <span style="display:block;font-weight:700;margin:10px 0 0;font-size:14px">最初に打ったマーク（基準点にするマーク）</span>
+    <span style="display:block;font-weight:700;margin:10px 0 0;font-size:14px">基準マーク</span>
     <div class="seg" id="refRoleSeg" role="group" aria-label="基準マークの選択" style="margin:6px 0 10px">
       <button type="button" data-refrole="hon" class="on">本船</button>
       <button type="button" data-refrole="outer">アウター</button>
       <button type="button" data-refrole="windward">上</button>
       <button type="button" data-refrole="finish">フィニッシュ</button>
     </div>
-    <p class="small" style="margin:0 0 8px">打ったマークのボタンを、その場所で押して確定してください（例：最初に上マークを打ったなら、上の「基準」で「上」を選び、「上マーク」ボタンを押す）。押し直せば打ち直しできます。</p>
+    <p class="small" style="margin:0 0 8px">打った場所でボタンを押して確定</p>
     <div class="markbtns" id="markBtns">
       <button class="markbtn" data-mark="hon">本船マーク<span class="mk-state">未確定</span></button>
       <button class="markbtn" data-mark="outer">アウターマーク<span class="mk-state">未確定</span></button>
@@ -401,7 +401,7 @@ input[type=range]{min-height:auto;padding:0}
     <div id="opsMap" class="map" style="margin-top:10px"></div>
     <div style="margin-top:16px">
       <h3 style="font-size:16px;margin:0 0 6px">マーク設置ガイド</h3>
-      <p class="small" style="margin:0 0 8px">基準にしたマークと、風向・風速・レグ長から、残り3つのマークの設置目標（緯度・経度）を計算します。各目標には、この端末の現在位置から「方位◯°・あと◯m」を表示するので、その通りに進んでください。目標に着いたら、上のボタンでその場所を確定します。ゲート（本船マーク〜アウターマーク）は風軸に直角なライン上に、中心から左右対称に開きます。フィニッシュ位置は、本船マークから風下へ約90m＋ライン方向へ約40mずらした、レスキューの待機位置（目安）です。</p>
+      
       <div class="btnrow">
         <label class="f"><span>風向（°｜吹いてくる方位）</span><input type="number" id="layWindDir" inputmode="numeric" min="0" max="359" placeholder="例: 330"></label>
         <label class="f"><span>風速（m/s）</span><input type="number" id="layWindSpd" inputmode="decimal" step="0.5" min="0" placeholder="例: 5.5"></label>
@@ -411,8 +411,8 @@ input[type=range]{min-height:auto;padding:0}
       <p class="small" id="gateSpanOut" style="font-weight:700;margin:6px 0 4px">ゲート幅 —</p>
       <div id="layTargets"></div>
       <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:14px">
-        <h3 style="font-size:16px;margin:0 0 6px">コース設定を共有する（他のレスキューへ）</h3>
-        <p class="small" style="margin:0 0 8px">基準マーク・風・レグ長がそろうと、同じコース設定を他のレスキュー艇に渡せます。設定一式が入った共有コードをLINEで送り、受けた側が下の欄に貼ると、同じ設置目標が、その人の位置から各マークまでの方位・距離つきで表示されます。送られたメッセージごと貼っても読み込めます。</p>
+        <h3 style="font-size:16px;margin:0 0 6px">コース設定を共有</h3>
+        <p class="small" style="margin:0 0 8px">コードを送ると同じ設定になる</p>
         <div class="btnrow">
           <button class="btn primary" id="btnShareCourse" type="button">LINEなどで共有する</button>
           <button class="btn" id="btnCopyCourseCode" type="button">共有コードをコピー</button>
@@ -422,7 +422,7 @@ input[type=range]{min-height:auto;padding:0}
         <button class="btn" id="btnImportCourseCode" type="button" style="width:100%">この設定を読み込む</button>
       </div>
     </div>
-    <p class="small">コース： スタート → 上マーク → ゲート → 上マーク → ゲート → 流し込みフィニッシュ。最後はゲートを通ったあと、少し斜めにリーチングで走って、フィニッシュ位置にいるレスキューの仮想ライン（腕を伸ばした延長線。本船マーク側がもう一端）を通過した順にフィニッシュします。フィニッシュ用に新しいマークは打ちません。スタートラインはゲートのライン（本船マーク〜アウターマーク）です。</p>
+    <p class="small">コース：スタート → 上 → ゲート → 上 → ゲート → フィニッシュ</p>
     <div class="btnrow"><button class="btn" id="btnOpsHere">現在位置を更新（地図）</button></div>
     <p class="small" id="opsPosOut">現在位置: —</p>
   </div>
@@ -431,7 +431,7 @@ input[type=range]{min-height:auto;padding:0}
 
   <div class="section">
     <h3><span class="step">ステップ2</span>風を記録する</h3>
-    <p class="small">レース中も何度でも追加できます（時刻付きで残ります）。</p>
+    
     <label class="f"><span>風向（°｜風が吹いてくる方位・0〜359）</span><input type="number" id="windDirNum" inputmode="numeric" min="0" max="359" step="1" placeholder="例: 330"></label>
     <label class="f"><span>風速（m/s）</span><input type="number" id="windSpdIn" inputmode="decimal" step="0.5" placeholder="例: 5.5"></label>
     <button class="btn primary" id="btnAddWind" style="width:100%">風を記録する</button>
@@ -440,7 +440,7 @@ input[type=range]{min-height:auto;padding:0}
 
   <div class="section">
     <h3><span class="step">ステップ3</span>スタート（時報どおり）</h3>
-    <p class="small">スタート時刻を「何時何分」で入力すると、その時刻ちょうどが号砲（全艇共通のスタート基準時刻）として記録されます。ボタンを押した時刻にはなりません。時報どおりに動かすための設定です。</p>
+    <p class="small">入力した時刻ちょうどが号砲</p>
     <label class="f"><span>スタート時刻（時：分）</span><input type="time" id="startClockIn" step="60"></label>
     <button class="btn primary" id="btnSetStart" style="width:100%">この時刻をスタートに設定する</button>
     <div class="countdown kbd" id="countdown">--:--</div>
@@ -452,7 +452,7 @@ input[type=range]{min-height:auto;padding:0}
 
   <div class="section">
     <h3><span class="step">ステップ4</span>マーク通過順位 <span class="pill" id="opStep4State">未記録</span></h3>
-    <p class="small">レスキューからの目視記録です。マークを選んで、回航した順に艇番をタップするだけ。GPSを載せていない艇も含めて、全艇の順位が取れます。「1下」はゲート通過（ゲートA〜ゲートBの間を抜けた順）です。最後のゲート通過のあとは流し込みフィニッシュで、順位はステップ5に記録します。</p>
+    <p class="small">回航した順にタップ</p>
     <div class="seg" id="mmSeg" role="tablist" aria-label="マーク選択">
       <button type="button" data-mm="mark1up" class="on">1上</button>
       <button type="button" data-mm="mark1down">ゲート</button>
@@ -465,7 +465,7 @@ input[type=range]{min-height:auto;padding:0}
 
   <div class="section">
     <h3><span class="step">ステップ5</span>フィニッシュを記録（流し込み）</h3>
-    <p class="small">最後のゲートを通ったあと、各艇は少し斜めにリーチングで走り、レスキューの仮想ライン（腕を伸ばした延長線）を通過してフィニッシュです。仮想ライン用のマークは打ちません。通過した順に艇番をタップすると、その艇のフィニッシュ時刻を記録します（GPS判定のバックアップ）。タップし直すか「取り消し」で消せます。</p>
+    <p class="small">通過した順にタップ</p>
     <div class="boat-chips" id="finishChips"></div>
     <p id="finishOrderOut" style="font-weight:700;margin-top:10px">順位: —</p>
     <div id="finishList"></div>
@@ -474,10 +474,10 @@ input[type=range]{min-height:auto;padding:0}
 
   <div class="section">
     <h3><span class="step">ステップ6</span>書き出し</h3>
-    <p style="font-weight:700;margin:0 0 8px">このファイルと、各艇のGPXは、Googleドライブの『GPSデータ』フォルダ（ヨット部フォルダ ＞ 2027 ＞ レース ＞ GPSデータ）に保存してください。</p>
+    <p style="font-weight:700;margin:0 0 8px">保存先：ドライブ『GPSデータ』</p>
     <button class="btn primary" id="expOps" style="width:100%;min-height:58px;font-size:17px">運営記録を書き出す</button>
     <p class="export-status" aria-live="polite"></p>
-    <p class="small">運営記録には、マーク位置（本船・アウター・上・フィニッシュ位置）と基準マーク・設置ガイドの目標（ゲート幅・レグ長・風向・風速）・風・設定したスタート時刻と号砲時刻・フィニッシュ時刻・マーク通過順位（目視）が入っています。フィニッシュはゲート通過後の流し込み（仮想ライン）です。</p>
+    
   </div>
   </div>
 
@@ -486,37 +486,37 @@ input[type=range]{min-height:auto;padding:0}
 
 <section id="view-replay" class="view">
   <h2 class="title">リプレイ</h2>
-  <p class="sub">日付を選ぶと、その日のリプレイページが開きます。その日に何レース行ったかは、当日集まった記録の数で決まります。レースの切り替えは、日付ページの中で行います。</p>
+  <p class="sub">日付を選ぶ</p>
 
   <div class="replay-list" id="replayDayList" role="list"></div>
-  <p class="small" style="margin-top:14px">各艇がレースごとに記録を始め・止めるため、1日に何本レースがあるかは当日まで分かりません。練習後に各艇のGPXと運営記録がドライブの『GPSデータ』フォルダに集まり、集計が終わった日付から順に「公開中」になって、タップでその日のページを開けるようになります。</p>
+  
 </section>
 
 <section id="view-check" class="view">
   <h2 class="title">端末チェック</h2>
-  <p class="sub">出艇前に、全員で。</p>
+  <p class="sub">出艇前に確認</p>
   <div id="deviceInfo" class="note" style="margin-bottom:12px">読み取り中…</div>
   <div id="checkList"></div>
-  <div class="note" style="margin-top:14px"><b>iPhone:</b> iOS 18.4未満＋ホーム画面追加ではスリープ防止が効かない場合があります。その場合はSafariのタブで開いてください。<br><b>正直な注意:</b> Webアプリのため、スリープを100%防ぐことはできません。電源ボタンを押した場合やOSが強制的にスリープさせた場合、その区間は記録が途切れ、欠損として正直に記録されます。画面に戻ったときは警告バナーで途切れた秒数を知らせます。記録中は画面上部の「スリープ防止中」表示を必ず確認してください。</div>
+  <div class="note" style="margin-top:14px">電源ボタンで画面を消すと記録が止まることがある。記録中は上部の「スリープ防止中」を確認。</div>
 </section>
 <section id="view-help" class="view">
   <h2 class="title">ヘルプ</h2>
-  <p class="sub">詳しい説明はここに集めています。</p>
-  <details open><summary>電源を切る／画面を消すとどうなる？</summary><p><b>スマホの電源を切ると、記録は完全に止まります。</b>電源が入っていない状態ではGPS測位はできません。電源ボタンで画面だけを消した場合も、このWebアプリでは継続を保証できません。多くの端末でブラウザのGPSが止まり、その区間は欠損になります。</p><p>正しい使い方は、記録開始後に自動で出る黒画面のまま、電源ボタンを押さずにポケット／防水ケースへ入れることです。黒く見えますがスマホは起きていて、スリープ防止が働いています。もし画面が消えてしまった場合は、画面を戻したときに測位の再開を試み、長く止まった区間は欠損として記録に残します。</p><p>止め方は<b>3秒長押し</b>だけです（誤操作防止）。タップしただけ、ケース越しに触れただけでは絶対に止まりません。通常画面と黒画面の両方とも、ボタンを3秒押し続けたときだけ停止します。あわせて<b>画面ロック</b>も使えます：艇画面の「ロックする」を1.5秒長押しすると、記録中はモード切替と黒画面からの「通常画面に戻る」が効かなくなります。ロックの解除も1.5秒長押しです。ロック状態はこの画面を開いている間だけのもので、保存はされません。</p></details>
-  <details><summary>スリープ対策と、その限界（正直な話）</summary><p>このアプリは記録中、Wake Lock（画面スリープ防止）を取得し、画面上部のステータスバーに状態を常時表示します。<b>「スリープ防止中」</b>と出ていれば防止が効いています。<b>「スリープ防止が切れています」</b>と出たら、解除された状態です — アプリは自動で再取得を試みますが、直らない場合は画面を一度タップして前面に戻し、表示が「スリープ防止中」に戻るか確認してください。Wake Lockが途中で解除された場合も、再取得できたかどうかが同じ表示と艇画面の「スリープ防止」欄に出ます。</p><p><b>出艇前の設定（Android）:</b> ①「設定 → ディスプレイ → 画面消灯（スリープ／画面タイムアウト）」を最長にしてください。②「充電中は画面をオンに保つ（スリープしない）」という設定がある機種（設定 → システム → 開発者向けオプション内）ではONにしてください。iPhoneは「設定 → 画面表示と明るさ → 自動ロック」を最長にしてください。あわせて、端末チェック画面の項目も全員で確認してください。</p><p><b>限界:</b> Webアプリのため、スリープを100%防ぐことはできません。電源ボタンを押す、電池切れ間際の省電力、OSの強制スリープなどでは記録が途切れます。その場合は、画面復帰時に「○秒間、記録が途切れました（スリープの可能性）」という警告バナーを出し、途切れた区間は欠損（gaps）として正直に記録されます。航跡が直線でつながって見えても、その区間は実測ではありません。</p></details>
-  <details><summary>電池について</summary><p>画面点灯が必要なため消費は大きめです。節電モード（5秒間隔＋自動で黒画面）が標準です。午前／午後は開始時刻で自動に分かれます。昼休みに充電してください。開始・終了時の電池残量は記録に含まれます。</p></details>
-  <details><summary>GPSの精度</summary><p>精度は数m〜10m程度。スタートの線際（OCS）の確定には使えず、候補フラグまでです。コース取りとシフト対応の振り返りに使ってください。精度100m超の点は原則保存しませんが、20秒以上よい点が届かない場合は、その間の最良の点を残します。艇画面のGPS診断で、届いた件数・保存点数・精度をいつでも確認できます。点数が増えないときは、まず「正確な位置情報」がONになっているか確認してください（OFFだと精度が数百mになり、全点が除外されます）。</p></details>
-  <details><summary>点数が増えない／「User denied Geolocation」と出る</summary><p>まずアドレスバーを見てください。<b>content://</b> で始まっていたら、それが原因です。ダウンロードしたファイルをChromeで開いた状態では、Chromeは位置情報を一切渡さず、許可ダイアログも出ません。Chromeの「許可されています」一覧にもこのサイトは出てきません。ファイルを閉じて、<b>Museアプリのカードから開き直し</b>てください（アドレスバーが https:// で始まればOK）。</p><p>httpsで開けているのに拒否される場合は、一度「拒否」したためダイアログが再表示されなくなっています。艇画面上部の「位置情報の許可」パネルに、Chrome側のブロック解除手順（設定 → サイトの設定 → 位置情報 →「許可しないサイト」から削除）を出しています。サイト側から出せるリクエストは同パネルの「位置情報をリクエストする」ボタンです — 押すと許可ダイアログが出ます（ブロック解除後のみ）。</p><p>ネイティブアプリ化しなくても、httpsで開いて許可すればWeb版のままで記録できます。アプリ化が必要になるのは「電源ボタンで画面を消しても記録し続ける」用途だけです。</p></details>
-  <details><summary>集計の流れ</summary><p>各艇は自分のGPXを書き出してGoogleドライブの『GPSデータ』フォルダ（ヨット部フォルダ ＞ 2027 ＞ レース ＞ GPSデータ）に保存し、レスキュー（運営）は運営記録JSONを同じフォルダに保存します。集計はClaudeがフォルダから読み取って行い、結果は冬の分析シートと、このアプリの「リプレイ」タブ（日付ごと）で公開します。コースは 上マーク → ゲート（ゲートA〜ゲートBの間を通過） → 上マーク → ゲート → 流し込みフィニッシュ（ゲート通過後、少しリーチングで走ってレスキューの仮想ラインを横切る）、の順で判定します。フィニッシュの仮想ラインにはマークを打たず、通過順は運営がステップ5に目視で記録します。</p></details>
-<details><summary>データの集め方</summary><p>サーバーはありません。各艇がGPXを書き出し、Googleドライブの『GPSデータ』フォルダ（ヨット部フォルダ ＞ 2027 ＞ レース ＞ GPSデータ）に保存します。運営JSONも同じフォルダに忘れずに。集計はClaudeがフォルダから読み取って行います。</p></details>
-  <details><summary>集めているデータ</summary><p>時刻・緯度・経度・精度だけを生で保存し、速度・VMG・タックは後から計算します。マーク実位置、号砲時刻、時刻つきの風、フィニッシュ目視順位、欠損区間、電池、配艇も残します。</p></details>
-  <details><summary>チューニング記録について</summary><p>艇モードで、艇とスキッパーを選んだあとに出る「チューニング記録」が朝のステップです。出艇前に1回、レーキ／サイドテンション／プリベンドを入れてください。前回の記録が端末内に残り、次回はその値が最初から表示されます。変わっていない日は「前回と同じ」を1回押すだけで今日の記録になります。</p><p>記録はこの端末内に日付×艇で残ります。書き出しはJSONファイル（tuning_日付_艇番.json）で、GPXと同じくGoogleドライブの『GPSデータ』フォルダに保存してください。集計のときに、その日の航跡・風・順位と艇ごとに結びつけます。</p></details>
-  <details><summary>マーク設置ガイドとゲート／流し込みフィニッシュ</summary><p>運営モードの「設置」タブにあります。マークは本船マーク／アウターマーク／上マーク／フィニッシュ位置の4つです。最初に打ったマークはどこでもよく、打った場所でそのマークのボタンを押して確定し、「基準」でそのマークを選ぶと、それが基準点になります。風向（°）・風速・レグ長（m）を入れると、残りのマークの設置目標の緯度・経度と、現在位置からの残り距離（あと○m）と方位を表示します。移動すると距離は自動で更新されます。目標に着いたら、ステップ1のボタンでその場所をGPS記録して確定します。ゲート幅はレグ長の約12%（40〜120mの範囲）で計算し、ゲートは風軸に直角なライン上に中心から左右対称に開きます。上マークはゲート中心から風上方向にレグ長の距離です。フィニッシュ位置は本船マークから風下へ約90m＋ライン方向へ約40mずらしたレスキューの待機位置（目安）です。</p><p>コース設定は共有できます。「LINEなどで共有する」か「共有コードをコピー」で、基準マーク・風向・風速・レグ長が入った共有コードを他のレスキューに送ってください。受けた側が「共有コードを貼って読み込む」に貼ると（送られたメッセージごと貼っても大丈夫です）、同じ設置目標が、その端末の現在位置からの方位・距離つきで表示されます。</p><p>下マークはゲートです（本船マークとアウターマークの間を通過）。最後のレグは、ゲートを通ったあと少し斜めにリーチングで走る流し込みフィニッシュです。フィニッシュラインはフィニッシュ位置にいるレスキューの腕を伸ばした仮想ライン（もう一端は本船マーク側）で、新しいマークは打ちません。通過した順は運営モードのステップ5で記録します。</p><p>スタートは時報どおりです。「風・スタート」タブでスタート時刻（時：分）を設定すると、その時刻ちょうどが号砲として記録されます。</p></details>
+  
+  <details open><summary>電源・画面</summary><p>電源を切ると記録は止まる。記録中は黒画面のままポケットへ。停止は3秒長押し、ロックは1.5秒長押し。</p></details>
+  <details><summary>スリープ</summary><p>上部に「スリープ防止中」と出ればOK。切れたら画面をタップして前面に戻す。</p><p>出艇前：画面消灯／自動ロックを最長に。</p><p>途切れた区間は欠損として記録される。</p></details>
+  <details><summary>電池</summary><p>節電モードが標準。昼休みに充電。</p></details>
+  <details><summary>GPSの精度</summary><p>数m〜10m。OCS判定には使えない。「正確な位置情報」をONに。</p></details>
+  <details><summary>点数が増えない</summary><p>アドレスバーが content:// なら、Museのカードから開き直す。httpsで拒否されたら艇画面の手順で解除。</p></details>
+  <details><summary>集計</summary><p>GPXと運営記録をドライブ『GPSデータ』へ。</p></details>
+
+  
+  <details><summary>チューニング記録</summary><p>出艇前に1回入力。書き出しはJSONでドライブへ。</p></details>
+  <details><summary>マーク設置</summary><p>基準マーク＋風向・レグ長で残りの目標が出る。共有コードで他艇と共有できる。</p></details>
   <p class="small" style="margin-top:16px">バージョン v2.6.0</p>
 </section>
 </div>
 <div id="toast" style="position:fixed;left:12px;right:12px;bottom:96px;z-index:10000;background:#111;color:#fff;padding:14px 16px;border-radius:12px;font-weight:700;display:none;box-shadow:0 8px 30px rgba(0,0,0,.3)"></div>
-<div id="pocket" aria-label="ポケット画面"><div class="dim"><b>● 記録中</b><br><span id="pocketInfo">—</span><br><span class="wake-line" id="pocketWake">スリープ防止 —</span><br><br>このままポケット／防水ケースへ<br>電源ボタンは押さないでください<br>画面を消すとGPSが止まります</div><button class="pocket-stop" id="pocketStop" type="button">■ 記録を止める<span>3秒長押しで停止（タップでは止まりません）</span></button><button class="pocket-lock lockbtn" id="pocketLock" type="button">ロックする（1.5秒長押し）</button><button class="pocket-back" id="pocketBack" type="button">通常画面に戻る（記録は続きます）</button></div>
+<div id="pocket" aria-label="ポケット画面"><div class="dim"><b>● 記録中</b><br><span id="pocketInfo">—</span><br><span class="wake-line" id="pocketWake">スリープ防止 —</span><br><br>ポケット／ケースへ。電源ボタンは押さない</div><button class="pocket-stop" id="pocketStop" type="button">■ 記録を止める<span>3秒長押し</span></button><button class="pocket-lock lockbtn" id="pocketLock" type="button">ロックする（1.5秒長押し）</button><button class="pocket-back" id="pocketBack" type="button">通常画面に戻る</button></div>
 <video id="nosleepVideo" playsinline muted loop style="position:fixed;width:2px;height:2px;opacity:0.01;pointer-events:none;left:0;bottom:0"><source src="data:video/mp4;base64,AAAAHGZ0eXBpcGRhdg=="></video>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -548,14 +548,14 @@ function downloadOrShare(blob,filename){
     try{
       var url=URL.createObjectURL(blob); var a=document.createElement("a"); a.href=url; a.download=filename; document.body.appendChild(a); a.click();
       setTimeout(function(){a.remove()},800); setTimeout(function(){URL.revokeObjectURL(url)},60000);
-      setExportStatus((reason?esc(reason)+"<br>":"")+"ダウンロードを開始しました： "+esc(filename)+"（ブラウザ下部のダウンロード通知／ダウンロードフォルダを確認してください。始まらない場合は、もう一度ボタンを押してください）",false);
-    }catch(e){ setExportStatus("書き出しに失敗しました： "+esc(e.message||e)+"。ブラウザを再読み込みして、もう一度押してください。",true); }
+      setExportStatus((reason?esc(reason)+"<br>":"")+"ダウンロード開始： "+esc(filename),false);
+    }catch(e){ setExportStatus("書き出し失敗： "+esc(e.message||e),true); }
   }
   if(file&&navigator.canShare&&navigator.canShare({files:[file]})){
-    setExportStatus("共有シートを開いています… 送り先（LINEなど）を選んでください： "+esc(filename),false);
+    setExportStatus("共有シートを開いています…： "+esc(filename),false);
     navigator.share({files:[file],title:filename}).then(function(){setExportStatus("共有しました： "+esc(filename),false)}).catch(function(err){
-      if(err&&err.name==="AbortError"){setExportStatus("共有がキャンセルされました。もう一度押せば再試行できます。",true)}
-      else{tryDownload("共有が使えなかったため、ダウンロードに切り替えました。")}
+      if(err&&err.name==="AbortError"){setExportStatus("共有がキャンセルされた",true)}
+      else{tryDownload("ダウンロードに切替")}
     });
     return;
   }
@@ -581,35 +581,35 @@ function renderOriginWarnings(){
   var prob=originProblem(); var slots=document.querySelectorAll(".originWarnSlot");
   if(!prob){slots.forEach(function(s){s.innerHTML=""});return}
   var lead;
-  if(prob==="content")lead="<p>いまアドレスバーが <b>content://</b> で始まっています（ダウンロードしたファイルをChromeで開いた状態）。この状態ではChromeが位置情報を一切渡さず、<b>許可ダイアログも出ません</b>。設定で「常に正確に」を選んでいても直りません — アプリの不具合ではなく、開き方の問題です。</p>";
-  else if(prob==="file")lead="<p>このページは端末内のファイルとして直接開かれています（アドレスバーが file: 等で始まる状態）。この状態ではブラウザが位置情報を渡さず、<b>許可ダイアログも出ません</b>。設定を変えても直りません — アプリの不具合ではなく、開き方の問題です。</p>";
-  else lead="<p>このページは <b>https で開かれていません</b>。位置情報は https のページでしか使えないため、このままでは測位できず、<b>許可ダイアログも出ません</b>。アプリの不具合ではなく、開き方の問題です。</p>";
-  var html="<div class='origin-warn' role='alert'><h3>⚠ この開き方では、位置情報は絶対に取れません</h3>"
+  if(prob==="content")lead="<p>アドレスバーが <b>content://</b> — この開き方では位置情報が取れない。</p>";
+  else if(prob==="file")lead="<p>ファイルとして開かれている — この開き方では位置情報が取れない。</p>";
+  else lead="<p><b>https で開かれていない</b> — 位置情報が取れない。</p>";
+  var html="<div class='origin-warn' role='alert'><h3>⚠ この開き方では位置情報が取れない</h3>"
     +lead
-    +"<p><b>正しい開き方:</b></p><ol>"
-    +"<li>このファイル／タブは閉じる</li>"
-    +"<li>Museアプリでこのトラッカーのカードを開き、カードから直接ページを開く（アドレスバーが https:// で始まることを確認）</li>"
-    +"<li>開けたら「艇」画面の「位置情報をリクエストする」を押して「許可」する</li></ol>"
-    +"<p>httpsで開けば、次からは許可が記憶されてそのまま記録できます。</p></div>";
+    +"<ol>"
+    +"<li>このタブを閉じる</li>"
+    +"<li>Museのカードから開き直す（https:// で始まること）</li>"
+    +"<li>「艇」で位置情報をリクエストして許可する</li></ol>"
+    +"</div>";
   slots.forEach(function(s){s.innerHTML=html});
 }
 function refreshPermState(){
   var el=$("permState"); if(!el)return;
   if(originProblem()){el.textContent="許可の状態: この開き方（content://等）では取得不可";el.style.color="var(--red)";return}
-  if(!navigator.permissions||!navigator.permissions.query){el.textContent="許可の状態: このブラウザでは自動確認できません（下のボタンでテストできます）";return}
+  if(!navigator.permissions||!navigator.permissions.query){el.textContent="許可の状態: 下のボタンで確認";return}
   navigator.permissions.query({name:"geolocation"}).then(function(st){
     window._permState=st.state;
     if(st.state==="granted"){el.textContent="許可の状態: ✅ 許可されています";el.style.color="var(--green)";var dh=$("permDeniedHelp");if(dh)dh.style.display="none"}
     else if(st.state==="denied"){el.textContent="許可の状態: ❌ 拒否されています（ダイアログは出ません）";el.style.color="var(--red)";var dh2=$("permDeniedHelp");if(dh2)dh2.style.display=""}
     else{el.textContent="許可の状態: まだ許可されていません — 下のボタンでダイアログが出ます";el.style.color="var(--yellow)"}
     try{st.onchange=function(){refreshPermState()}}catch(e){}
-  }).catch(function(){el.textContent="許可の状態: 自動確認できません（下のボタンでテストできます）"});
+  }).catch(function(){el.textContent="許可の状態: 下のボタンで確認"});
 }
 function deniedExplanation(e){
-  if(originProblem()==="content")return "この開き方（content://）ではChromeが位置情報を渡しません。上の赤い警告の手順で、Museのカードから開き直してください。";
-  if(originProblem()==="file")return "ファイルを直接開いた状態ではブラウザが位置情報を渡しません。上の赤い警告の手順で、Museのカードから開き直してください。";
-  if(originProblem()==="insecure")return "httpsで開かれていないため位置情報が使えません。Museのカードから開き直してください。";
-  if(e&&e.code===1)return "許可が拒否されています。一度拒否したサイトにはダイアログが再表示されないため、下の「拒否されていた場合の解除手順」でChrome側のブロックを解除してから、もう一度押してください。";
+  if(originProblem()==="content")return "Museのカードから開き直す。";
+  if(originProblem()==="file")return "Museのカードから開き直す。";
+  if(originProblem()==="insecure")return "Museのカードから開き直す。";
+  if(e&&e.code===1)return "拒否されている。下の手順で解除する。";
   return "";
 }
 function requestLocationPermission(){
@@ -621,10 +621,10 @@ function requestLocationPermission(){
     var slot=document.querySelector("#view-boat .originWarnSlot"); if(slot)slot.scrollIntoView({behavior:"smooth",block:"center"});
     return;
   }
-  if(out)out.textContent="位置情報をリクエスト中… ダイアログが出たら「許可」を押してください（出ない場合は少し待ってください）。";
+  if(out)out.textContent="リクエスト中…「許可」を押す";
   navigator.geolocation.getCurrentPosition(function(p){
     var a=p.coords.accuracy!=null?Math.round(p.coords.accuracy):null;
-    if(out)out.innerHTML="<b style='color:var(--green)'>✅ 許可され、位置が取れました。</b> 精度 "+(a==null?"—":a+"m")+"。このまま「記録する」を押せば点数が増えていきます。";
+    if(out)out.innerHTML="<b style='color:var(--green)'>✅ 許可された。</b> 精度 "+(a==null?"—":a+"m");
     refreshPermState();
   },function(e){
     if(out)out.innerHTML="<b style='color:var(--red)'>取れませんでした:</b> "+esc(e.message||"")+"<br>"+deniedExplanation(e);
@@ -637,7 +637,7 @@ function requestLocationPermission(){
 var maps={};
 var currentView="home";
 function show(view){
-  if(typeof boat!=="undefined"&&boat&&boat.locked&&boat.recording&&view!==currentView){showMsg("画面ロック中です。ロックを解除してから切り替えてください（ロックボタンを1.5秒長押し）。");return}
+  if(typeof boat!=="undefined"&&boat&&boat.locked&&boat.recording&&view!==currentView){showMsg("ロック中。解除は1.5秒長押し。");return}
   currentView=view;
   document.querySelectorAll(".view").forEach(function(v){v.classList.remove("active")});
   var el=$("view-"+view); if(el)el.classList.add("active");
@@ -678,7 +678,7 @@ function loadFleet(){
 }
 function getFleet(){var rows=[];document.querySelectorAll("#fleetBody tr").forEach(function(tr){var ins=tr.querySelectorAll("input");rows.push([ins[0].value.trim(),ins[1].value.trim(),ins[2].value.trim(),ins[3].value.trim()])});return {date:$("fleetDate").value,area:$("fleetArea").value,session:autoSession(),rows:rows.filter(function(r){return r[0]})}}
 $("addFleetRow").onclick=function(){$("fleetBody").appendChild(fleetRow(["","","",""]))};
-$("saveFleet").onclick=function(){var f=getFleet();try{localStorage.setItem(FLEET_KEY,JSON.stringify(f))}catch(e){} $("fleetMsg").textContent="保存しました（"+f.date+" / "+f.area+" / "+f.rows.length+"艇）。艇モードに反映されます。"; syncBoatFromFleet();};
+$("saveFleet").onclick=function(){var f=getFleet();try{localStorage.setItem(FLEET_KEY,JSON.stringify(f))}catch(e){} $("fleetMsg").textContent="保存した"; syncBoatFromFleet();};
 function fleetLookup(boat){var f=getFleet();for(var i=0;i<f.rows.length;i++){if(f.rows[i][0]===boat)return f.rows[i]}return null}
 function syncBoatFromFleet(){var b=currentBoatNo();var r=fleetLookup(b);if(r){$("skipperName").value=r[1]||"";$("crewName").value=r[2]||""}}
 function currentBoatNo(){var v=$("boatNoSel").value;return v==="custom"?($("boatNoCustom").value.trim()||"custom") : v}
@@ -737,13 +737,13 @@ function renderTuning(){
   var last=tuningLastForBoat(boat);
   if(todayRec){
     state.textContent="今日は記録済み ✓"; state.style.color="var(--green)"; state.style.borderColor="var(--green)";
-    info.innerHTML="今日（"+esc(todayRec.date)+"）の記録を表示しています。直したら「記録する」で上書きできます。";
+    info.textContent="";
   }else if(last){
     state.textContent="今日は未記録"; state.style.color=""; state.style.borderColor="";
-    info.innerHTML="前回（"+esc(last.date||"")+"）の値を表示しています。変わっていなければ「前回と同じ」で完了です。";
+    info.textContent="";
   }else{
     state.textContent="今日は未記録"; state.style.color=""; state.style.borderColor="";
-    info.textContent="この艇の前回の記録はまだありません。測った値を入れて「記録する」を押してください。";
+    info.textContent="";
   }
   if(sameBtn){
     if(!last||todayRec){sameBtn.disabled=true;sameBtn.style.opacity=".45"}
@@ -816,7 +816,7 @@ function saveTuningRecord(rec,viaSame){
   var missing=tuningValidateCore(rec);
   var msg=$("tuningMsg");
   if(missing.length){
-    if(msg){msg.innerHTML="<span style='color:var(--red);font-weight:700'>未入力です: "+esc(missing.join("・"))+"</span> 測った値を入れてください。";msg.scrollIntoView({behavior:"smooth",block:"center"})}
+    if(msg){msg.innerHTML="<span style='color:var(--red);font-weight:700'>未入力: "+esc(missing.join("・"))+"</span>";msg.scrollIntoView({behavior:"smooth",block:"center"})}
     showMsg("チューニング記録: "+missing.join("・")+" が未入力です");
     return false;
   }
@@ -829,7 +829,7 @@ function saveTuningRecord(rec,viaSame){
   return true;
 }
 function exportTuningRecord(rec){
-  if(!rec){setExportStatus("書き出すチューニング記録がありません。先に「記録する」か「前回と同じ」で今日の記録を作ってください。",true);return}
+  if(!rec){setExportStatus("記録がありません",true);return}
   var ordered={date:rec.date,boat:rec.boat,skipper:rec.skipper||"",sail:rec.sail,rake:rec.rake,sideTension:rec.sideTension,prebend:rec.prebend,spreaderLength:(rec.spreaderLength==null?null:rec.spreaderLength),deflection:(rec.deflection==null?null:rec.deflection),mastStep:(rec.mastStep==null?null:rec.mastStep),memo:rec.memo||"",recordedAt:rec.recordedAt||new Date().toISOString()};
   var filename="tuning_"+ordered.date+"_"+ordered.boat+".json";
   downloadOrShare(new Blob([JSON.stringify(ordered,null,2)],{type:"application/json"}),filename);
@@ -866,28 +866,28 @@ var boat={powerSave:true,recording:false,watchId:null,sessionId:null,startedAt:n
 function setWakeMsg(t,cls){var el=$("wakeStatus");if(el){el.textContent=t;el.className="banner "+(cls||"")}}
 function setWakeState(s){boat.wakeState=s;if(typeof updateStatus==="function")updateStatus()}
 function showGapWarning(sec){
-  var msg=sec+"秒間、記録が途切れました（スリープの可能性）。その区間は欠損として記録されています。";
+  var msg=sec+"秒間、記録が途切れた";
   var gw=$("gapWarn"),gt=$("gapWarnText");
-  if(gw&&gt){gt.textContent=msg+" 測位は再開しました。画面上部の「スリープ防止中」表示を確認してから、ポケット／防水ケースに戻してください。";gw.style.display=""}
+  if(gw&&gt){gt.textContent=msg;gw.style.display=""}
   showMsg("⚠ "+msg);
 }
 async function acquireWakeLock(){
   if(!boat.recording)return;
-  if(!("wakeLock" in navigator)){boat.wakeLock=null;setWakeState("unsupported");setWakeMsg("スリープ防止: この端末/ブラウザは Wake Lock 非対応のため、スリープ防止が切れています。無音映像ループによるフォールバックを試みます。端末設定で画面消灯を最長にしてください。","warn");startNoSleep();return}
+  if(!("wakeLock" in navigator)){boat.wakeLock=null;setWakeState("unsupported");setWakeMsg("スリープ防止: 非対応の端末です。画面消灯を最長に。","warn");startNoSleep();return}
   setWakeState("acquiring");
   try{
     var lock=await navigator.wakeLock.request("screen");
     if(!boat.recording){try{lock.release()}catch(e){} return}
     boat.wakeLock=lock; setWakeState("active");
-    setWakeMsg("スリープ防止: Wake Lock 有効中 — スリープ防止中です（画面は消えません）","ok");
+    setWakeMsg("スリープ防止中","ok");
     lock.addEventListener("release",function(){
       if(boat.wakeLock===lock)boat.wakeLock=null;
       if(!boat.recording)return;
       setWakeState("lost");
-      setWakeMsg("スリープ防止: Wake Lock が解除されました（スリープ防止が切れています）。再取得を試みます…","warn");
-      if(document.visibilityState==="visible"){setTimeout(function(){if(boat.recording&&document.visibilityState==="visible")acquireWakeLock().then(function(){setWakeMsg(boat.wakeState==="active"?"スリープ防止: Wake Lock を再取得しました — スリープ防止中です":"スリープ防止: 再取得できませんでした（スリープ防止が切れています）。画面を前面に保ち、端末設定で画面消灯を最長にしてください。",boat.wakeState==="active"?"ok":"warn")})},350)}
+      setWakeMsg("スリープ防止: 切れた。再取得中…","warn");
+      if(document.visibilityState==="visible"){setTimeout(function(){if(boat.recording&&document.visibilityState==="visible")acquireWakeLock().then(function(){setWakeMsg(boat.wakeState==="active"?"スリープ防止: 再取得した":"スリープ防止: 再取得できない。画面を前面に。",boat.wakeState==="active"?"ok":"warn")})},350)}
     });
-  }catch(e){boat.wakeLock=null;setWakeState("lost");setWakeMsg("スリープ防止: Wake Lock を取得できませんでした（"+esc(e.name||e.message||"理由不明")+"）— スリープ防止が切れています。無音映像ループのフォールバックを使います。","warn");startNoSleep()}
+  }catch(e){boat.wakeLock=null;setWakeState("lost");setWakeMsg("スリープ防止: 取得できない（"+esc(e.name||e.message||"不明")+"）","warn");startNoSleep()}
 }
 function startNoSleep(){var v=$("nosleepVideo");try{v.play().catch(function(){})}catch(e){} /* canvas stream fallback */ try{var c=document.createElement("canvas");c.width=2;c.height=2;if(c.captureStream){/* stream kept alive while recording */}}catch(e){}}
 document.addEventListener("visibilitychange",function(){
@@ -901,7 +901,7 @@ document.addEventListener("visibilitychange",function(){
     acquireWakeLock(); startWatch();
     if(effMs>=10000){
       if(!boat.gapOpen){boat.gapOpen={sessionId:boat.sessionId,start:boat.lastFixAt||(now-hiddenFor),end:null}}
-      setWakeMsg("スリープ防止: 画面が背面／消灯していた間は測位できていない可能性があります。その区間を欠損として記録し、測位を再開しました。","warn");
+      setWakeMsg("途切れた区間を欠損として記録した","warn");
       showGapWarning(Math.round(effMs/1000));
     }
   }
@@ -948,14 +948,14 @@ function renderDiag(){
     el.style.borderColor="var(--red)"; return;
   }
   el.style.borderColor="";
-  if(!boat.recording&&!(boat.received>0)){el.textContent="GPS診断: まだ記録していません。下の「位置を確認」で、この端末が位置を取れるか先にテストできます。";return}
+  if(!boat.recording&&!(boat.received>0)){el.textContent="GPS診断: —";return}
   var accTxt=boat.lastPt&&boat.lastPt.acc!=null?Math.round(boat.lastPt.acc)+"m":"—";
   var bestTxt=boat.bestAcc!=null?Math.round(boat.bestAcc)+"m":"—";
   var html="<b>GPS診断</b> ｜ 届いた位置: <b>"+(boat.received||0)+"件</b> ｜ 保存した点: <b>"+boat.points+"点</b> ｜ 精度不足で除外: "+boat.discarded+"件<br>最新の精度: "+accTxt+" ｜ 最も良い精度: "+bestTxt+" ｜ 最終受信: "+(boat.lastFixAt?Math.max(0,Math.round((Date.now()-boat.lastFixAt)/1000))+"秒前":"—");
   if(boat.recording&&(boat.received||0)===0&&boat.startedAt&&Date.now()-boat.startedAt>15000){
-    html+="<br><b>⚠ 記録開始から15秒以上、位置情報が1件も届いていません。</b>位置情報の許可と「正確な位置情報」がONか確認してください。アプリ内ブラウザで開いている場合は、Safari／Chromeで開き直すと取れることがあります。";
+    html+="<br><b>⚠ 位置情報が届いていない。</b>許可と「正確な位置情報」を確認。";
   } else if(boat.points===0&&boat.discarded>0){
-    html+="<br><b>⚠ 位置は届いていますが、精度が100mより悪いため保存できていません。</b>「正確な位置情報」がOFFだと精度が大きく悪化します。設定でONにして、空の見える屋外で試してください。20秒以上よい点が無い場合は、その間の最良の点を自動で残します。";
+    html+="<br><b>⚠ 精度が悪く保存できていない。</b>「正確な位置情報」をONに。";
   }
   el.innerHTML=html;
 }
@@ -968,12 +968,12 @@ function renderBoatStats(){
 function startRecording(){
   if(originProblem()){
     renderOriginWarnings();
-    showMsg("この開き方（content://等）では位置情報が取れないため、記録を開始できません。上の赤い警告の手順で開き直してください。");
+    showMsg("この開き方では記録できない。開き直す。");
     var slot=document.querySelector("#view-boat .originWarnSlot"); if(slot)setTimeout(function(){slot.scrollIntoView({behavior:"smooth",block:"center"})},60);
     return;
   }
   if(window._permState==="denied"){
-    showMsg("位置情報が拒否されています。先に「位置情報をリクエストする」の下にある解除手順でブロックを外してください。");
+    showMsg("拒否されている。解除手順で外す。");
     var pp=$("permPanel"); if(pp)pp.scrollIntoView({behavior:"smooth",block:"center"});
     var dh=$("permDeniedHelp"); if(dh)dh.style.display="";
     return;
@@ -994,7 +994,7 @@ function startRecording(){
     if(boat.recording&&boat.candidate){var lastT=boat.lastSaved?boat.lastSaved.t:boat.startedAt;if(lastT&&Date.now()-lastT>=20000){var c=boat.candidate;boat.candidate=null;savePoint(c)}}
   },1000);
   boat.watchdog=setInterval(function(){if(!boat.recording)return;
-    if(boat.lastFixAt&&Date.now()-boat.lastFixAt>15000){var isNewGap=!boat.gapOpen;if(!boat.gapOpen){boat.gapOpen={sessionId:boat.sessionId,start:boat.lastFixAt,end:null}}startWatch();setWakeMsg("測位が15秒以上途切れたため watchPosition を張り直しました。欠損区間として記録しています。","warn");if(isNewGap)showGapWarning(Math.round((Date.now()-boat.lastFixAt)/1000))}
+    if(boat.lastFixAt&&Date.now()-boat.lastFixAt>15000){var isNewGap=!boat.gapOpen;if(!boat.gapOpen){boat.gapOpen={sessionId:boat.sessionId,start:boat.lastFixAt,end:null}}startWatch();setWakeMsg("測位が途切れた。欠損として記録中。","warn");if(isNewGap)showGapWarning(Math.round((Date.now()-boat.lastFixAt)/1000))}
     if(document.visibilityState==="visible"&&boat.wakeState!=="active"&&boat.wakeState!=="acquiring"&&("wakeLock" in navigator)&&(!boat.wakeLock||boat.wakeLock.released)&&Date.now()-(boat.lastWakeRetry||0)>15000){boat.lastWakeRetry=Date.now();acquireWakeLock()}
   },5000);
   renderBoatStats(); refreshSessions(); updateStatus();
@@ -1011,9 +1011,9 @@ function showExportPanel(){
   var warn=$("exportWarn");
   if(boat.points===0){warn.style.display="";
     var why;
-    if(boat.justStopped&&(boat.received||0)===0){why="位置情報が1件も届きませんでした。"+(originProblem()?"この開き方（content://等）ではChromeが位置情報を渡しません。艇画面の赤い警告の手順で、Museのカードから開き直してください。":"許可が拒否されているか、このブラウザに位置情報が渡っていません。艇画面上部の「位置情報の許可」パネルで状態を確認し、「位置情報をリクエストする」を押してください。「正確な位置情報」ONも確認を。")}
-    else if(boat.justStopped&&boat.discarded>0){why="位置情報は"+(boat.received||0)+"件届きましたが、精度が悪く（最も良い精度でも"+(boat.bestAcc!=null?Math.round(boat.bestAcc):"—")+"m）保存できませんでした。「正確な位置情報」をONにして、空の見える屋外で再試行してください。"}
-    else{why="記録時間が短いか、位置情報が届いていません。艇画面のGPS診断で「届いた位置」の件数を確認してください。"}
+    if(boat.justStopped&&(boat.received||0)===0){why="位置情報が届いていない。"+(originProblem()?"Museのカードから開き直す。":"許可と「正確な位置情報」を確認。")}
+    else if(boat.justStopped&&boat.discarded>0){why="精度が悪く保存できていない。「正確な位置情報」をONにして屋外で。"}
+    else{why="GPS診断を確認。"}
     warn.innerHTML="<span class='warn'>⚠ 点数が0です。</span> "+why+" このまま書き出してもファイルは作られません。"}
   else{warn.style.display="none";warn.textContent=""}
   panel.classList.add("on");
@@ -1033,9 +1033,9 @@ function stopRecording(){
   getBatteryPct().then(function(p){boat.batteryEnd=p;if(boat._sess){boat._sess.batteryEnd=p;idbPut("sessions",boat._sess)} showExportPanel();});
   if(boat.gapOpen){boat.gapOpen.end=Date.now();idbAdd("gaps",boat.gapOpen);boat.gapOpen=null}
   $("btnRecord").style.display=""; $("btnStop").style.display="none"; $("btnPocket").disabled=true; exitPocket();
-  setWakeMsg("画面スリープ防止: 記録を停止したため解放しました"); refreshSessions();
+  setWakeMsg("スリープ防止: 停止"); refreshSessions();
   showExportPanel();
-  showMsg("記録を停止しました。下のボタンからそのまま GPX を書き出せます。"); updateStatus();
+  showMsg("停止した。GPXを書き出す。"); updateStatus();
 }
 $("btnRecord").addEventListener("click",startRecording);
 /* stop = 3-second hold only. A tap, a graze through a waterproof case, or a
@@ -1043,7 +1043,7 @@ $("btnRecord").addEventListener("click",startRecording);
    full 3 seconds, with a visible fill + countdown while holding. */
 function resetStopArm(){
   var b=$("btnStop"); if(b){b.classList.remove("armed");b.style.backgroundImage="";b.innerHTML="■ 止める<span class='holdhint'>3秒長押しで停止（タップでは止まりません）</span>"}
-  var p=$("pocketStop"); if(p){p.classList.remove("armed");p.style.backgroundImage="";p.innerHTML="■ 記録を止める<span>3秒長押しで停止（タップでは止まりません）</span>"}
+  var p=$("pocketStop"); if(p){p.classList.remove("armed");p.style.backgroundImage="";p.innerHTML="■ 記録を止める<span>3秒長押し</span>"}
 }
 function finishStop(){
   if(!boat.recording)return;
@@ -1086,25 +1086,25 @@ attachHold($("pocketStop"),3000,function(){finishStop()},stopHoldLabel($("pocket
 function renderLock(){
   var on=!!(boat.locked&&boat.recording);
   var bar=$("lockBar"); if(bar)bar.classList.toggle("on",on);
-  var t=$("lockTitle"); if(t)t.textContent=on?"画面ロック： ON（切替・画面移動は止まっています）":"画面ロック： OFF";
+  var t=$("lockTitle"); if(t)t.textContent=on?"画面ロック： ON":"画面ロック： OFF";
   var b=$("btnLock"); if(b)b.innerHTML=on?"ロックを解除する<span class='holdhint'>1.5秒長押し</span>":"ロックする<span class='holdhint'>1.5秒長押し</span>";
   var p=$("pocketLock"); if(p)p.textContent=on?"ロックを解除する（1.5秒長押し）":"ロックする（1.5秒長押し）";
   document.querySelectorAll(".navbtn").forEach(function(nb){nb.disabled=on});
 }
 function toggleLock(){
-  if(!boat.recording){showMsg("画面ロックは記録中だけ使えます");return}
+  if(!boat.recording){showMsg("ロックは記録中のみ");return}
   boat.locked=!boat.locked;
   renderLock();
-  showMsg(boat.locked?"画面ロックをONにしました。モード切替と「通常画面に戻る」は止まります（停止は3秒長押しでできます）。":"画面ロックを解除しました");
+  showMsg(boat.locked?"ロックON":"ロック解除");
 }
 attachHold($("btnLock"),1500,toggleLock,null);
 attachHold($("pocketLock"),1500,toggleLock,null);
 $("gapWarnDismiss").addEventListener("click",function(){var gw=$("gapWarn");if(gw)gw.style.display="none"});
 $("btnRequestPerm").addEventListener("click",requestLocationPermission);
-$("btnTestFix").addEventListener("click",function(){if(!navigator.geolocation)return;$("testFixOut").textContent="測位中…（屋外で空が見える場所で）";navigator.geolocation.getCurrentPosition(function(p){var a=Math.round(p.coords.accuracy);$("testFixOut").textContent="測位OK: "+p.coords.latitude.toFixed(6)+", "+p.coords.longitude.toFixed(6)+" 精度 "+a+"m"+(a>100?" — 精度が悪すぎて記録に使えません。「正確な位置情報」がOFFの可能性があります。設定でONにして、もう一度押してください。":(a>30?" — 記録には使えます。屋外でしばらく置くと精度は上がります。":" — この精度なら問題なく記録できます。"))},function(e){$("testFixOut").textContent="測位失敗: "+e.message+" "+deniedExplanation(e);if(e.code===1&&!originProblem()){var dh=$("permDeniedHelp");if(dh)dh.style.display=""}refreshPermState()},{enableHighAccuracy:true,timeout:15000})});
+$("btnTestFix").addEventListener("click",function(){if(!navigator.geolocation)return;$("testFixOut").textContent="測位中…";navigator.geolocation.getCurrentPosition(function(p){var a=Math.round(p.coords.accuracy);$("testFixOut").textContent="測位OK: "+p.coords.latitude.toFixed(6)+", "+p.coords.longitude.toFixed(6)+" 精度 "+a+"m"+(a>100?" — 精度不足。「正確な位置情報」をONに。":(a>30?"":""))},function(e){$("testFixOut").textContent="測位失敗: "+e.message+" "+deniedExplanation(e);if(e.code===1&&!originProblem()){var dh=$("permDeniedHelp");if(dh)dh.style.display=""}refreshPermState()},{enableHighAccuracy:true,timeout:15000})});
 /* Pocket */
 $("btnPocket").addEventListener("click",function(){$("pocket").classList.add("on");pocketTick()});
-$("pocketBack").addEventListener("click",function(){if(boat.locked&&boat.recording){showMsg("画面ロック中です。先にロックを解除してください（「ロックを解除する」を1.5秒長押し）。");return} exitPocket()});
+$("pocketBack").addEventListener("click",function(){if(boat.locked&&boat.recording){showMsg("ロック中。先に解除する。");return} exitPocket()});
 function pocketTick(){var pk=$("pocket");if(!pk||!pk.classList.contains("on"))return;if(!boat.recording){dismissPocket();return}$("pocketInfo").textContent=currentBoatNo()+"艇 ｜ "+$("stElapsed").textContent+" ｜ "+boat.points+"点 ｜ 最終測位 "+$("stSince").textContent+"前";var pw=$("pocketWake");if(pw)pw.textContent=(boat.wakeState==="active"?"スリープ防止中":(boat.wakeState==="acquiring"?"スリープ防止を取得中…":"スリープ防止が切れています"));setTimeout(pocketTick,2000)}
 function exitPocket(){dismissPocket()}
 
@@ -1112,12 +1112,12 @@ function exitPocket(){dismissPocket()}
 function sessionPoints(sid){return idbAllByIndex("points","sessionId",sid).then(function(p){p.sort(function(a,b){return a.t-b.t});return p})}
 function refreshSessions(){
   idbAllSessions().then(function(list){
-    var html=list.slice(0,8).map(function(s){return "<div style='border:1px solid var(--line);border-radius:10px;padding:10px;margin:6px 0'><b>"+esc(s.boat)+"艇</b> "+esc(s.date||"")+" "+esc(s.session||"")+" ｜ "+fmtTime(s.startedAt)+(s.endedAt?"〜"+fmtTime(s.endedAt):"（未終了）")+" ｜ 電池 "+(s.batteryStart==null?"—":s.batteryStart+"%")+"→"+(s.batteryEnd==null?"—":s.batteryEnd+"%")+" <button class='btn' data-use='"+esc(s.id)+"'>この記録を書き出し対象にする</button></div>"}).join("");
+    var html=list.slice(0,8).map(function(s){return "<div style='border:1px solid var(--line);border-radius:10px;padding:10px;margin:6px 0'><b>"+esc(s.boat)+"艇</b> "+esc(s.date||"")+" "+esc(s.session||"")+" ｜ "+fmtTime(s.startedAt)+(s.endedAt?"〜"+fmtTime(s.endedAt):"（未終了）")+" ｜ 電池 "+(s.batteryStart==null?"—":s.batteryStart+"%")+"→"+(s.batteryEnd==null?"—":s.batteryEnd+"%")+" <button class='btn' data-use='"+esc(s.id)+"'>書き出し対象にする</button></div>"}).join("");
     $("sessionList").innerHTML=html||"<p class='small'>まだ記録がありません。</p>";
-    $("sessionList").querySelectorAll("[data-use]").forEach(function(b){b.onclick=function(){boat.justStopped=false;boat.sessionId=b.dataset.use;boat._sess=list.filter(function(x){return x.id===b.dataset.use})[0];if(boat._sess){boat.startedAt=boat._sess.startedAt;boat.batteryEnd=boat._sess.batteryEnd}sessionPoints(boat.sessionId).then(function(p){boat.points=p.length;showExportPanel()}).catch(function(){showExportPanel()});showMsg("書き出し対象を切り替えました: "+boat.sessionId)}});
+    $("sessionList").querySelectorAll("[data-use]").forEach(function(b){b.onclick=function(){boat.justStopped=false;boat.sessionId=b.dataset.use;boat._sess=list.filter(function(x){return x.id===b.dataset.use})[0];if(boat._sess){boat.startedAt=boat._sess.startedAt;boat.batteryEnd=boat._sess.batteryEnd}sessionPoints(boat.sessionId).then(function(p){boat.points=p.length;showExportPanel()}).catch(function(){showExportPanel()});showMsg("対象を切り替えた")}});
     /* recovery banner */
     var unfinished=list.filter(function(s){return !s.endedAt&&s.id!==boat.sessionId});
-    var recHtml=unfinished.length?"<div class='banner recover'>⚠ 前回の記録が残っています（"+esc(unfinished[0].boat)+"艇 "+fmtTime(unfinished[0].startedAt)+"開始）。クラッシュ／リロードしても IndexedDB に保存されています。「艇モード」の書き出し対象に選んで GPX を書き出してください。</div>":"";
+    var recHtml=unfinished.length?"<div class='banner recover'>⚠ 前回の記録が残っている（"+esc(unfinished[0].boat)+"艇 "+fmtTime(unfinished[0].startedAt)+"開始）。「艇」で選んでGPXを書き出す。</div>":"";
     $("recoverBannerHome").innerHTML=recHtml; $("recoverBannerBoat").innerHTML=recHtml;
   }).catch(function(){});
 }
@@ -1127,17 +1127,17 @@ function buildGPX(sess,pts,gaps){
   return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gpx version=\"1.1\" creator=\"SnipeTracker\" xmlns=\"http://www.topografix.com/GPX/1/1\"><metadata><name>boat_"+esc(sess.boat)+"_"+esc(sess.date||"")+"</name><desc>boat="+esc(sess.boat)+" skipper="+esc(sess.skipper||"")+" crew="+esc(sess.crew||"")+" session="+esc(sess.session||"")+" batteryStart="+(sess.batteryStart==null?"":sess.batteryStart)+"% batteryEnd="+(sess.batteryEnd==null?"":sess.batteryEnd)+"% gaps: "+esc(gapTxt)+"</desc><time>"+new Date(sess.startedAt).toISOString()+"</time></metadata><trk><name>"+esc(sess.boat)+"</name><trkseg>"+trkpts+"</trkseg></trk></gpx>";
 }
 function exportBoat(kind){
-  if(!boat.sessionId){setExportStatus("書き出す記録が選ばれていません。下の記録リストから「この記録を書き出し対象にする」を押してから、もう一度書き出してください。",true);return}
+  if(!boat.sessionId){setExportStatus("記録が選ばれていない",true);return}
   setExportStatus("ファイルを準備中…",false);
   var sess=boat._sess||{id:boat.sessionId,boat:currentBoatNo(),startedAt:Date.now(),date:todayStr()};
   Promise.all([sessionPoints(boat.sessionId),idbAllByIndex("gaps","sessionId",boat.sessionId)]).then(function(r){
     var pts=r[0],gaps=r[1];
-    if(!pts.length){setExportStatus("この記録はポイントが0件のため、ファイルを作れません。外で記録し直すか、別の記録を書き出し対象に選んでください。",true);return}
+    if(!pts.length){setExportStatus("ポイント0件のため作れない",true);return}
     var base="snipe_"+sess.boat+"_"+(sess.date||todayStr())+"_"+(sess.session||"");
     if(kind==="gpx")downloadOrShare(new Blob([buildGPX(sess,pts,gaps)],{type:"application/gpx+xml"}),base+".gpx");
     else if(kind==="csv"){var csv="time_ms,time_iso,lat,lon,accuracy_m,session_id,boat\n"+pts.map(function(p){return p.t+","+new Date(p.t).toISOString()+","+p.lat+","+p.lon+","+(p.acc==null?"":Math.round(p.acc))+","+sess.id+","+sess.boat}).join("\n");downloadOrShare(new Blob([csv],{type:"text/csv"}),base+".csv")}
     else{downloadOrShare(new Blob([JSON.stringify({session:sess,points:pts,gaps:gaps},null,2)],{type:"application/json"}),base+".json")}
-  }).catch(function(e){setExportStatus("書き出しの準備に失敗しました： "+esc(e&&e.message?e.message:e)+"。ページを再読み込みして、もう一度押してください。",true)});
+  }).catch(function(e){setExportStatus("書き出し失敗： "+esc(e&&e.message?e.message:e),true)});
 }
 $("expGpx").onclick=function(){exportBoat("gpx")}; $("expCsv").onclick=function(){exportBoat("csv")}; $("expJson").onclick=function(){exportBoat("json")};
 $("expGpxMain").onclick=function(){exportBoat("gpx")};
@@ -1199,7 +1199,7 @@ function renderMarks(){
     if(q)return "<div>✅ <b>"+MARK_LABELS[k]+"</b>"+ref+" "+q.lat.toFixed(6)+", "+q.lon.toFixed(6)+(q.t?" ｜ "+fmtTime(q.t):"")+(q.shared?" ｜ 共有から読込":"")+"</div>";
     if(tg2&&tg2[k])return "<div>◎ <b>"+MARK_LABELS[k]+"</b> 目標 "+tg2[k].lat.toFixed(6)+", "+tg2[k].lon.toFixed(6)+"（未確定）</div>";
     return "<div>⬜ <b>"+MARK_LABELS[k]+"</b> 未確定</div>"}).join("");
-  document.querySelectorAll("#markBtns .markbtn").forEach(function(b){var q=rc.marks[b.dataset.mark];b.classList.toggle("done",!!q);var sp=b.querySelector(".mk-state");if(sp)sp.textContent=q?("確定済み "+(q.t?fmtTime(q.t):"")+"（打ち直し可）"):((tg2&&tg2[b.dataset.mark])?"目標あり（着いたら押す）":"未確定")});
+  document.querySelectorAll("#markBtns .markbtn").forEach(function(b){var q=rc.marks[b.dataset.mark];b.classList.toggle("done",!!q);var sp=b.querySelector(".mk-state");if(sp)sp.textContent=q?("確定済み "+(q.t?fmtTime(q.t):"")):((tg2&&tg2[b.dataset.mark])?"目標あり":"未確定")});
   document.querySelectorAll("#refRoleSeg button").forEach(function(b){b.classList.toggle("on",b.dataset.refrole===rc.refRole)});
   $("gunOut").textContent="号砲時刻: "+(rc.startTime?fmtTime(rc.startTime):"未記録");
   $("windList").innerHTML=rc.wind.map(function(w){return "<div>🌬 "+fmtTime(w.t)+" ｜ 風向 "+w.dir+"° ｜ 風速 "+w.spd+" m/s</div>"}).join("")||"<p class='small'>風の記録はまだありません。</p>";
@@ -1210,7 +1210,7 @@ $("btnOpsHere").onclick=function(){opsGetPos(function(){})};
 document.querySelectorAll("#markBtns .markbtn").forEach(function(b){b.addEventListener("click",function(){
   if(!navigator.geolocation){showMsg("位置情報が使えません");return}
   var key=b.dataset.mark;
-  navigator.geolocation.getCurrentPosition(function(p){var rc=opsRace();rc.marks[key]={lat:p.coords.latitude,lon:p.coords.longitude,t:Date.now(),acc:p.coords.accuracy};var setCount=REF_ROLES.filter(function(k){return !!rc.marks[k]}).length;if(setCount===1)rc.refRole=key;saveOpsLocal();renderMarks();drawOps();startOpsWatch();showMsg(MARK_LABELS[key]+" を確定しました: "+fmtTime(Date.now())+(setCount===1?"（このマークを基準にします。「基準」の選択と違っていたら切り替えてください）":""))},function(e){showMsg("測位失敗: "+e.message)},{enableHighAccuracy:true,timeout:15000});
+  navigator.geolocation.getCurrentPosition(function(p){var rc=opsRace();rc.marks[key]={lat:p.coords.latitude,lon:p.coords.longitude,t:Date.now(),acc:p.coords.accuracy};var setCount=REF_ROLES.filter(function(k){return !!rc.marks[k]}).length;if(setCount===1)rc.refRole=key;saveOpsLocal();renderMarks();drawOps();startOpsWatch();showMsg(MARK_LABELS[key]+" を確定: "+fmtTime(Date.now()))},function(e){showMsg("測位失敗: "+e.message)},{enableHighAccuracy:true,timeout:15000});
 })});
 $("opsRace").addEventListener("change",function(){renderMarks();drawOps()});
 /* ---------- ops sub-tabs (in-memory only) ---------- */
@@ -1275,18 +1275,18 @@ function renderLayGuide(){
   document.querySelectorAll("#refRoleSeg button").forEach(function(b){b.classList.toggle("on",b.dataset.refrole===rc.refRole)});
   var t=computeTargets(rc);
   var spanEl=$("gateSpanOut");
-  if(spanEl)spanEl.textContent=t?("ゲート幅 約"+t.gateSpan+"m（レグ長の約12%／中心から左右対称） ｜ 基準： "+(REF_LABELS[t.refRole]||"旧・本船位置")):"ゲート幅 —（基準マーク・風向・レグ長がそろうと計算します）";
+  if(spanEl)spanEl.textContent=t?("ゲート幅 約"+t.gateSpan+"m ｜ 基準： "+(REF_LABELS[t.refRole]||"旧・本船位置")):"ゲート幅 —";
   var box=$("layTargets"); if(!box)return;
   var refSet=REF_ROLES.some(function(k){return !!rc.marks[k]})||!!rc.marks.committee;
-  if(!refSet){box.innerHTML="<p class='small'>まず、最初に打ったマークを上のボタンで確定してください（どのマークからでも大丈夫です）。それが基準になって、残りの目標を計算します。</p>";return}
-  if(!t){box.innerHTML="<p class='small'>風向（°）とレグ長（m）を入れると、残りのマークの設置目標と、現在位置からの方位・残り距離を表示します。</p>";return}
+  if(!refSet){box.innerHTML="<p class='small'>基準マークを確定する</p>";return}
+  if(!t){box.innerHTML="<p class='small'>風向とレグ長を入れる</p>";return}
   box.innerHTML=MARK_KEYS.map(function(key){
     var tp=t[key],mk=rc.marks[key],isRef=(key===t.refRole);
     var shown=mk||tp;
-    var dist="現在位置が未取得です（「現在位置を更新」を押すと案内が始まります）",brg="";
+    var dist="現在位置なし",brg="";
     if(ops.current&&!mk){var dm=Math.round(haversine(ops.current,tp));dist=(dm<=10?"ほぼ到着（あと "+dm+" m）":"あと "+dm+" m");brg="方位 "+Math.round(bearingTo(ops.current,tp))+"° で進む"}
     if(ops.current&&mk){dist="確定済み（現在位置から "+Math.round(haversine(ops.current,mk))+" m）";brg=""}
-    var head=isRef?"<span style='color:var(--yellow);font-weight:800'>基準点</span>":(mk?"<span style='color:var(--green);font-weight:800'>設置済み "+(mk.t?fmtTime(mk.t):"")+"</span>":"目標に着いたら、上のボタンで確定");
+    var head=isRef?"<span style='color:var(--yellow);font-weight:800'>基準点</span>":(mk?"<span style='color:var(--green);font-weight:800'>設置済み "+(mk.t?fmtTime(mk.t):"")+"</span>":"未確定");
     return "<div class='lay-row'><b>"+MARK_LABELS[key]+"</b> "+head+"<br>"+shown.lat.toFixed(6)+", "+shown.lon.toFixed(6)+"<br><span class='lay-dist'>"+dist+"</span> <span class='small'>"+brg+"</span></div>"
   }).join("");
 }
@@ -1322,12 +1322,12 @@ function courseShareText(p){
   var lines=["【コース設定】"+p.race+" ｜ 基準： "+(REF_LABELS[p.ref]||p.ref)+" "+p.lat.toFixed(6)+", "+p.lon.toFixed(6),
     "風向 "+p.wd+"°"+(p.ws!=null?" ｜ 風速 "+p.ws+" m/s":"")+" ｜ レグ長 "+p.leg+"m"];
   if(t){MARK_KEYS.forEach(function(k){if(k===p.ref)return;lines.push(MARK_LABELS[k]+"（目標）: "+t[k].lat.toFixed(6)+", "+t[k].lon.toFixed(6))})}
-  lines.push("トラッカーの運営→設置にある「共有コードを貼って読み込む」に、下のコードを貼ると同じ設定になります。");
+  lines.push("下のコードを貼ると同じ設定になる。");
   lines.push("コース設定コード: "+encodeCourseCode(p));
   return lines.join("\n");
 }
 function applyCoursePayload(p,sourceLabel){
-  if(!p||REF_ROLES.indexOf(p.ref)<0||typeof p.lat!=="number"||typeof p.lon!=="number"||!(p.leg>0)||p.wd==null){showMsg("共有された設定を読み取れませんでした（コードが壊れている可能性があります）");return false}
+  if(!p||REF_ROLES.indexOf(p.ref)<0||typeof p.lat!=="number"||typeof p.lon!=="number"||!(p.leg>0)||p.wd==null){showMsg("設定を読み取れない");return false}
   var race=(/^R[1-6]$/.test(p.race||"")?p.race:"R1");
   var sel=$("opsRace"); if(sel)sel.value=race;
   var rc=opsRace();
@@ -1335,8 +1335,8 @@ function applyCoursePayload(p,sourceLabel){
   rc.marks[p.ref]={lat:p.lat,lon:p.lon,t:null,acc:null,shared:true};
   rc.layWindDir=p.wd; rc.windSpd=(p.ws==null?null:p.ws); rc.legLength=p.leg;
   saveOpsLocal(); renderMarks(); drawOps(); startOpsWatch();
-  showMsg("共有されたコース設定を読み込みました（"+race+" ｜ 基準： "+(REF_LABELS[p.ref]||p.ref)+"）。「設置」タブで各マークまでの方位・距離を確認してください。");
-  var out=$("shareCourseOut"); if(out)out.innerHTML="<span style='color:var(--green);font-weight:700'>✓ "+esc(sourceLabel||"共有設定")+"を読み込みました。</span> 基準は "+esc(REF_LABELS[p.ref]||p.ref)+" です。自分の位置から各目標までの方位・距離は上のガイドに出ます。";
+  showMsg("コース設定を読み込んだ（"+race+"）");
+  var out=$("shareCourseOut"); if(out)out.innerHTML="<span style='color:var(--green);font-weight:700'>✓ 読み込んだ。</span> 基準： "+esc(REF_LABELS[p.ref]||p.ref);
   return true;
 }
 /* Live ops position for the guide: while laying marks, keep updating the
@@ -1379,19 +1379,19 @@ function startOpsWatch(){
     var leg=legSuggestForWind(spd);
     if(leg==null){showMsg("先に風速を入れてください（設置ガイドの風速欄、またはステップ2の風の記録）");return}
     rc.windSpd=spd; rc.legLength=leg; saveOpsLocal(); renderMarks(); drawOps();
-    showMsg("風速 "+spd+" m/s の目安として、レグ長 "+leg+"m を入れました（目安です。現場に合わせて変えて大丈夫です）");
+    showMsg("レグ長 "+leg+"m を入れた");
   });
   document.querySelectorAll("#refRoleSeg button").forEach(function(b){b.addEventListener("click",function(){
     var rc=opsRace(); rc.refRole=b.dataset.refrole; saveOpsLocal(); renderMarks(); drawOps();
-    showMsg("基準マークを「"+REF_LABELS[rc.refRole]+"」にしました。そのマークが確定していれば、残りの目標を計算します。");
+    showMsg("基準： "+REF_LABELS[rc.refRole]);
   })});
   var shareBtn=$("btnShareCourse");
   if(shareBtn)shareBtn.addEventListener("click",function(){
     var rc=opsRace(); var p=courseSharePayload(rc); var out=$("shareCourseOut");
-    if(!p){showMsg("共有するには、基準マークの確定と、風向・レグ長が必要です");if(out)out.textContent="まだ共有できません： 基準マークを確定し、風向とレグ長を入れてください。";return}
+    if(!p){showMsg("基準マーク・風向・レグ長が必要");if(out)out.textContent="基準マーク・風向・レグ長を入れる";return}
     var text=courseShareText(p);
     if(navigator.share){
-      navigator.share({title:"コース設定 "+p.race,text:text}).then(function(){if(out)out.textContent="共有しました。受けた側は、文末の共有コードを「共有コードを貼って読み込む」に貼れば同じ設定になります。"}).catch(function(err){if(err&&err.name!=="AbortError"){if(out)out.innerHTML="共有シートが使えませんでした。下の「共有コードをコピー」で送ってください。";}});
+      navigator.share({title:"コース設定 "+p.race,text:text}).then(function(){if(out)out.textContent="共有した"}).catch(function(err){if(err&&err.name!=="AbortError"){if(out)out.innerHTML="共有シートが使えませんでした。下の「共有コードをコピー」で送ってください。";}});
     }else{
       var lineUrl="https://line.me/R/msg/text/?"+encodeURIComponent(text);
       if(out)out.innerHTML="この端末では共有シートが開けないため、LINEの送信画面を開きます。";
@@ -1401,16 +1401,16 @@ function startOpsWatch(){
   var copyBtn=$("btnCopyCourseCode");
   if(copyBtn)copyBtn.addEventListener("click",function(){
     var rc=opsRace(); var p=courseSharePayload(rc); var out=$("shareCourseOut");
-    if(!p){showMsg("共有するには、基準マークの確定と、風向・レグ長が必要です");if(out)out.textContent="まだ共有できません： 基準マークを確定し、風向とレグ長を入れてください。";return}
+    if(!p){showMsg("基準マーク・風向・レグ長が必要");if(out)out.textContent="基準マーク・風向・レグ長を入れる";return}
     var code="コース設定コード: "+encodeCourseCode(p);
-    function done(){if(out)out.innerHTML="<span style='color:var(--green);font-weight:700'>✓ 共有コードをコピーしました。</span> LINEに貼って送ってください。受けた側は「共有コードを貼って読み込む」に貼れば、同じ設定になります。";showMsg("共有コードをコピーしました")}
+    function done(){if(out)out.innerHTML="<span style='color:var(--green);font-weight:700'>✓ コピーした。</span> LINEに貼って送る。";showMsg("コピーした")}
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(code).then(done).catch(function(){fallbackCopy()})}else{fallbackCopy()}
     function fallbackCopy(){var ta=$("shareCodeIn");if(ta){ta.value=code;ta.focus();ta.select();try{document.execCommand("copy");done()}catch(e){if(out)out.textContent="コピーできませんでした。欄に出したコードを長押しでコピーしてください。";}}}
   });
   var impBtn=$("btnImportCourseCode");
   if(impBtn)impBtn.addEventListener("click",function(){
     var code=$("shareCodeIn").value; var p=decodeCourseCode(code);
-    if(!p){showMsg("コードを読み取れませんでした。送られたコード全体を貼ってください");return}
+    if(!p){showMsg("コードを読み取れない");return}
     switchOpsTab("setup"); applyCoursePayload(p,"共有コード");
   });
 })();
@@ -1454,7 +1454,7 @@ function schedTick(){
   if(!rc.scheduledStart){if(el)el.textContent="--:--";if(so)so.textContent="スタート時刻: 未設定";if(go)go.textContent="号砲時刻: "+(rc.startTime?fmtTime(rc.startTime):"未記録");return}
   if(!rc.startTime&&Date.now()>=rc.scheduledStart){
     rc.startTime=rc.scheduledStart; saveOpsLocal(); renderMarks();
-    showMsg("スタート時刻になりました。その時刻を号砲として記録しました: "+fmtTime(rc.startTime));
+    showMsg("号砲: "+fmtTime(rc.startTime));
   }
   if(el)el.textContent=rc.startTime?fmtTime(rc.startTime):("あと "+fmtDur(Math.max(0,Math.ceil((rc.scheduledStart-Date.now())/1000))));
   if(so)so.textContent="スタート時刻: "+fmtTime(rc.scheduledStart)+(rc.startTime?"（記録済み）":"");
@@ -1469,7 +1469,7 @@ $("btnSetStart").onclick=function(){
   var rc=opsRace(); rc.scheduledStart=d.getTime();
   rc.startTime=(rc.scheduledStart<=Date.now())?rc.scheduledStart:null;
   saveOpsLocal(); renderMarks(); schedTick();
-  showMsg("スタート時刻を設定しました: "+fmtTime(rc.scheduledStart)+"（この時刻ちょうどが号砲になります）");
+  showMsg("スタート: "+fmtTime(rc.scheduledStart));
 };
 $("btnGun").onclick=function(){
   switchOpsTab("run");
@@ -1522,17 +1522,13 @@ function renderReplay(){
 
 /* ---------- CHECK LIST ---------- */
 var checkItems=[
- ["Museのカードから開き、アドレスバーが https:// で始まっている","ダウンロードしたファイルをChromeで開くとアドレスバーが content:// になり、この状態ではChromeが位置情報を一切渡しません（許可ダイアログも出ません）。必ずMuseアプリのカードから開いてください。"],
- ["位置情報の許可が「正確な位置」になっている","iPhone: 設定 → プライバシーとセキュリティ → 位置情報サービス → ブラウザで「正確な位置情報」ON。Android: 位置情報の精度（高精度）をON。"],
- ["iPhone: iOSバージョンを確認した（18.4以上推奨）","設定 → 一般 → 情報 で確認。18.4未満でホーム画面追加版を使うと Wake Lock が効かない不具合があります。その場合は Safari のタブで開いてください。"],
- ["Android: 電池の最適化からブラウザを除外した","設定 → アプリ → ブラウザ → バッテリー →「制限なし」。機種によって文言が違います。"],
- ["記録中は電源ボタンで画面を消さないことを全員で確認した","黒画面でもスマホは起きています。電源ボタンで画面を消すとGPSが止まることがあり、電源を切ると記録は完全に止まります。止めるには3秒長押し：黒画面の中の「記録を止める」を3秒押し続けてください（タップでは止まりません）。記録中は画面ロックもONにしておくと、モード切替や画面移動の誤タップも防げます。"],
- ["Android: 画面消灯（スリープ）を最長にした","設定 → ディスプレイ → 画面消灯（機種により「スリープ」「画面タイムアウト」）で最長（30分など）を選んでください。記録中は Wake Lock が働きますが、保険として最長にしておくとスリープしにくくなります。"],
- ["Android: 「充電中は画面をオンに保つ」があればONにした","設定 → システム → 開発者向けオプション →「充電中は画面をオンに保つ（スリープしない）」がある機種ではONにしてください。開発者向けオプション自体が無い機種は、無理に有効化しなくて大丈夫です。"],
- ["画面の自動ロックを長めにした／充電を確認した","iPhoneは 設定 → 画面表示と明るさ → 自動ロックを最長に。電池は開始時に満タン近く、昼休みに充電が前提です。"],
- ["記録開始後、画面上部に「スリープ防止中」と出ることを確認した","記録中はステータスバーに Wake Lock の状態が常時出ます。「スリープ防止が切れています」と出たら要注意 — アプリは自動で再取得を試みますが、戻らない場合は画面を前面に保ってください。"],
- ["スリープの限界を理解した","Webアプリのため、スリープを100%防ぐことはできません。スリープした区間は記録が途切れ、欠損として正直に記録されます。画面に戻ったときは「○秒間、記録が途切れました」という警告バナーで知らせます。"],
- ["防水ケースに入れ、艇に固定できる状態にした","ポケット画面にしてからケースへ。落水防止のストラップも忘れずに。"]
+ ["https:// で開いている","Museのカードから開く"],
+ ["正確な位置情報がON",""],
+ ["電池の最適化を除外（Android）",""],
+ ["電源ボタンで画面を消さない","停止は3秒長押し"],
+ ["画面消灯／自動ロックを最長に",""],
+ ["「スリープ防止中」と出ている","記録開始後に確認"],
+ ["防水ケースに入れた",""]
 ];
 function renderChecks(){
   var ua=navigator.userAgent||"";var ios=/iPhone|iPad/.test(ua);var ver=(ua.match(/OS (\d+)[_\.](\d+)/)||[]);
@@ -1556,7 +1552,7 @@ function updateStatus(){
   var hs=document.getElementById("homeSummary"); if(hs){try{var f=getFleet(); hs.textContent=(f.date||"")+" ・ "+(f.area||"")+" ・ "+(f.session||"")+" ／ 配艇 "+f.rows.length+"艇"+(boat.recording?" ／ 記録中":"");}catch(e){}}
 }
 setInterval(function(){updateStatus(); if(boat.recording)renderBoatStats();},1000);
-var _ps=document.getElementById("powerSave"); if(_ps){_ps.addEventListener("change",function(){boat.powerSave=_ps.checked; var hint=document.getElementById("powerSaveHint"); if(hint)hint.textContent=_ps.checked?"節電ON：5秒間隔で保存し、開始と同時に黒画面になります。電池の減りを抑えます。":"節電OFF：1秒間隔で保存します。電池の減りが早くなります。";});}
+var _ps=document.getElementById("powerSave"); if(_ps){_ps.addEventListener("change",function(){boat.powerSave=_ps.checked; var hint=document.getElementById("powerSaveHint"); if(hint)hint.textContent=_ps.checked?"5秒間隔・黒画面":"節電OFF：1秒間隔で保存します。電池の減りが早くなります。";});}
 
 /* ---------- init ---------- */
 function init(){ updateStatus();
