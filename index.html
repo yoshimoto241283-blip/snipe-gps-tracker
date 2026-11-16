@@ -144,6 +144,7 @@ input[type=range]{min-height:auto;padding:0}
 .seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:10px 0}
 .seg button{flex:1;border:0;background:transparent;padding:12px 2px;font-weight:800;font-size:15px;color:var(--muted);min-height:48px}
 .seg button.on{background:var(--black);color:var(--bg)}
+#refRoleSeg button{font-size:13.5px;letter-spacing:-.03em;padding:12px 1px;white-space:nowrap}
 @media(prefers-color-scheme:dark){.seg button.on{color:#111}}
 .mm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}
 .mm-boat{position:relative;padding:14px 4px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:800;min-height:54px;font-size:16px}
@@ -380,27 +381,48 @@ input[type=range]{min-height:auto;padding:0}
   <div class="ops-panel" id="opsPanel-setup">
   <div class="section">
     <h3><span class="step">ステップ1</span>マークを打つ <span class="pill" id="opStep1State">未完了</span></h3>
-    <p class="small">本船はアンカーしないので、「本船位置」は落とすマークではなく基準点です（今いる場所で確定）。実際に打つマークは3つだけ：ゲートB（本船マーク側）／ゲートA（アウター側）／上マーク。下の設置ガイドが目標の場所と残り距離を案内します。各マークを落とした場所でボタンを押して確定してください。押し直せば打ち直しできます。</p>
+    <p class="small">マークは4つです：<b>本船マーク／アウターマーク／上マーク／フィニッシュ位置</b>（フィニッシュ位置は流し込みの仮想ラインの端になる、レスキューの待機位置です。マークを打つのは本船・アウター・上の3つ）。<br>進め方： <b>最初に、どこでもいいのでマークを1つ打ってください。</b>打った場所で下のボタンを押し、そのマークが何かを確定します。それが基準点になって、残りのマークの設置場所をガイドが計算します。どのマークから打っても大丈夫です。</p>
     <label class="f"><span>レース</span><select id="opsRace"><option>R1</option><option>R2</option><option>R3</option><option>R4</option><option>R5</option><option>R6</option></select></label>
+    <span style="display:block;font-weight:700;margin:10px 0 0;font-size:14px">最初に打ったマーク（基準点にするマーク）</span>
+    <div class="seg" id="refRoleSeg" role="group" aria-label="基準マークの選択" style="margin:6px 0 10px">
+      <button type="button" data-refrole="hon" class="on">本船</button>
+      <button type="button" data-refrole="outer">アウター</button>
+      <button type="button" data-refrole="windward">上</button>
+      <button type="button" data-refrole="finish">フィニッシュ</button>
+    </div>
+    <p class="small" style="margin:0 0 8px">打ったマークのボタンを、その場所で押して確定してください（例：最初に上マークを打ったなら、上の「基準」で「上」を選び、「上マーク」ボタンを押す）。押し直せば打ち直しできます。</p>
     <div class="markbtns" id="markBtns">
-      <button class="markbtn" data-mark="committee">本船位置（基準）<span class="mk-state">未確定</span></button>
-      <button class="markbtn" data-mark="gate_b">ゲートB（本船マーク側）<span class="mk-state">未確定</span></button>
-      <button class="markbtn" data-mark="gate_a">ゲートA（アウター側）<span class="mk-state">未確定</span></button>
+      <button class="markbtn" data-mark="hon">本船マーク<span class="mk-state">未確定</span></button>
+      <button class="markbtn" data-mark="outer">アウターマーク<span class="mk-state">未確定</span></button>
       <button class="markbtn" data-mark="windward">上マーク<span class="mk-state">未確定</span></button>
+      <button class="markbtn" data-mark="finish">フィニッシュ位置<span class="mk-state">未確定</span></button>
     </div>
     <div id="markList" style="margin-top:10px"></div>
     <div id="opsMap" class="map" style="margin-top:10px"></div>
     <div style="margin-top:16px">
       <h3 style="font-size:16px;margin:0 0 6px">マーク設置ガイド</h3>
-      <p class="small" style="margin:0 0 8px">本船位置を基準に、風向とレグ長から、ゲート2つと上マークの設置目標（緯度・経度）と、現在位置からの残り距離・方位を表示します。目標に着いたら、上のボタンでその場所を確定してください。ゲートは風軸に直角なライン上に、中心から左右対称に開きます。</p>
+      <p class="small" style="margin:0 0 8px">基準にしたマークと、風向・風速・レグ長から、残り3つのマークの設置目標（緯度・経度）を計算します。各目標には、この端末の現在位置から「方位◯°・あと◯m」を表示するので、その通りに進んでください。目標に着いたら、上のボタンでその場所を確定します。ゲート（本船マーク〜アウターマーク）は風軸に直角なライン上に、中心から左右対称に開きます。フィニッシュ位置は、本船マークから風下へ約90m＋ライン方向へ約40mずらした、レスキューの待機位置（目安）です。</p>
       <div class="btnrow">
         <label class="f"><span>風向（°｜吹いてくる方位）</span><input type="number" id="layWindDir" inputmode="numeric" min="0" max="359" placeholder="例: 330"></label>
+        <label class="f"><span>風速（m/s）</span><input type="number" id="layWindSpd" inputmode="decimal" step="0.5" min="0" placeholder="例: 5.5"></label>
         <label class="f"><span>レグ長（m｜ゲート〜上マーク）</span><input type="number" id="legLenIn" inputmode="numeric" min="50" step="10" placeholder="例: 800"></label>
       </div>
-      <p class="small" id="gateSpanOut" style="font-weight:700;margin:4px 0">ゲート幅 —</p>
+      <button class="btn" id="btnLegSuggest" type="button" style="width:100%">風速からレグ長の目安を入れる</button>
+      <p class="small" id="gateSpanOut" style="font-weight:700;margin:6px 0 4px">ゲート幅 —</p>
       <div id="layTargets"></div>
+      <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:14px">
+        <h3 style="font-size:16px;margin:0 0 6px">コース設定を共有する（他のレスキューへ）</h3>
+        <p class="small" style="margin:0 0 8px">基準マーク・風・レグ長がそろうと、同じコース設定を他のレスキュー艇に渡せます。設定一式が入った共有コードをLINEで送り、受けた側が下の欄に貼ると、同じ設置目標が、その人の位置から各マークまでの方位・距離つきで表示されます。送られたメッセージごと貼っても読み込めます。</p>
+        <div class="btnrow">
+          <button class="btn primary" id="btnShareCourse" type="button">LINEなどで共有する</button>
+          <button class="btn" id="btnCopyCourseCode" type="button">共有コードをコピー</button>
+        </div>
+        <p class="small" id="shareCourseOut" aria-live="polite" style="margin:6px 0"></p>
+        <label class="f"><span>共有コードを貼って読み込む</span><textarea id="shareCodeIn" rows="2" placeholder="受け取った共有コードをここに貼る" style="min-height:52px"></textarea></label>
+        <button class="btn" id="btnImportCourseCode" type="button" style="width:100%">この設定を読み込む</button>
+      </div>
     </div>
-    <p class="small">コース： スタート → 上マーク → ゲート → 上マーク → ゲート → 流し込みフィニッシュ。最後はゲートを通ったあと、少し斜めにリーチングで走って、レスキューの仮想ライン（腕を伸ばした延長線）を通過した順にフィニッシュします。仮想ライン用のマークは打ちません。スタートラインはゲートのラインです。</p>
+    <p class="small">コース： スタート → 上マーク → ゲート → 上マーク → ゲート → 流し込みフィニッシュ。最後はゲートを通ったあと、少し斜めにリーチングで走って、フィニッシュ位置にいるレスキューの仮想ライン（腕を伸ばした延長線。本船マーク側がもう一端）を通過した順にフィニッシュします。フィニッシュ用に新しいマークは打ちません。スタートラインはゲートのライン（本船マーク〜アウターマーク）です。</p>
     <div class="btnrow"><button class="btn" id="btnOpsHere">現在位置を更新（地図）</button></div>
     <p class="small" id="opsPosOut">現在位置: —</p>
   </div>
@@ -455,7 +477,7 @@ input[type=range]{min-height:auto;padding:0}
     <p style="font-weight:700;margin:0 0 8px">このファイルと、各艇のGPXは、Googleドライブの『GPSデータ』フォルダ（ヨット部フォルダ ＞ 2027 ＞ レース ＞ GPSデータ）に保存してください。</p>
     <button class="btn primary" id="expOps" style="width:100%;min-height:58px;font-size:17px">運営記録を書き出す</button>
     <p class="export-status" aria-live="polite"></p>
-    <p class="small">運営記録には、マーク位置（本船位置・ゲート・上マーク）・設置ガイドの目標（ゲート幅・レグ長・風向）・風・設定したスタート時刻と号砲時刻・フィニッシュ時刻・マーク通過順位（目視）が入っています。フィニッシュはゲート通過後の流し込み（仮想ライン）です。</p>
+    <p class="small">運営記録には、マーク位置（本船・アウター・上・フィニッシュ位置）と基準マーク・設置ガイドの目標（ゲート幅・レグ長・風向・風速）・風・設定したスタート時刻と号砲時刻・フィニッシュ時刻・マーク通過順位（目視）が入っています。フィニッシュはゲート通過後の流し込み（仮想ライン）です。</p>
   </div>
   </div>
 
@@ -489,8 +511,8 @@ input[type=range]{min-height:auto;padding:0}
 <details><summary>データの集め方</summary><p>サーバーはありません。各艇がGPXを書き出し、Googleドライブの『GPSデータ』フォルダ（ヨット部フォルダ ＞ 2027 ＞ レース ＞ GPSデータ）に保存します。運営JSONも同じフォルダに忘れずに。集計はClaudeがフォルダから読み取って行います。</p></details>
   <details><summary>集めているデータ</summary><p>時刻・緯度・経度・精度だけを生で保存し、速度・VMG・タックは後から計算します。マーク実位置、号砲時刻、時刻つきの風、フィニッシュ目視順位、欠損区間、電池、配艇も残します。</p></details>
   <details><summary>チューニング記録について</summary><p>艇モードで、艇とスキッパーを選んだあとに出る「チューニング記録」が朝のステップです。出艇前に1回、レーキ／サイドテンション／プリベンドを入れてください。前回の記録が端末内に残り、次回はその値が最初から表示されます。変わっていない日は「前回と同じ」を1回押すだけで今日の記録になります。</p><p>記録はこの端末内に日付×艇で残ります。書き出しはJSONファイル（tuning_日付_艇番.json）で、GPXと同じくGoogleドライブの『GPSデータ』フォルダに保存してください。集計のときに、その日の航跡・風・順位と艇ごとに結びつけます。</p></details>
-  <details><summary>マーク設置ガイドとゲート／流し込みフィニッシュ</summary><p>運営モードの「設置」タブにあります。本船位置（アンカーしないので基準点として記録）を決め、風向（°）とレグ長（m）を入れると、ゲートA／ゲートB／上マークの設置目標の緯度・経度と、現在位置からの残り距離（あと○m）と方位を表示します。移動すると距離は自動で更新されます。目標に着いたら、ステップ1のボタンでその場所をGPS記録して確定します。ゲート幅はレグ長の約12%（40〜120mの範囲）で計算し、ゲートは風軸に直角なライン上に中心から左右対称に開きます。上マークはゲート中心から風上方向にレグ長の距離です。</p><p>下マークはゲートになりました（ゲートA＝旧アウター側、ゲートB＝旧本船マーク側）。最後のレグは、ゲートを通ったあと少し斜めにリーチングで走る流し込みフィニッシュです。フィニッシュラインはレスキューの腕を伸ばした仮想ラインで、新しいマークは打ちません。通過した順は運営モードのステップ5で記録します。</p><p>スタートは時報どおりです。「風・スタート」タブでスタート時刻（時：分）を設定すると、その時刻ちょうどが号砲として記録されます。</p></details>
-  <p class="small" style="margin-top:16px">バージョン v2.5.0</p>
+  <details><summary>マーク設置ガイドとゲート／流し込みフィニッシュ</summary><p>運営モードの「設置」タブにあります。マークは本船マーク／アウターマーク／上マーク／フィニッシュ位置の4つです。最初に打ったマークはどこでもよく、打った場所でそのマークのボタンを押して確定し、「基準」でそのマークを選ぶと、それが基準点になります。風向（°）・風速・レグ長（m）を入れると、残りのマークの設置目標の緯度・経度と、現在位置からの残り距離（あと○m）と方位を表示します。移動すると距離は自動で更新されます。目標に着いたら、ステップ1のボタンでその場所をGPS記録して確定します。ゲート幅はレグ長の約12%（40〜120mの範囲）で計算し、ゲートは風軸に直角なライン上に中心から左右対称に開きます。上マークはゲート中心から風上方向にレグ長の距離です。フィニッシュ位置は本船マークから風下へ約90m＋ライン方向へ約40mずらしたレスキューの待機位置（目安）です。</p><p>コース設定は共有できます。「LINEなどで共有する」か「共有コードをコピー」で、基準マーク・風向・風速・レグ長が入った共有コードを他のレスキューに送ってください。受けた側が「共有コードを貼って読み込む」に貼ると（送られたメッセージごと貼っても大丈夫です）、同じ設置目標が、その端末の現在位置からの方位・距離つきで表示されます。</p><p>下マークはゲートです（本船マークとアウターマークの間を通過）。最後のレグは、ゲートを通ったあと少し斜めにリーチングで走る流し込みフィニッシュです。フィニッシュラインはフィニッシュ位置にいるレスキューの腕を伸ばした仮想ライン（もう一端は本船マーク側）で、新しいマークは打ちません。通過した順は運営モードのステップ5で記録します。</p><p>スタートは時報どおりです。「風・スタート」タブでスタート時刻（時：分）を設定すると、その時刻ちょうどが号砲として記録されます。</p></details>
+  <p class="small" style="margin-top:16px">バージョン v2.6.0</p>
 </section>
 </div>
 <div id="toast" style="position:fixed;left:12px;right:12px;bottom:96px;z-index:10000;background:#111;color:#fff;padding:14px 16px;border-radius:12px;font-weight:700;display:none;box-shadow:0 8px 30px rgba(0,0,0,.3)"></div>
@@ -1123,20 +1145,25 @@ getBatteryPct().then(function(p){if(p!=null){$("stBattery").textContent=p+"%"; u
 
 /* ---------- OPS MODE ---------- */
 var ops={current:null,races:{},cdTimer:null,cdLeft:300};
-var MARK_LABELS={committee:"本船位置",gate_b:"ゲートB（本船マーク側）",gate_a:"ゲートA（アウター側）",windward:"上マーク",start_boat:"本船マーク（旧）",mark_outer:"アウターマーク（旧）",mark_up:"上マーク（旧）",rescue:"レスキュー位置（旧）",start_pin:"スタート ピン側（旧）",mark1up:"1上（旧）",mark1down:"1下（旧）",mark2up:"2上（旧）",finish:"フィニッシュ（旧）"};
-var MARK_KEYS=["committee","gate_b","gate_a","windward"];
-/* Legacy ops data (v2.4 and earlier) is read into the gate scheme:
-   old 本船マーク -> gate B, old アウター（下） -> gate A, old 上マーク -> windward.
-   The old rescue position has no mark in the gate scheme and is dropped. */
-function normMarks(m){if(!m)return {};var out={};if(m.committee)out.committee=m.committee;if(m.gate_b)out.gate_b=m.gate_b;else if(m.start_boat)out.gate_b=m.start_boat;if(m.gate_a)out.gate_a=m.gate_a;else if(m.mark_outer)out.gate_a=m.mark_outer;else if(m.mark1down)out.gate_a=m.mark1down;if(m.windward)out.windward=m.windward;else if(m.mark_up)out.windward=m.mark_up;else if(m.mark1up)out.windward=m.mark1up;return out}
+var MARK_LABELS={hon:"本船マーク",outer:"アウターマーク",windward:"上マーク",finish:"フィニッシュ位置",committee:"本船位置（旧・基準点）",gate_b:"ゲートB（旧）",gate_a:"ゲートA（旧）",start_boat:"本船マーク（旧）",mark_outer:"アウターマーク（旧）",mark_up:"上マーク（旧）",rescue:"レスキュー位置（旧）",start_pin:"スタート ピン側（旧）",mark1up:"1上（旧）",mark1down:"1下（旧）",mark2up:"2上（旧）"};
+var MARK_KEYS=["hon","outer","windward","finish"];
+var REF_ROLES=["hon","outer","windward","finish"];
+var REF_LABELS={hon:"本船マーク",outer:"アウターマーク",windward:"上マーク",finish:"フィニッシュ位置"};
+/* Legacy ops data is read into the 4-mark scheme:
+   v2.5 gate_b（本船マーク側） -> hon, gate_a（アウター側） -> outer,
+   v2.4 本船マーク -> hon, アウター（下） -> outer, 上マーク -> windward.
+   The v2.5 "committee" point was the gate centre; it is kept as a legacy
+   centre so an old course can still produce targets until a mark is set. */
+function normMarks(m){if(!m)return {};var out={};if(m.hon)out.hon=m.hon;else if(m.gate_b)out.hon=m.gate_b;else if(m.start_boat)out.hon=m.start_boat;if(m.outer)out.outer=m.outer;else if(m.gate_a)out.outer=m.gate_a;else if(m.mark_outer)out.outer=m.mark_outer;else if(m.mark1down)out.outer=m.mark1down;if(m.windward)out.windward=m.windward;else if(m.mark_up)out.windward=m.mark_up;else if(m.mark1up)out.windward=m.mark1up;if(m.finish&&typeof m.finish==="object")out.finish=m.finish;if(m.committee)out.committee=m.committee;return out}
 function normManual(m){var out={mark1up:[],mark1down:[],mark2up:[]};if(m)for(var k in out){if(Array.isArray(m[k]))out[k]=m[k].map(function(x){return String(x)})}return out}
-function opsRace(){var r=$("opsRace").value;if(!ops.races[r])ops.races[r]={marks:{},wind:[],startTime:null,finishOrder:[],finishTimes:{},manualMarks:normManual(null)};var rc=ops.races[r];rc.marks=normMarks(rc.marks);if(!rc.finishTimes)rc.finishTimes={};if(!rc.finishOrder)rc.finishOrder=[];if(!rc.wind)rc.wind=[];rc.manualMarks=normManual(rc.manualMarks);if(rc.legLength==null)rc.legLength=800;if(rc.layWindDir===undefined)rc.layWindDir=null;if(rc.scheduledStart===undefined)rc.scheduledStart=null;if(rc.targets===undefined)rc.targets=null;rc.course="gate_reach_finish";return rc}
+function opsRace(){var r=$("opsRace").value;if(!ops.races[r])ops.races[r]={marks:{},wind:[],startTime:null,finishOrder:[],finishTimes:{},manualMarks:normManual(null)};var rc=ops.races[r];rc.marks=normMarks(rc.marks);if(!rc.finishTimes)rc.finishTimes={};if(!rc.finishOrder)rc.finishOrder=[];if(!rc.wind)rc.wind=[];rc.manualMarks=normManual(rc.manualMarks);if(rc.legLength==null)rc.legLength=800;if(rc.layWindDir===undefined)rc.layWindDir=null;if(rc.windSpd===undefined)rc.windSpd=null;if(REF_ROLES.indexOf(rc.refRole)<0)rc.refRole=(rc.marks.hon?"hon":(rc.marks.outer?"outer":(rc.marks.windward?"windward":"hon")));if(rc.scheduledStart===undefined)rc.scheduledStart=null;if(rc.targets===undefined)rc.targets=null;rc.course="gate_reach_finish";return rc}
 function saveOpsLocal(){try{localStorage.setItem("snipe_ops_v2",JSON.stringify(ops.races))}catch(e){}}
 function loadOpsLocal(){try{var d=JSON.parse(localStorage.getItem("snipe_ops_v2")||"null");if(d){for(var k in d){if(d[k])d[k].marks=normMarks(d[k].marks)}ops.races=d}}catch(e){}}
 function opsProgressUpdate(){
   var rc=opsRace();
   var mmAny=!!(rc.manualMarks&&(rc.manualMarks.mark1up.length||rc.manualMarks.mark1down.length||rc.manualMarks.mark2up.length));
-  var done=[MARK_KEYS.every(function(k){return !!rc.marks[k]}),rc.wind.length>0,!!rc.startTime,mmAny,rc.finishOrder.length>0,!!rc.exportedAt];
+  var step1Done=MARK_KEYS.every(function(k){return !!rc.marks[k]});
+  var done=[step1Done,rc.wind.length>0,!!rc.startTime,mmAny,rc.finishOrder.length>0,!!rc.exportedAt];
   var names=["マークを打つ","風を記録する","スタート","マーク通過順位","フィニッシュを記録","書き出し"];
   var cur=done.indexOf(false); if(cur<0)cur=5;
   var el=$("opsProgress"); if(el)el.innerHTML="進捗： <b>ステップ "+(cur+1)+"/6</b> ｜ 次は「"+names[cur]+"」（完了 "+done.filter(Boolean).length+"/6）";
@@ -1148,22 +1175,32 @@ function drawOps(){
   if(ops._layer)ops._layer.clearLayers(); ops._layer=L.layerGroup().addTo(m);
   var rc=opsRace(); var pts=[];
   var t=computeTargets(rc);
+  function posOf(k){return rc.marks[k]||(t?t[k]:null)}
   if(t){
-    ["gate_b","gate_a","windward"].forEach(function(k){var tp=t[k];L.circleMarker([tp.lat,tp.lon],{radius:10,color:"#2563eb",fillOpacity:0,weight:2,dashArray:"4 3"}).addTo(ops._layer).bindPopup(MARK_LABELS[k]+"（設置目標）");pts.push([tp.lat,tp.lon])});
-    L.polyline([[t.gate_a.lat,t.gate_a.lon],[t.gate_b.lat,t.gate_b.lon]],{color:"#2563eb",dashArray:"4 4",weight:2}).addTo(ops._layer);
+    MARK_KEYS.forEach(function(k){if(rc.marks[k])return;var tp=t[k];L.circleMarker([tp.lat,tp.lon],{radius:10,color:"#2563eb",fillOpacity:0,weight:2,dashArray:"4 3"}).addTo(ops._layer).bindPopup(MARK_LABELS[k]+"（設置目標）");pts.push([tp.lat,tp.lon])});
+    L.polyline([[t.outer.lat,t.outer.lon],[t.hon.lat,t.hon.lon]],{color:"#2563eb",dashArray:"4 4",weight:2}).addTo(ops._layer);
     L.polyline([[t.gateCentre.lat,t.gateCentre.lon],[t.windward.lat,t.windward.lon]],{color:"#2563eb",dashArray:"2 6",weight:2}).addTo(ops._layer);
+    L.polyline([[t.hon.lat,t.hon.lon],[t.finish.lat,t.finish.lon]],{color:"#2563eb",dashArray:"4 4",weight:2}).addTo(ops._layer);
   }
-  MARK_KEYS.forEach(function(k){var q=rc.marks[k];if(q){var isBase=(k==="committee");L.circleMarker([q.lat,q.lon],{radius:11,color:isBase?"#7c2d12":"#0a7a42",fillColor:isBase?"#f97316":"#22c55e",fillOpacity:.9}).addTo(ops._layer).bindPopup(MARK_LABELS[k]+" "+fmtTime(q.t));pts.push([q.lat,q.lon])}});
-  var lineKeys=["gate_b","windward","gate_a","windward","gate_b"]; var line=lineKeys.map(function(k){return rc.marks[k]?[rc.marks[k].lat,rc.marks[k].lon]:null}).filter(Boolean);
+  MARK_KEYS.forEach(function(k){var q=rc.marks[k];if(q){var isRef=(k===rc.refRole);L.circleMarker([q.lat,q.lon],{radius:11,color:isRef?"#7c2d12":"#0a7a42",fillColor:isRef?"#f97316":"#22c55e",fillOpacity:.9}).addTo(ops._layer).bindPopup(MARK_LABELS[k]+(isRef?"（基準）":"")+" "+(q.t?fmtTime(q.t):""));pts.push([q.lat,q.lon])}});
+  var lineKeys=["hon","windward","outer","windward","hon"]; var line=lineKeys.map(function(k){var p=posOf(k);return p?[p.lat,p.lon]:null}).filter(Boolean);
   if(line.length>1)L.polyline(line,{color:"#0b2a4a",dashArray:"6 6",weight:2}).addTo(ops._layer);
-  if(rc.marks.gate_a&&rc.marks.gate_b)L.polyline([[rc.marks.gate_a.lat,rc.marks.gate_a.lon],[rc.marks.gate_b.lat,rc.marks.gate_b.lon]],{color:"#d92d20",weight:3}).addTo(ops._layer);
+  var ga=posOf("outer"),gb=posOf("hon");
+  if(ga&&gb)L.polyline([[ga.lat,ga.lon],[gb.lat,gb.lon]],{color:"#d92d20",weight:3}).addTo(ops._layer);
+  var fp=posOf("finish");
+  if(fp&&gb)L.polyline([[gb.lat,gb.lon],[fp.lat,fp.lon]],{color:"#b54708",dashArray:"3 5",weight:2}).addTo(ops._layer);
   if(ops.current)L.circleMarker([ops.current.lat,ops.current.lon],{radius:8,color:"#ff5a00",fillColor:"#ff5a00",fillOpacity:1}).addTo(ops._layer).bindPopup("現在位置");
   if(pts.length)m.fitBounds(pts,{padding:[30,30]});
 }
 function renderMarks(){
   var rc=opsRace();
-  $("markList").innerHTML=MARK_KEYS.map(function(k){var q=rc.marks[k];return q?"<div>✅ <b>"+MARK_LABELS[k]+"</b> "+q.lat.toFixed(6)+", "+q.lon.toFixed(6)+" ｜ "+fmtTime(q.t)+"</div>":"<div>⬜ <b>"+MARK_LABELS[k]+"</b> 未確定</div>"}).join("");
-  document.querySelectorAll("#markBtns .markbtn").forEach(function(b){var q=rc.marks[b.dataset.mark];b.classList.toggle("done",!!q);var sp=b.querySelector(".mk-state");if(sp)sp.textContent=q?("確定済み "+fmtTime(q.t)+"（打ち直し可）"):"未確定"});
+  var tg2=computeTargets(rc);
+  $("markList").innerHTML=MARK_KEYS.map(function(k){var q=rc.marks[k];var ref=(k===rc.refRole)?"（基準）":"";
+    if(q)return "<div>✅ <b>"+MARK_LABELS[k]+"</b>"+ref+" "+q.lat.toFixed(6)+", "+q.lon.toFixed(6)+(q.t?" ｜ "+fmtTime(q.t):"")+(q.shared?" ｜ 共有から読込":"")+"</div>";
+    if(tg2&&tg2[k])return "<div>◎ <b>"+MARK_LABELS[k]+"</b> 目標 "+tg2[k].lat.toFixed(6)+", "+tg2[k].lon.toFixed(6)+"（未確定）</div>";
+    return "<div>⬜ <b>"+MARK_LABELS[k]+"</b> 未確定</div>"}).join("");
+  document.querySelectorAll("#markBtns .markbtn").forEach(function(b){var q=rc.marks[b.dataset.mark];b.classList.toggle("done",!!q);var sp=b.querySelector(".mk-state");if(sp)sp.textContent=q?("確定済み "+(q.t?fmtTime(q.t):"")+"（打ち直し可）"):((tg2&&tg2[b.dataset.mark])?"目標あり（着いたら押す）":"未確定")});
+  document.querySelectorAll("#refRoleSeg button").forEach(function(b){b.classList.toggle("on",b.dataset.refrole===rc.refRole)});
   $("gunOut").textContent="号砲時刻: "+(rc.startTime?fmtTime(rc.startTime):"未記録");
   $("windList").innerHTML=rc.wind.map(function(w){return "<div>🌬 "+fmtTime(w.t)+" ｜ 風向 "+w.dir+"° ｜ 風速 "+w.spd+" m/s</div>"}).join("")||"<p class='small'>風の記録はまだありません。</p>";
   renderFinish(); renderManualMarks(); renderLayGuide(); opsProgressUpdate();
@@ -1173,7 +1210,7 @@ $("btnOpsHere").onclick=function(){opsGetPos(function(){})};
 document.querySelectorAll("#markBtns .markbtn").forEach(function(b){b.addEventListener("click",function(){
   if(!navigator.geolocation){showMsg("位置情報が使えません");return}
   var key=b.dataset.mark;
-  navigator.geolocation.getCurrentPosition(function(p){var rc=opsRace();rc.marks[key]={lat:p.coords.latitude,lon:p.coords.longitude,t:Date.now(),acc:p.coords.accuracy};saveOpsLocal();renderMarks();drawOps();startOpsWatch();showMsg(MARK_LABELS[key]+" を確定しました: "+fmtTime(Date.now()))},function(e){showMsg("測位失敗: "+e.message)},{enableHighAccuracy:true,timeout:15000});
+  navigator.geolocation.getCurrentPosition(function(p){var rc=opsRace();rc.marks[key]={lat:p.coords.latitude,lon:p.coords.longitude,t:Date.now(),acc:p.coords.accuracy};var setCount=REF_ROLES.filter(function(k){return !!rc.marks[k]}).length;if(setCount===1)rc.refRole=key;saveOpsLocal();renderMarks();drawOps();startOpsWatch();showMsg(MARK_LABELS[key]+" を確定しました: "+fmtTime(Date.now())+(setCount===1?"（このマークを基準にします。「基準」の選択と違っていたら切り替えてください）":""))},function(e){showMsg("測位失敗: "+e.message)},{enableHighAccuracy:true,timeout:15000});
 })});
 $("opsRace").addEventListener("change",function(){renderMarks();drawOps()});
 /* ---------- ops sub-tabs (in-memory only) ---------- */
@@ -1186,43 +1223,121 @@ function switchOpsTab(t){
   window.scrollTo(0,0);
 }
 document.querySelectorAll("#opsTabs button").forEach(function(b){b.addEventListener("click",function(){switchOpsTab(b.dataset.opstab)})});
-/* ---------- mark-layer guide ----------
-   Reference point = committee position (the committee boat no longer anchors;
-   its position when set is the基準点). The gate sits on the line through the
-   committee position perpendicular to the wind axis, opened symmetrically
-   around that centre. The windward mark is legLength metres upwind (toward
-   the direction the wind blows FROM) from the gate centre.
-   Gate span = about 12% of the leg length, clamped to 40–120 m. */
+/* ---------- mark-layer guide (v2.6: any mark can be the reference) ----------
+   The rescue lays ONE mark first, wherever it happens to be, and declares
+   what that mark is (refRole: hon / outer / windward / finish). That mark is
+   the reference; every other target is computed from it + wind + leg length.
+   Geometry (W = wind direction FROM, L = leg length, S = gate span):
+     gate centre C; hon = C offset (W+90)°, S/2; outer = C offset (W-90)°, S/2;
+     windward = C offset W°, L (upwind);
+     finish = hon offset downwind (W+180)° 90 m, then (W+90)° 40 m
+              (rescue waiting position for the reach / 流し込み finish, 目安).
+   Gate span = about 12% of the leg length, clamped to 40–120 m.
+   Legacy fallback: a v2.5 course whose only point is the old committee
+   (gate-centre) position still computes targets from that centre. */
+var FINISH_DOWNWIND_M=90, FINISH_OFFSET_M=40;
 function gateSpanFor(leg){return Math.round(Math.min(120,Math.max(40,leg*0.12)))}
+function legSuggestForWind(ws){
+  if(ws==null||isNaN(ws))return null;
+  if(ws<2.5)return 450; if(ws<3.5)return 550; if(ws<4.5)return 650;
+  if(ws<5.5)return 750; if(ws<6.5)return 850; if(ws<8)return 950; return 1050;
+}
 function computeTargets(rc){
-  if(!rc||!rc.marks.committee||rc.layWindDir==null||isNaN(rc.layWindDir)||!(rc.legLength>0)){if(rc)rc.targets=null;return null}
-  var centre={lat:rc.marks.committee.lat,lon:rc.marks.committee.lon};
-  var span=gateSpanFor(rc.legLength);
-  var gb=destPoint(centre,(rc.layWindDir+90+360)%360,span/2);
-  var ga=destPoint(centre,(rc.layWindDir-90+360)%360,span/2);
-  var wu=destPoint(centre,rc.layWindDir,rc.legLength);
-  rc.targets={gateCentre:centre,gateSpan:span,gate_b:gb,gate_a:ga,windward:wu,windDir:rc.layWindDir,legLength:rc.legLength};
+  if(!rc||rc.layWindDir==null||isNaN(rc.layWindDir)||!(rc.legLength>0)){if(rc)rc.targets=null;return null}
+  var W=((rc.layWindDir%360)+360)%360, L=rc.legLength, S=gateSpanFor(L);
+  var bHon=(W+90)%360, bOuter=(W+270)%360, bDown=(W+180)%360;
+  var centre=null, refKey=null, refPt=null;
+  var role=REF_ROLES.indexOf(rc.refRole)>=0?rc.refRole:"hon";
+  if(rc.marks[role]){refKey=role;refPt=rc.marks[role]}
+  else{for(var i=0;i<REF_ROLES.length;i++){if(rc.marks[REF_ROLES[i]]){refKey=REF_ROLES[i];refPt=rc.marks[REF_ROLES[i]];break}}}
+  if(refPt){
+    if(refKey==="hon")centre=destPoint(refPt,bOuter,S/2);
+    else if(refKey==="outer")centre=destPoint(refPt,bHon,S/2);
+    else if(refKey==="windward")centre=destPoint(refPt,bDown,L);
+    else if(refKey==="finish"){var s1=destPoint(refPt,bOuter,FINISH_OFFSET_M);var s2=destPoint(s1,W,FINISH_DOWNWIND_M);centre=destPoint(s2,bOuter,S/2)}
+  }else if(rc.marks.committee){
+    centre={lat:rc.marks.committee.lat,lon:rc.marks.committee.lon}; refKey="committee";
+  }
+  if(!centre){rc.targets=null;return null}
+  var hon=destPoint(centre,bHon,S/2);
+  var outer=destPoint(centre,bOuter,S/2);
+  var wu=destPoint(centre,W,L);
+  var fin=destPoint(destPoint(hon,bDown,FINISH_DOWNWIND_M),bHon,FINISH_OFFSET_M);
+  rc.targets={gateCentre:centre,gateSpan:S,refRole:refKey,hon:hon,outer:outer,windward:wu,finish:fin,windDir:W,windSpd:(rc.windSpd==null?null:rc.windSpd),legLength:L};
   return rc.targets;
 }
 function renderLayGuide(){
   var rc=opsRace();
-  var wd=$("layWindDir"),ll=$("legLenIn");
+  var wd=$("layWindDir"),ws=$("layWindSpd"),ll=$("legLenIn");
   if(wd&&document.activeElement!==wd)wd.value=(rc.layWindDir==null?"":rc.layWindDir);
+  if(ws&&document.activeElement!==ws)ws.value=(rc.windSpd==null?"":rc.windSpd);
   if(ll&&document.activeElement!==ll)ll.value=rc.legLength||"";
+  document.querySelectorAll("#refRoleSeg button").forEach(function(b){b.classList.toggle("on",b.dataset.refrole===rc.refRole)});
   var t=computeTargets(rc);
   var spanEl=$("gateSpanOut");
-  if(spanEl)spanEl.textContent=t?("ゲート幅 約"+t.gateSpan+"m（レグ長の約12%／中心から左右対称）"):"ゲート幅 —（本船位置・風向・レグ長がそろうと計算します）";
+  if(spanEl)spanEl.textContent=t?("ゲート幅 約"+t.gateSpan+"m（レグ長の約12%／中心から左右対称） ｜ 基準： "+(REF_LABELS[t.refRole]||"旧・本船位置")):"ゲート幅 —（基準マーク・風向・レグ長がそろうと計算します）";
   var box=$("layTargets"); if(!box)return;
-  if(!rc.marks.committee){box.innerHTML="<p class='small'>まず「本船位置」を、今いる場所で確定してください。そこを基準に、ゲートと上マークの設置目標を計算します。</p>";return}
-  if(!t){box.innerHTML="<p class='small'>風向（°）とレグ長（m）を入れると、設置目標と残り距離を表示します。</p>";return}
-  var rows=[["gate_b","ゲートB（本船マーク側）"],["gate_a","ゲートA（アウター側）"],["windward","上マーク"]];
-  box.innerHTML=rows.map(function(r){
-    var key=r[0],tp=t[key],mk=rc.marks[key];
-    var dist="現在位置が未取得です",brg="";
-    if(ops.current){dist="あと "+Math.round(haversine(ops.current,tp))+" m";brg="方位 "+Math.round(bearingTo(ops.current,tp))+"°"}
-    var doneTxt=mk?("<span style='color:var(--green);font-weight:800'>設置済み "+fmtTime(mk.t)+"</span>"):"目標に着いたら、上のボタンで確定";
-    return "<div class='lay-row'><b>"+r[1]+"</b> ｜ "+tp.lat.toFixed(6)+", "+tp.lon.toFixed(6)+"<br><span class='lay-dist'>"+dist+"</span> <span class='small'>"+brg+"</span><br><span class='small'>"+doneTxt+"</span></div>"
+  var refSet=REF_ROLES.some(function(k){return !!rc.marks[k]})||!!rc.marks.committee;
+  if(!refSet){box.innerHTML="<p class='small'>まず、最初に打ったマークを上のボタンで確定してください（どのマークからでも大丈夫です）。それが基準になって、残りの目標を計算します。</p>";return}
+  if(!t){box.innerHTML="<p class='small'>風向（°）とレグ長（m）を入れると、残りのマークの設置目標と、現在位置からの方位・残り距離を表示します。</p>";return}
+  box.innerHTML=MARK_KEYS.map(function(key){
+    var tp=t[key],mk=rc.marks[key],isRef=(key===t.refRole);
+    var shown=mk||tp;
+    var dist="現在位置が未取得です（「現在位置を更新」を押すと案内が始まります）",brg="";
+    if(ops.current&&!mk){var dm=Math.round(haversine(ops.current,tp));dist=(dm<=10?"ほぼ到着（あと "+dm+" m）":"あと "+dm+" m");brg="方位 "+Math.round(bearingTo(ops.current,tp))+"° で進む"}
+    if(ops.current&&mk){dist="確定済み（現在位置から "+Math.round(haversine(ops.current,mk))+" m）";brg=""}
+    var head=isRef?"<span style='color:var(--yellow);font-weight:800'>基準点</span>":(mk?"<span style='color:var(--green);font-weight:800'>設置済み "+(mk.t?fmtTime(mk.t):"")+"</span>":"目標に着いたら、上のボタンで確定");
+    return "<div class='lay-row'><b>"+MARK_LABELS[key]+"</b> "+head+"<br>"+shown.lat.toFixed(6)+", "+shown.lon.toFixed(6)+"<br><span class='lay-dist'>"+dist+"</span> <span class='small'>"+brg+"</span></div>"
   }).join("");
+}
+/* ---------- course sharing (LINE etc.) ----------
+   The whole course setup (reference mark + wind + leg) is packed into a
+   compact code. The share link carries it in the URL hash (#c=...), so a
+   rescue boat opening the link gets the identical targets, with guidance
+   from its own position. The same code can be pasted manually. */
+function courseSharePayload(rc){
+  var t=computeTargets(rc); if(!t)return null;
+  var role=t.refRole; if(REF_ROLES.indexOf(role)<0)return null;
+  var rp=rc.marks[role]; if(!rp)return null;
+  return {v:2,race:$("opsRace").value,ref:role,lat:Math.round(rp.lat*1e6)/1e6,lon:Math.round(rp.lon*1e6)/1e6,wd:rc.layWindDir,ws:(rc.windSpd==null?null:rc.windSpd),leg:rc.legLength};
+}
+function encodeCourseCode(p){try{return btoa(unescape(encodeURIComponent(JSON.stringify(p))))}catch(e){return ""}}
+function decodeCourseCode(code){
+  code=String(code||"").trim();
+  if(!code)return null;
+  var m=code.match(/#c=([A-Za-z0-9+/=]+)/);
+  if(m){code=m[1]}
+  else{
+    /* Accept the bare code, the labelled code, or the whole shared message
+       pasted as-is: pull the longest base64-looking token out of the text. */
+    var toks=code.match(/[A-Za-z0-9+/]{16,}={0,2}/g);
+    if(!toks)return null;
+    toks.sort(function(a,b){return b.length-a.length});
+    code=toks[0];
+  }
+  try{var p=JSON.parse(decodeURIComponent(escape(atob(code))));return (p&&typeof p==="object"&&REF_ROLES.indexOf(p.ref)>=0)?p:null}catch(e){return null}
+}
+function courseShareText(p){
+  var t=null; var rc=opsRace(); if(rc&&courseSharePayload(rc))t=computeTargets(rc);
+  var lines=["【コース設定】"+p.race+" ｜ 基準： "+(REF_LABELS[p.ref]||p.ref)+" "+p.lat.toFixed(6)+", "+p.lon.toFixed(6),
+    "風向 "+p.wd+"°"+(p.ws!=null?" ｜ 風速 "+p.ws+" m/s":"")+" ｜ レグ長 "+p.leg+"m"];
+  if(t){MARK_KEYS.forEach(function(k){if(k===p.ref)return;lines.push(MARK_LABELS[k]+"（目標）: "+t[k].lat.toFixed(6)+", "+t[k].lon.toFixed(6))})}
+  lines.push("トラッカーの運営→設置にある「共有コードを貼って読み込む」に、下のコードを貼ると同じ設定になります。");
+  lines.push("コース設定コード: "+encodeCourseCode(p));
+  return lines.join("\n");
+}
+function applyCoursePayload(p,sourceLabel){
+  if(!p||REF_ROLES.indexOf(p.ref)<0||typeof p.lat!=="number"||typeof p.lon!=="number"||!(p.leg>0)||p.wd==null){showMsg("共有された設定を読み取れませんでした（コードが壊れている可能性があります）");return false}
+  var race=(/^R[1-6]$/.test(p.race||"")?p.race:"R1");
+  var sel=$("opsRace"); if(sel)sel.value=race;
+  var rc=opsRace();
+  rc.refRole=p.ref;
+  rc.marks[p.ref]={lat:p.lat,lon:p.lon,t:null,acc:null,shared:true};
+  rc.layWindDir=p.wd; rc.windSpd=(p.ws==null?null:p.ws); rc.legLength=p.leg;
+  saveOpsLocal(); renderMarks(); drawOps(); startOpsWatch();
+  showMsg("共有されたコース設定を読み込みました（"+race+" ｜ 基準： "+(REF_LABELS[p.ref]||p.ref)+"）。「設置」タブで各マークまでの方位・距離を確認してください。");
+  var out=$("shareCourseOut"); if(out)out.innerHTML="<span style='color:var(--green);font-weight:700'>✓ "+esc(sourceLabel||"共有設定")+"を読み込みました。</span> 基準は "+esc(REF_LABELS[p.ref]||p.ref)+" です。自分の位置から各目標までの方位・距離は上のガイドに出ます。";
+  return true;
 }
 /* Live ops position for the guide: while laying marks, keep updating the
    remaining distances as the rescue/committee boat moves. */
@@ -1237,19 +1352,79 @@ function startOpsWatch(){
   },function(){},{enableHighAccuracy:true,maximumAge:2000,timeout:20000});
 }
 (function(){
-  var wd=$("layWindDir"),ll=$("legLenIn");
+  var wd=$("layWindDir"),ws=$("layWindSpd"),ll=$("legLenIn");
   if(wd)wd.addEventListener("change",function(){
     var rc=opsRace(); var v=wd.value.trim();
     if(v===""){rc.layWindDir=null}
     else{var n=Number(v); if(isNaN(n)||n<0||n>359){showMsg("風向は0〜359の数字で入れてください");wd.value=(rc.layWindDir==null?"":rc.layWindDir);return} rc.layWindDir=n}
-    saveOpsLocal(); renderLayGuide(); drawOps();
+    saveOpsLocal(); renderMarks(); drawOps();
+  });
+  if(ws)ws.addEventListener("change",function(){
+    var rc=opsRace(); var v=ws.value.trim();
+    if(v===""){rc.windSpd=null}
+    else{var n=Number(v); if(isNaN(n)||n<0){showMsg("風速は0以上の数字で入れてください");ws.value=(rc.windSpd==null?"":rc.windSpd);return} rc.windSpd=n}
+    saveOpsLocal(); renderLayGuide();
   });
   if(ll)ll.addEventListener("change",function(){
     var rc=opsRace(); var n=Number(ll.value);
     if(isNaN(n)||n<50){showMsg("レグ長は50m以上の数字で入れてください");ll.value=rc.legLength||"";return}
-    rc.legLength=n; saveOpsLocal(); renderLayGuide(); drawOps();
+    rc.legLength=n; saveOpsLocal(); renderMarks(); drawOps();
+  });
+  var sug=$("btnLegSuggest");
+  if(sug)sug.addEventListener("click",function(){
+    var rc=opsRace();
+    var spd=rc.windSpd;
+    if(spd==null){var wsv=ws?ws.value.trim():""; if(wsv!==""&&!isNaN(Number(wsv)))spd=Number(wsv)}
+    if(spd==null&&rc.wind.length)spd=rc.wind[rc.wind.length-1].spd;
+    var leg=legSuggestForWind(spd);
+    if(leg==null){showMsg("先に風速を入れてください（設置ガイドの風速欄、またはステップ2の風の記録）");return}
+    rc.windSpd=spd; rc.legLength=leg; saveOpsLocal(); renderMarks(); drawOps();
+    showMsg("風速 "+spd+" m/s の目安として、レグ長 "+leg+"m を入れました（目安です。現場に合わせて変えて大丈夫です）");
+  });
+  document.querySelectorAll("#refRoleSeg button").forEach(function(b){b.addEventListener("click",function(){
+    var rc=opsRace(); rc.refRole=b.dataset.refrole; saveOpsLocal(); renderMarks(); drawOps();
+    showMsg("基準マークを「"+REF_LABELS[rc.refRole]+"」にしました。そのマークが確定していれば、残りの目標を計算します。");
+  })});
+  var shareBtn=$("btnShareCourse");
+  if(shareBtn)shareBtn.addEventListener("click",function(){
+    var rc=opsRace(); var p=courseSharePayload(rc); var out=$("shareCourseOut");
+    if(!p){showMsg("共有するには、基準マークの確定と、風向・レグ長が必要です");if(out)out.textContent="まだ共有できません： 基準マークを確定し、風向とレグ長を入れてください。";return}
+    var text=courseShareText(p);
+    if(navigator.share){
+      navigator.share({title:"コース設定 "+p.race,text:text}).then(function(){if(out)out.textContent="共有しました。受けた側は、文末の共有コードを「共有コードを貼って読み込む」に貼れば同じ設定になります。"}).catch(function(err){if(err&&err.name!=="AbortError"){if(out)out.innerHTML="共有シートが使えませんでした。下の「共有コードをコピー」で送ってください。";}});
+    }else{
+      var lineUrl="https://line.me/R/msg/text/?"+encodeURIComponent(text);
+      if(out)out.innerHTML="この端末では共有シートが開けないため、LINEの送信画面を開きます。";
+      try{window.open(lineUrl,"_blank")}catch(e){}
+    }
+  });
+  var copyBtn=$("btnCopyCourseCode");
+  if(copyBtn)copyBtn.addEventListener("click",function(){
+    var rc=opsRace(); var p=courseSharePayload(rc); var out=$("shareCourseOut");
+    if(!p){showMsg("共有するには、基準マークの確定と、風向・レグ長が必要です");if(out)out.textContent="まだ共有できません： 基準マークを確定し、風向とレグ長を入れてください。";return}
+    var code="コース設定コード: "+encodeCourseCode(p);
+    function done(){if(out)out.innerHTML="<span style='color:var(--green);font-weight:700'>✓ 共有コードをコピーしました。</span> LINEに貼って送ってください。受けた側は「共有コードを貼って読み込む」に貼れば、同じ設定になります。";showMsg("共有コードをコピーしました")}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(code).then(done).catch(function(){fallbackCopy()})}else{fallbackCopy()}
+    function fallbackCopy(){var ta=$("shareCodeIn");if(ta){ta.value=code;ta.focus();ta.select();try{document.execCommand("copy");done()}catch(e){if(out)out.textContent="コピーできませんでした。欄に出したコードを長押しでコピーしてください。";}}}
+  });
+  var impBtn=$("btnImportCourseCode");
+  if(impBtn)impBtn.addEventListener("click",function(){
+    var code=$("shareCodeIn").value; var p=decodeCourseCode(code);
+    if(!p){showMsg("コードを読み取れませんでした。送られたコード全体を貼ってください");return}
+    switchOpsTab("setup"); applyCoursePayload(p,"共有コード");
   });
 })();
+/* On open: if the URL hash carries a shared course (#c=...), load it so all
+   rescue boats work from the identical mark settings. */
+function importCourseFromHash(){
+  var h=""; try{h=String(location.hash||"")}catch(e){}
+  if(h.indexOf("#c=")!==0)return;
+  var p=decodeCourseCode(h);
+  if(!p)return;
+  show("ops"); switchOpsTab("setup");
+  applyCoursePayload(p,"共有リンク");
+  try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+}
 /* manual mark-rounding order (visual, from rescue boat) */
 var MM_KEYS=["mark1up","mark1down","mark2up"];
 var MM_LABELS={mark1up:"1上",mark1down:"ゲート",mark2up:"2上"};
@@ -1307,6 +1482,7 @@ $("btnAddWind").onclick=function(){
   if(isNaN(d)||d<0||d>359){showMsg("風向は0〜359の数字で入れてください");return}
   var rc=opsRace(); rc.wind.push({t:Date.now(),dir:d,spd:parseFloat(sv)}); rc.wind.sort(function(a,b){return a.t-b.t});
   if(rc.layWindDir==null){rc.layWindDir=d}
+  rc.windSpd=parseFloat(sv);
   saveOpsLocal(); renderMarks(); showMsg("風を記録しました: "+d+"° / "+sv+" m/s");
 };
 /* finish order with times */
@@ -1385,7 +1561,7 @@ var _ps=document.getElementById("powerSave"); if(_ps){_ps.addEventListener("chan
 /* ---------- init ---------- */
 function init(){ updateStatus();
   renderOriginWarnings(); refreshPermState();
-  loadFleet(); syncBoatFromFleet(); prefillTuningForm(); loadOpsLocal(); renderMarks(); renderChecks(); refreshSessions(); schedTick(); renderReplay();
+  loadFleet(); syncBoatFromFleet(); prefillTuningForm(); loadOpsLocal(); renderMarks(); renderChecks(); refreshSessions(); schedTick(); renderReplay(); importCourseFromHash();
   $("fleetDate").value=$("fleetDate").value||todayStr();
   setTimeout(function(){initMaps();drawOps()},600);
 }
